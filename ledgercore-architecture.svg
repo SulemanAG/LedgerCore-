@@ -1,0 +1,304 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 920" width="100%" height="100%">
+  <defs>
+    <!-- Master Dark Theme Radial Background -->
+    <radialGradient id="bgCanvas" cx="50%" cy="35%" r="75%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="55%" stop-color="#090d16" />
+      <stop offset="100%" stop-color="#030712" />
+    </radialGradient>
+
+    <!-- Node 1: Client Card Gradients -->
+    <linearGradient id="clientTop" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="100%" stop-color="#0284c7"/>
+    </linearGradient>
+    <linearGradient id="clientFront" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#075985"/>
+      <stop offset="100%" stop-color="#0c4a6e"/>
+    </linearGradient>
+
+    <!-- Node 2: Security & AuthGuard Card Gradients -->
+    <linearGradient id="secTop" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#c084fc"/>
+      <stop offset="100%" stop-color="#9333ea"/>
+    </linearGradient>
+    <linearGradient id="secFront" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#6b21a8"/>
+      <stop offset="100%" stop-color="#4c1d95"/>
+    </linearGradient>
+
+    <!-- Node 3: Service Engine Gradients -->
+    <linearGradient id="serviceTop" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#d97706"/>
+    </linearGradient>
+    <linearGradient id="serviceFront" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#b45309"/>
+      <stop offset="100%" stop-color="#78350f"/>
+    </linearGradient>
+
+    <!-- Node 4: PostgreSQL Vault Gradients -->
+    <linearGradient id="dbTop" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#34d399"/>
+      <stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
+    <linearGradient id="dbSide" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#047857"/>
+      <stop offset="50%" stop-color="#065f46"/>
+      <stop offset="100%" stop-color="#047857"/>
+    </linearGradient>
+
+    <!-- Glassmorphic Panel Gradient -->
+    <linearGradient id="glassCard" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b" stop-opacity="0.92"/>
+      <stop offset="100%" stop-color="#0f172a" stop-opacity="0.96"/>
+    </linearGradient>
+
+    <!-- Soft Ambient Elevation Shadows -->
+    <filter id="cardElevation" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="18" stdDeviation="14" flood-color="#000000" flood-opacity="0.6"/>
+    </filter>
+
+    <filter id="glowBlue" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+
+    <filter id="glowGreen" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+
+    <style>
+      .main-title { font-family: system-ui, -apple-system, sans-serif; font-size: 26px; font-weight: 800; fill: #ffffff; letter-spacing: 1px; }
+      .sub-title { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; font-weight: 500; fill: #94a3b8; }
+      .node-heading { font-family: system-ui, -apple-system, sans-serif; font-size: 18px; font-weight: 800; fill: #ffffff; }
+      .node-sub { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 600; fill: #cbd5e1; }
+      .code-pill { font-family: "Courier New", Courier, monospace; font-size: 12px; font-weight: 700; }
+      .badge-text { font-family: system-ui, -apple-system, sans-serif; font-size: 11px; font-weight: 800; letter-spacing: 0.8px; }
+
+      /* Connecting Line Styles */
+      .pipeline-track { fill: none; stroke: #1e293b; stroke-width: 8; stroke-linecap: round; }
+      .pipeline-flow { fill: none; stroke: #0284c7; stroke-width: 3; stroke-dasharray: 8 8; animation: pipeFlow 2.5s linear infinite; }
+      .pipeline-return { fill: none; stroke: #10b981; stroke-width: 3; stroke-dasharray: 8 8; animation: pipeReturn 2.5s linear infinite; }
+
+      @keyframes pipeFlow { to { stroke-dashoffset: -16; } }
+      @keyframes pipeReturn { to { stroke-dashoffset: 16; } }
+
+      /* Transaction Flow Pulses */
+      .req-packet { fill: #38bdf8; filter: url(#glowBlue); }
+      .res-packet { fill: #34d399; filter: url(#glowGreen); }
+    </style>
+  </defs>
+
+  <!-- Canvas -->
+  <rect width="1440" height="920" fill="url(#bgCanvas)"/>
+
+  <!-- Subtle Axonometric Perspective Mesh -->
+  <g opacity="0.08" stroke="#64748b" stroke-width="1.2">
+    <path d="M 60 220 L 720 540 L 1380 220"/>
+    <path d="M 60 420 L 720 740 L 1380 420"/>
+    <path d="M 60 620 L 720 940 L 1380 620"/>
+    <line x1="720" y1="40" x2="720" y2="900"/>
+  </g>
+
+  <!-- Header Section -->
+  <g transform="translate(80, 55)">
+    <text class="main-title" x="0" y="0">🏦 LEDGERCORE ARCHITECTURE &amp; TRANSACTION PIPELINE</text>
+    <text class="sub-title" x="0" y="24">Layered Security, Strict Ownership Verification, Optimistic Locking &amp; Double-Entry Persistence</text>
+  </g>
+
+  <!-- Background Connecting Data Pipes -->
+  <g id="tracks">
+    <!-- Client to Security -->
+    <path d="M 230 380 L 400 380" class="pipeline-track"/>
+    <path d="M 230 380 L 400 380" class="pipeline-flow"/>
+
+    <!-- Security to Service -->
+    <path d="M 660 380 L 780 380" class="pipeline-track"/>
+    <path d="M 660 380 L 780 380" class="pipeline-flow"/>
+
+    <!-- Service to DB -->
+    <path d="M 1040 380 L 1180 380" class="pipeline-track"/>
+    <path d="M 1040 380 L 1180 380" class="pipeline-flow"/>
+
+    <!-- Return Pipeline -->
+    <path d="M 1180 430 L 780 430 L 400 430 L 230 430" class="pipeline-track"/>
+    <path d="M 1180 430 L 780 430 L 400 430 L 230 430" class="pipeline-return"/>
+  </g>
+
+  <!-- Animated Transaction Packets (<animateMotion>) -->
+  <g>
+    <!-- Forward Request Packet -->
+    <circle r="6" class="req-packet">
+      <animateMotion path="M 230 380 L 400 380 L 660 380 L 780 380 L 1040 380 L 1180 380" dur="4s" repeatCount="indefinite"/>
+    </circle>
+
+    <!-- Balanced Commit Response Packet -->
+    <circle r="6" class="res-packet">
+      <animateMotion path="M 1180 430 L 780 430 L 400 430 L 230 430" dur="4s" repeatCount="indefinite" begin="2s"/>
+    </circle>
+  </g>
+
+  <!-- ==================== NODE 1: CLIENT APPLICATION ==================== -->
+  <g transform="translate(60, 260)" filter="url(#cardElevation)">
+    <!-- 2.5D Isometric Top Accent -->
+    <polygon points="0,0 200,-15 220,0 20,15" fill="url(#clientTop)" stroke="#7dd3fc" stroke-width="1"/>
+    <!-- Card Surface -->
+    <rect x="0" y="0" width="220" height="270" rx="14" fill="url(#glassCard)" stroke="#0284c7" stroke-width="2"/>
+
+    <g transform="translate(20, 35)">
+      <text font-size="26">📱</text>
+      <text class="node-heading" x="38" y="0">Client / Web</text>
+      <text class="node-sub" x="0" y="28">Untrusted Environment</text>
+      <text class="code-pill" x="0" y="55" fill="#38bdf8">POST /transfer</text>
+      <text class="node-sub" x="0" y="78" font-size="11px">Payload: {to, amount}</text>
+
+      <rect x="0" y="105" width="180" height="26" rx="6" fill="#0369a1"/>
+      <text class="badge-text" x="90" y="122" text-anchor="middle" fill="#f0f9ff">NEVER TRUST CLIENT</text>
+
+      <text class="node-sub" x="0" y="158" font-size="12px">❌ No balance in JSON</text>
+      <text class="node-sub" x="0" y="178" font-size="12px">🔒 Uses Bearer / Auth</text>
+    </g>
+  </g>
+
+  <!-- ==================== NODE 2: SECURITY & OWNERSHIP GUARD ==================== -->
+  <g transform="translate(370, 240)" filter="url(#cardElevation)">
+    <!-- 2.5D Isometric Top Accent -->
+    <polygon points="0,0 270,-15 290,0 20,15" fill="url(#secTop)" stroke="#e9d5ff" stroke-width="1"/>
+    <!-- Card Surface -->
+    <rect x="0" y="0" width="290" height="310" rx="14" fill="url(#glassCard)" stroke="#9333ea" stroke-width="2.5"/>
+
+    <g transform="translate(20, 35)">
+      <text font-size="26">🛡️</text>
+      <text class="node-heading" x="38" y="0">Security &amp; Guard</text>
+      <text class="node-sub" x="0" y="28">Spring Security 6 + Filter Chain</text>
+
+      <!-- Step 1: Auth -->
+      <rect x="0" y="48" width="250" height="52" rx="8" fill="#1e1b4b" stroke="#7e22ce" stroke-width="1.2"/>
+      <text class="code-pill" x="12" y="70" fill="#c084fc">1. BCrypt Password Hash</text>
+      <text class="node-sub" x="12" y="88" font-size="11px">User Identity (Secret Credential)</text>
+
+      <!-- Step 2: Ownership -->
+      <rect x="0" y="110" width="250" height="64" rx="8" fill="#1e1b4b" stroke="#a855f7" stroke-width="1.2"/>
+      <text class="code-pill" x="12" y="132" fill="#e9d5ff">2. Ownership Verification</text>
+      <text class="node-sub" x="12" y="150" font-size="11px">User ID ➔ Customer ID</text>
+      <text class="node-sub" x="12" y="165" font-size="11px">Validates Account Ownership (403)</text>
+
+      <rect x="0" y="190" width="250" height="26" rx="6" fill="#581c87"/>
+      <text class="badge-text" x="125" y="207" text-anchor="middle" fill="#faf5ff">KEYCARD ≠ THE PERSON</text>
+    </g>
+  </g>
+
+  <!-- ==================== NODE 3: CORE SERVICE ENGINE ==================== -->
+  <g transform="translate(750, 240)" filter="url(#cardElevation)">
+    <!-- 2.5D Isometric Top Accent -->
+    <polygon points="0,0 270,-15 290,0 20,15" fill="url(#serviceTop)" stroke="#fde68a" stroke-width="1"/>
+    <!-- Card Surface -->
+    <rect x="0" y="0" width="290" height="310" rx="14" fill="url(#glassCard)" stroke="#d97706" stroke-width="2.5"/>
+
+    <g transform="translate(20, 35)">
+      <text font-size="26">⚙️</text>
+      <text class="node-heading" x="38" y="0">Transfer Service</text>
+      <text class="node-sub" x="0" y="28">Business Rules &amp; State Guard</text>
+
+      <!-- Execution Rules -->
+      <rect x="0" y="48" width="250" height="52" rx="8" fill="#451a03" stroke="#b45309" stroke-width="1.2"/>
+      <text class="code-pill" x="12" y="70" fill="#fbbf24">State Machine Check</text>
+      <text class="node-sub" x="12" y="88" font-size="11px">Status == ACTIVE (Blocks FROZEN/CLOSED)</text>
+
+      <rect x="0" y="110" width="250" height="64" rx="8" fill="#451a03" stroke="#d97706" stroke-width="1.2"/>
+      <text class="code-pill" x="12" y="132" fill="#fde68a">@Version Optimistic Lock</text>
+      <text class="node-sub" x="12" y="150" font-size="11px">Prevents Concurrent Overdraws</text>
+      <text class="node-sub" x="12" y="165" font-size="11px">Double-Entry Balance Verification</text>
+
+      <rect x="0" y="190" width="250" height="26" rx="6" fill="#78350f"/>
+      <text class="badge-text" x="125" y="207" text-anchor="middle" fill="#fffbeb">MONEY CANNOT VANISH</text>
+    </g>
+  </g>
+
+  <!-- ==================== NODE 4: POSTGRESQL & LEDGER VAULT ==================== -->
+  <g transform="translate(1130, 230)" filter="url(#cardElevation)">
+    <!-- Extruded Isometric Database Cylinder -->
+    <g transform="translate(110, 50)">
+      <!-- Cylinder Bottom -->
+      <path d="M -90,50 L -90,140 C -90,175 90,175 90,140 L 90,50 Z" fill="url(#dbSide)"/>
+      <ellipse cx="0" cy="50" rx="90" ry="32" fill="url(#dbTop)" stroke="#6ee7b7" stroke-width="1.5"/>
+      <ellipse cx="0" cy="140" rx="90" ry="32" fill="none" stroke="#a7f3d0" stroke-width="1" stroke-dasharray="6 4"/>
+    </g>
+
+    <!-- Overlay Info Panel -->
+    <rect x="0" y="120" width="230" height="200" rx="14" fill="url(#glassCard)" stroke="#10b981" stroke-width="2"/>
+
+    <g transform="translate(18, 145)">
+      <text class="node-heading" x="0" y="0">PostgreSQL Vault</text>
+      <text class="node-sub" x="0" y="22">ACID Ledger Storage</text>
+
+      <text class="code-pill" x="0" y="50" fill="#34d399">1. LEDGER_ENTRIES</text>
+      <text class="node-sub" x="0" y="68" font-size="11px">Debit (-500) | Credit (+500)</text>
+
+      <text class="code-pill" x="0" y="92" fill="#6ee7b7">2. ACCOUNTS Table</text>
+      <text class="node-sub" x="0" y="110" font-size="11px">Updated version = version + 1</text>
+
+      <rect x="0" y="125" width="194" height="24" rx="6" fill="#047857"/>
+      <text class="badge-text" x="97" y="141" text-anchor="middle" fill="#ecfdf5">IMMUTABLE AUDIT TRAIL</text>
+    </g>
+  </g>
+
+  <!-- ==================== BOTTOM PANEL: LIFECYCLE & INVARIANTS ==================== -->
+  <g transform="translate(80, 640)" filter="url(#cardElevation)">
+    <rect width="1280" height="200" rx="16" fill="url(#glassCard)" stroke="#334155" stroke-width="1.5"/>
+
+    <!-- Left Box: Account State Machine -->
+    <g transform="translate(35, 30)">
+      <text class="node-heading" x="0" y="0">Account State Machine</text>
+      <text class="node-sub" x="0" y="24">Accounts are never deleted with raw DELETE SQL</text>
+
+      <g transform="translate(0, 50)">
+        <rect x="0" y="0" width="100" height="34" rx="8" fill="#065f46" stroke="#34d399" stroke-width="1.5"/>
+        <text class="badge-text" x="50" y="21" text-anchor="middle" fill="#ecfdf5">ACTIVE</text>
+
+        <path d="M 105 17 L 145 17" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+
+        <rect x="150" y="0" width="100" height="34" rx="8" fill="#854d0e" stroke="#fbbf24" stroke-width="1.5"/>
+        <text class="badge-text" x="200" y="21" text-anchor="middle" fill="#fffbeb">FROZEN</text>
+
+        <path d="M 255 17 L 295 17" stroke="#64748b" stroke-width="2"/>
+
+        <rect x="300" y="0" width="100" height="34" rx="8" fill="#881337" stroke="#f43f5e" stroke-width="1.5"/>
+        <text class="badge-text" x="350" y="21" text-anchor="middle" fill="#fff1f2">CLOSED</text>
+      </g>
+      <text class="node-sub" x="0" y="125" font-size="12px">Transition to CLOSED requires zero balance ($0.00)</text>
+    </g>
+
+    <!-- Vertical Separator Line -->
+    <line x1="560" y1="20" x2="560" y2="180" stroke="#334155" stroke-width="1.5"/>
+
+    <!-- Right Box: Double-Entry Balance Invariant -->
+    <g transform="translate(600, 30)">
+      <text class="node-heading" x="0" y="0">Double-Entry Financial Invariant</text>
+      <text class="node-sub" x="0" y="24">Every financial movement is modeled as two balancing ledger entries</text>
+
+      <g transform="translate(0, 50)">
+        <!-- Debit Box -->
+        <rect x="0" y="0" width="190" height="60" rx="10" fill="#1e1b4b" stroke="#38bdf8" stroke-width="1.5"/>
+        <text class="code-pill" x="15" y="24" fill="#38bdf8">DEBIT: Account A</text>
+        <text class="node-sub" x="15" y="44" font-size="12px">- ₹500.00 (Source)</text>
+
+        <text class="node-heading" x="215" y="38" fill="#94a3b8">+</text>
+
+        <!-- Credit Box -->
+        <rect x="245" y="0" width="190" height="60" rx="10" fill="#1e1b4b" stroke="#34d399" stroke-width="1.5"/>
+        <text class="code-pill" x="15" y="24" fill="#34d399" transform="translate(245,0)">CREDIT: Account B</text>
+        <text class="node-sub" x="15" y="44" font-size="12px" transform="translate(245,0)">+ ₹500.00 (Target)</text>
+
+        <text class="node-heading" x="460" y="38" fill="#94a3b8">=</text>
+
+        <!-- Balance Sum Result -->
+        <rect x="490" y="0" width="130" height="60" rx="10" fill="#047857" stroke="#6ee7b7" stroke-width="1.5"/>
+        <text class="badge-text" x="555" y="25" text-anchor="middle" fill="#ecfdf5">NET SUM</text>
+        <text class="node-heading" x="555" y="47" text-anchor="middle" fill="#ffffff">₹ 0.00</text>
+      </g>
+    </g>
+  </g>
+</svg>

@@ -10,6 +10,10 @@
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 ---
+<p align="center">
+  <img src="./ledgercore-architecture.svg" alt="LedgerCore System Architecture and Flow" width="100%" />
+</p>
+
 
 ## 📖 Table of Contents
 
@@ -47,10 +51,6 @@ LedgerCore is built on four non-negotiable rules:
 └───────────────────────────────┴────────────────────────────────────────────────────────────────────────┘
 
 ```
-
-<p align="center">
-  <img src="./ledgercore-architecture.svg" alt="LedgerCore System Architecture and Flow" width="100%" />
-</p>
 
 ---
 

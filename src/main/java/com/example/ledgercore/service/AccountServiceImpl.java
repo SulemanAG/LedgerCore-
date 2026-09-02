@@ -6,6 +6,7 @@ import com.example.ledgercore.exception.AccountNotFoundException;
 import com.example.ledgercore.exception.CustomerNotFoundException;
 import com.example.ledgercore.model.Account;
 import com.example.ledgercore.model.AccountStatus;
+import com.example.ledgercore.model.AccountType;
 import com.example.ledgercore.model.Customer;
 import com.example.ledgercore.repository.AccountRepository;
 import com.example.ledgercore.repository.CustomerRepository;
@@ -67,6 +68,7 @@ public class AccountServiceImpl implements AccountService {
         account.setCurrency(request.getCurrency());
         account.setStatus(AccountStatus.ACTIVE);
         account.setCustomer(customer);
+        account.setAccountType(AccountType.CUSTOMER);
 
         Account savedAccount = accountRepository.save(account);
 

@@ -63,6 +63,10 @@ public class Account {
     @Column(nullable = false, length = 20)
     private AccountStatus status = AccountStatus.ACTIVE;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false,length = 20)
+    private AccountType accountType;
+
 
     @Version
     private Long version;
@@ -85,7 +89,8 @@ public class Account {
             Currency currency,
             AccountStatus status,
             Long version,
-            Customer customer
+            Customer customer,
+            AccountType accountType
     ) {
         this.accountId = accountId;
         this.accountNumber = accountNumber;
@@ -94,5 +99,6 @@ public class Account {
         this.status = status;
         this.version = version;
         this.customer = customer;
+        this.accountType=accountType;
     }
 }

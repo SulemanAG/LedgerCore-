@@ -1,8 +1,10 @@
 package com.example.ledgercore.controller;
 
 import com.example.ledgercore.dto.request.TransferRequest;
+import com.example.ledgercore.dto.request.WithdrawalRequest;
 import com.example.ledgercore.dto.response.TransactionResponse;
 import com.example.ledgercore.service.TransactionService;
+import com.example.ledgercore.service.WithdrawalService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,9 +26,11 @@ import java.util.List;
 public class TransactionController {
 
     private final TransactionService transactionService;
+    private final WithdrawalService withdrawalService;
 
-    public TransactionController(TransactionService transactionService) {
+    public TransactionController(TransactionService transactionService, WithdrawalService withdrawalService) {
         this.transactionService = transactionService;
+        this.withdrawalService=withdrawalService;
     }
 
     /**
@@ -84,5 +88,23 @@ public class TransactionController {
         return ResponseEntity.ok(
                 transactionService.getTransactionById(transactionId)
         );
+    }
+
+    /**
+     * Withdraws money from a customer account.
+     *
+     * @param request withdrawal details
+     * @return completed withdrawal transaction
+     */
+    @PostMapping("/withdraw")
+    public ResponseEntity<TransactionResponse> withdraw(
+            @Valid @RequestBody WithdrawalRequest request) {
+
+        TransactionResponse response =
+                withdrawalService.withdraw(request);
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(response);
     }
 }

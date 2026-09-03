@@ -249,6 +249,33 @@ public class GlobalExceptionHandler {
     }
 
     /**
+     * Handles invalid withdrawal requests caused by
+     * withdrawal-specific business rules.
+     *
+     * <p>
+     * Returns an HTTP 400 BAD REQUEST response with
+     * the corresponding error message and timestamp.
+     * </p>
+     *
+     * @param exception exception containing the validation message
+     * @return response containing the HTTP status, error message, and timestamp
+     */
+    @ExceptionHandler(InvalidWithdrawalException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidWithdrawal(
+            InvalidWithdrawalException exception) {
+
+        ErrorResponse errorResponse = new ErrorResponse(
+                HttpStatus.BAD_REQUEST.value(),
+                exception.getMessage(),
+                LocalDateTime.now()
+        );
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(errorResponse);
+    }
+
+    /**
      * Represents the standard error response returned by LedgerCore.
      *
      * @param status HTTP status code associated with the error

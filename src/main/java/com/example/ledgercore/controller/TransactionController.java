@@ -6,18 +6,15 @@ import com.example.ledgercore.service.TransactionService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
- * REST Controller responsible for financial transactions.
+ * REST controller for financial transactions.
  *
- * <p>
- * The controller only handles HTTP-related concerns.
- * Business and financial logic is delegated to {@link TransactionService}.
- * </p>
+ * <p>This controller exposes APIs for transferring money between
+ * LedgerCore accounts.</p>
  *
  * @author Suleman Agasimani
  * @since 1.0
@@ -36,12 +33,11 @@ public class TransactionController {
      * Transfers money from one account to another.
      *
      * @param request transfer details
-     * @return transaction response
+     * @return completed transaction
      */
     @PostMapping("/transfer")
     public ResponseEntity<TransactionResponse> transfer(
-            @Valid @RequestBody TransferRequest request
-    ) {
+            @Valid @RequestBody TransferRequest request) {
 
         TransactionResponse response =
                 transactionService.transfer(request);
@@ -49,5 +45,24 @@ public class TransactionController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(response);
+    }
+
+    /**
+     * Retrieves all transactions associated with an account.
+     *
+     * <p>
+     * Access is restricted to the authenticated owner of the account.
+     * </p>
+     *
+     * @param accountId ID of the account
+     * @return list of transactions associated with the account
+     */
+    @GetMapping("/accounts/{accountId}")
+    public ResponseEntity<List<TransactionResponse>> getAccountTransactions(
+            @PathVariable Long accountId) {
+
+        return ResponseEntity.ok(
+                transactionService.getTransactionsByAccount(accountId)
+        );
     }
 }

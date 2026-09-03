@@ -6,6 +6,8 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Represents a financial transaction processed by LedgerCore.
@@ -51,6 +53,10 @@ public class Transaction {
     //Human-readable reference associated with transaction, it is optional
     @Column(length = 100)
     private String reference;
+
+    @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL)
+    private List<LedgerEntry> ledgerEntries = new ArrayList<>();
+
 
 
     public Transaction() {

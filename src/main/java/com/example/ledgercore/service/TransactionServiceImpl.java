@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * Service responsible for executing financial transactions.
@@ -264,7 +265,6 @@ public class TransactionServiceImpl implements TransactionService {
         }
     }
 
-
     /**
      * Ensures both accounts are active.
      *
@@ -308,5 +308,45 @@ public class TransactionServiceImpl implements TransactionService {
                     "Transfer currency does not match destination account currency"
             );
         }
+    }
+    //The code to retrieve the list of transactions owned by the authenticated user.
+    @Override
+    @Transactional(readOnly = true)
+    public List<TransactionResponse> getTransactionsByAccount(Long accountId) {
+
+        Account account = accountRepository.findById(accountId)
+                .orElseThrow(() ->
+                        new AccountNotFoundException(accountId));
+
+        if (!accountAuthorizationService.isOwner(account)) {
+            throw new AccessDeniedException(
+                    "You are not authorized to access this account's transactions"
+            );
+        }
+
+        return transactionRepository
+                .findDistinctByLedgerEntriesAccountAccountId(accountId)
+                .stream()
+                .map(this::mapToResponse)
+                .toList();
+    }
+
+
+    /**
+     * Converts a Transaction entity into a TransactionResponse DTO.
+     *
+     * @param transaction transaction entity
+     * @return transaction response DTO
+     */
+    private TransactionResponse mapToResponse(Transaction transaction) {
+
+        return new TransactionResponse(
+                transaction.getTransactionId(),
+                transaction.getAmount(),
+                transaction.getCurrency(),
+                transaction.getStatus(),
+                transaction.getCreatedAt(),
+                transaction.getReference()
+        );
     }
 }

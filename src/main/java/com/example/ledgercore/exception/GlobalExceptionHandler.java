@@ -8,6 +8,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+
 import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 
@@ -170,6 +171,55 @@ public class GlobalExceptionHandler {
         return ResponseEntity
                 .status(HttpStatus.CONFLICT)
                 .body(error);
+    }
+
+    /**
+     * Handles transfer attempts where the source account does not
+     * contain sufficient funds.
+     *
+     * <p>Insufficient funds is a valid business-rule failure rather
+     * than an unexpected server error, so LedgerCore returns HTTP 400.</p>
+     *
+     * @param exception exception containing the insufficient-funds message
+     * @return HTTP 400 response containing the error details
+     */
+    @ExceptionHandler(InsufficientFundsException.class)
+    public ResponseEntity<ErrorResponse> handleInsufficientFunds(
+            InsufficientFundsException exception) {
+
+        ErrorResponse errorResponse = new ErrorResponse(
+                HttpStatus.BAD_REQUEST.value(),
+                exception.getMessage(),
+                LocalDateTime.now()
+        );
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(errorResponse);
+    }
+
+    /**
+     * Handles invalid financial transfer requests.
+     *
+     * <p>Returns HTTP 400 when a transfer violates a business rule,
+     * such as attempting to transfer money to the same account.</p>
+     *
+     * @param exception exception containing the transfer validation message
+     * @return HTTP 400 response containing the error details
+     */
+    @ExceptionHandler(InvalidTransferException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidTransfer(
+            InvalidTransferException exception) {
+
+        ErrorResponse errorResponse = new ErrorResponse(
+                HttpStatus.BAD_REQUEST.value(),
+                exception.getMessage(),
+                LocalDateTime.now()
+        );
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(errorResponse);
     }
 
     /**

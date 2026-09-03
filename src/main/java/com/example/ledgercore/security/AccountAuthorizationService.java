@@ -7,19 +7,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-/**
- * Provides resource-level authorization checks for LedgerCore accounts.
- *
- * <p>Spring Security establishes the authenticated identity, while this
- * service determines whether that identity is authorized to access a
- * particular account.</p>
- *
- * <p>Account authorization is based on ownership rather than trusting a
- * customer identifier supplied by the client.</p>
- *
- * @author Suleman Agasimani
- * @since 1.0
- */
 @Service
 public class AccountAuthorizationService {
 
@@ -29,13 +16,6 @@ public class AccountAuthorizationService {
         this.userRepository = userRepository;
     }
 
-    /**
-     * Determines whether the currently authenticated user owns the
-     * specified account.
-     *
-     * @param account account whose ownership is being checked
-     * @return true when the authenticated user owns the account
-     */
     public boolean isOwner(Account account) {
 
         Authentication authentication =
@@ -52,11 +32,18 @@ public class AccountAuthorizationService {
             return false;
         }
 
-        return user.getCustomer()
-                .getCustomerId()
-                .equals(account.getCustomer().getCustomerId());
-    }
+        Long userCustomerId =
+                user.getCustomer().getCustomerId();
 
+        Long accountCustomerId =
+                account.getCustomer().getCustomerId();
+
+        System.out.println("Authenticated username: " + username);
+        System.out.println("User customer ID: " + userCustomerId);
+        System.out.println("Account customer ID: " + accountCustomerId);
+
+        return userCustomerId.equals(accountCustomerId);
+    }
 
     public boolean isCustomerOwner(Long customerId) {
 

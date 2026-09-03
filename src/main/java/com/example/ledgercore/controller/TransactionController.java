@@ -2,6 +2,7 @@ package com.example.ledgercore.controller;
 
 import com.example.ledgercore.dto.request.TransferRequest;
 import com.example.ledgercore.dto.request.WithdrawalRequest;
+import com.example.ledgercore.dto.response.LedgerEntryResponse;
 import com.example.ledgercore.dto.response.TransactionResponse;
 import com.example.ledgercore.service.TransactionService;
 import com.example.ledgercore.service.WithdrawalService;
@@ -87,6 +88,24 @@ public class TransactionController {
 
         return ResponseEntity.ok(
                 transactionService.getTransactionById(transactionId)
+        );
+    }
+
+
+    /**
+     * Retrieves the ledger entries associated with a transaction.
+     *
+     * @param transactionId ID of the transaction
+     * @return list of ledger entries for the transaction
+     */
+    @GetMapping("/{transactionId}/ledger")
+    public ResponseEntity<List<LedgerEntryResponse>> getLedgerEntries(
+            @PathVariable Long transactionId) {
+
+        return ResponseEntity.ok(
+                transactionService.getLedgerEntriesByTransaction(
+                        transactionId
+                )
         );
     }
 

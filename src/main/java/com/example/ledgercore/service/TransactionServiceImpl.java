@@ -1,6 +1,7 @@
 package com.example.ledgercore.service;
 
 import com.example.ledgercore.dto.request.TransferRequest;
+import com.example.ledgercore.dto.response.LedgerEntryResponse;
 import com.example.ledgercore.dto.response.TransactionResponse;
 import com.example.ledgercore.exception.AccountNotFoundException;
 import com.example.ledgercore.exception.InsufficientFundsException;
@@ -361,6 +362,64 @@ public class TransactionServiceImpl implements TransactionService {
 
         return mapToResponse(transaction);
     }
+
+    /**
+     * Retrieves all ledger entries associated with a transaction.
+     *
+     * <p>
+     * The transaction must exist, and the authenticated user must
+     * own at least one account involved in the transaction.
+     * </p>
+     *
+     * @param transactionId ID of the transaction
+     * @return list of ledger entry responses
+     * @throws TransactionNotFoundException if the transaction does not exist
+     * @throws AccessDeniedException if the user is not authorized
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public List<LedgerEntryResponse> getLedgerEntriesByTransaction(
+            Long transactionId
+    )
+    {
+        // Check the transaction exists.
+        transactionRepository.findById(transactionId)
+                .orElseThrow(
+                        ()-> new TransactionNotFoundException(transactionId)
+                );
+
+        //retrieve the ledger entries with the account.
+        List<LedgerEntry> ledgerEntries=
+                ledgerEntryRepository.findByTransactionTransactionId(transactionId);
+
+        //make sure the authenticated user owns the account.
+        boolean authorized=ledgerEntries.stream()
+                .anyMatch(entry->
+                        accountAuthorizationService.isOwner(
+                                entry.getAccount()
+                        )
+                );
+
+        if(!authorized)
+        {
+            throw new AccessDeniedException(
+                    "You are not authorized to access this transactions's ledger"
+            );
+        }
+
+        return ledgerEntries.stream()
+                .map(entry -> new LedgerEntryResponse(
+                        entry.getLedgerEntryId(),
+                        entry.getAmount(),
+                        entry.getEntryType(),
+                        entry.getAccount().getAccountId()
+                ))
+                .toList();
+
+    }
+
+
+
 
     /**
      * Converts a Transaction entity into a TransactionResponse DTO.

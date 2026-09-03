@@ -78,6 +78,14 @@ public class AccountController {
         );
     }
 
+    @PatchMapping("/{accountId}/unfreeze")
+    public ResponseEntity<AccountResponse> unfreezeAccount(
+            @PathVariable Long accountId){
+        return ResponseEntity.ok(
+                accountService.unfreezeAccount(accountId)
+        );
+    }
+
 
     @PatchMapping("/{accountId}/close")
     public ResponseEntity<AccountResponse> closeAccount(

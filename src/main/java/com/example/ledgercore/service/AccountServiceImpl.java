@@ -127,6 +127,24 @@
         }
 
         @Override
+        public AccountResponse unfreezeAccount(Long accountId)
+        {
+            Account account= findAccount(accountId);
+
+            if (account.getStatus() == AccountStatus.CLOSED) {
+                throw new IllegalStateException(
+                        "Closed account cannot be Unfrozen"
+                );
+
+            }
+            account.setStatus(AccountStatus.ACTIVE);
+
+            return mapToResponse(
+                    accountRepository.save(account)
+            );
+        }
+
+        @Override
         public AccountResponse closeAccount(Long accountId) {
 
             Account account = findAccount(accountId);

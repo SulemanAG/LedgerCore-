@@ -32,5 +32,8 @@ public interface AccountService {
 
     AccountResponse freezeAccount(Long accountId);
 
+    AccountResponse unfreezeAccount(Long accountId);
+
     AccountResponse closeAccount(Long accountId);
+
 }

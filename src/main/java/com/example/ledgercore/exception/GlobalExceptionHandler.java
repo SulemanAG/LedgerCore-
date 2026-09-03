@@ -223,6 +223,32 @@ public class GlobalExceptionHandler {
     }
 
     /**
+     * Handles cases where a requested transaction cannot be found.
+     *
+     * <p>
+     * Returns an HTTP 404 NOT FOUND response with a structured
+     * error message and timestamp.
+     * </p>
+     *
+     * @param exception exception containing the transaction-not-found message
+     * @return response containing the HTTP status, error message, and timestamp
+     */
+    @ExceptionHandler(TransactionNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleTransactionNotFound(
+            TransactionNotFoundException exception) {
+
+        ErrorResponse errorResponse = new ErrorResponse(
+                HttpStatus.NOT_FOUND.value(),
+                exception.getMessage(),
+                LocalDateTime.now()
+        );
+
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(errorResponse);
+    }
+
+    /**
      * Represents the standard error response returned by LedgerCore.
      *
      * @param status HTTP status code associated with the error

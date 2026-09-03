@@ -65,4 +65,24 @@ public class TransactionController {
                 transactionService.getTransactionsByAccount(accountId)
         );
     }
+
+    /**
+     * Retrieves a transaction by its ID.
+     *
+     * <p>
+     * Access is restricted to authenticated users who own
+     * at least one account involved in the transaction.
+     * </p>
+     *
+     * @param transactionId ID of the transaction
+     * @return transaction response
+     */
+    @GetMapping("/{transactionId}")
+    public ResponseEntity<TransactionResponse> getTransactionById(
+            @PathVariable Long transactionId) {
+
+        return ResponseEntity.ok(
+                transactionService.getTransactionById(transactionId)
+        );
+    }
 }

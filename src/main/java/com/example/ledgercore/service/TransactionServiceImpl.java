@@ -5,6 +5,7 @@ import com.example.ledgercore.dto.response.TransactionResponse;
 import com.example.ledgercore.exception.AccountNotFoundException;
 import com.example.ledgercore.exception.InsufficientFundsException;
 import com.example.ledgercore.exception.InvalidTransferException;
+import com.example.ledgercore.exception.TransactionNotFoundException;
 import com.example.ledgercore.model.Account;
 import com.example.ledgercore.model.AccountStatus;
 import com.example.ledgercore.model.LedgerEntry;
@@ -330,7 +331,36 @@ public class TransactionServiceImpl implements TransactionService {
                 .map(this::mapToResponse)
                 .toList();
     }
+    //This method finds the transactions by id, but it checks whether the request is
+    //from authenticated user or someone else.
+    @Override
+    @Transactional(readOnly = true)
+    public TransactionResponse getTransactionById(Long transactionId) {
 
+        Transaction transaction = transactionRepository.findById(transactionId)
+                .orElseThrow(() ->
+                        new TransactionNotFoundException(transactionId));
+
+
+        List<LedgerEntry> ledgerEntries =
+                ledgerEntryRepository
+                        .findByTransactionTransactionId(transactionId);
+
+        boolean authorized = ledgerEntries.stream()
+                .anyMatch(entry ->
+                        accountAuthorizationService.isOwner(
+                                entry.getAccount()
+                        )
+                );
+
+        if (!authorized) {
+            throw new AccessDeniedException(
+                    "You are not authorized to access this transaction"
+            );
+        }
+
+        return mapToResponse(transaction);
+    }
 
     /**
      * Converts a Transaction entity into a TransactionResponse DTO.

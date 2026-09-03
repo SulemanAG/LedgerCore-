@@ -22,4 +22,12 @@ public interface TransactionService {
      * @return list of transactions associated with the account
      */
     List<TransactionResponse> getTransactionsByAccount(Long accountId);
+
+    /**
+     * Retrieves a transaction by its ID.
+     *
+     * @param transactionId ID of the transaction
+     * @return transaction response
+     */
+    TransactionResponse getTransactionById(Long transactionId);
 }

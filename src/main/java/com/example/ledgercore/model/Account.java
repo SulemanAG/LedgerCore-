@@ -11,7 +11,7 @@ import java.math.BigDecimal;
  *
  * <p>An account belongs to exactly one customer and maintains its current
  * monetary balance in a specific currency. The account uses {@link BigDecimal}
- * for monetary values and {@link Version} for optimistic concurrency control.</p>
+ * for monetary values and {@code @Version} for optimistic concurrency control.</p>
  *
  * <p>The account balance represents the current balance available for
  * efficient access, while the double-entry ledger will eventually serve as

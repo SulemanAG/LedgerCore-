@@ -161,6 +161,7 @@ class LedgerIntegrityTest {
             request.setAmount(new BigDecimal("1000.00"));
             request.setCurrency(Currency.INR);
             request.setReference("Ledger integrity test");
+            request.setIdempotencyKey("LEDGER-INT-" + java.util.UUID.randomUUID());
 
 
 

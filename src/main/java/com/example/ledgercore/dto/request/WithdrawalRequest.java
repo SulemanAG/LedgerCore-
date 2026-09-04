@@ -4,6 +4,7 @@ package com.example.ledgercore.dto.request;
 import com.example.ledgercore.model.Currency;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -49,4 +50,29 @@ public class WithdrawalRequest {
             message = "References cannot exceed 100 characters"
     )
     private String reference;
+
+    @NotBlank(message = "Idempotency key cannot be blank")
+    @Size(
+            max = 100,
+            message = "Idempotency key cannot exceed 100 characters"
+    )
+    private String idempotencyKey;
+
+    public WithdrawalRequest() {
+    }
+
+    public WithdrawalRequest(Long accountId, BigDecimal amount, Currency currency, String reference) {
+        this.accountId = accountId;
+        this.amount = amount;
+        this.currency = currency;
+        this.reference = reference;
+    }
+
+    public WithdrawalRequest(Long accountId, BigDecimal amount, Currency currency, String reference, String idempotencyKey) {
+        this.accountId = accountId;
+        this.amount = amount;
+        this.currency = currency;
+        this.reference = reference;
+        this.idempotencyKey = idempotencyKey;
+    }
 }

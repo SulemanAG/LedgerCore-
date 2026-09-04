@@ -149,6 +149,7 @@ class AccountAuthorizationTest {
             request.setAmount(new BigDecimal("1000.00"));
             request.setCurrency(Currency.INR);
             request.setReference("Authorization test");
+            request.setIdempotencyKey("AUTH-TEST-OWNED-" + java.util.UUID.randomUUID());
 
 
             // 6. EXECUTE TRANSFER
@@ -323,6 +324,7 @@ class AccountAuthorizationTest {
             request.setReference(
                     "Unauthorized transfer test"
             );
+            request.setIdempotencyKey("AUTH-TEST-UNOWNED-" + java.util.UUID.randomUUID());
 
 
             // 7. VERIFY ACCESS IS DENIED

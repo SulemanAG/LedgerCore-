@@ -203,6 +203,7 @@ class TransactionAtomicityTest {
             request.setAmount(new BigDecimal("1000.00"));
             request.setCurrency(Currency.INR);
             request.setReference("Atomicity test");
+            request.setIdempotencyKey("ATOMICITY-" + java.util.UUID.randomUUID());
 
 
             // 8. EXECUTE TRANSFER AND EXPECT FAILURE

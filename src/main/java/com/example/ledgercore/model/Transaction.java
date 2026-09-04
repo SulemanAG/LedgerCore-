@@ -54,6 +54,11 @@ public class Transaction {
     @Column(length = 100)
     private String reference;
 
+
+    //Idempotency Key
+    @Column(name="idempotency_key",unique = true,length =100)
+    private String idempotencyKey;
+
     @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL)
     private List<LedgerEntry> ledgerEntries = new ArrayList<>();
 

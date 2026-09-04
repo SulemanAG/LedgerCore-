@@ -3,7 +3,9 @@ package com.example.ledgercore.dto.request;
 
 import com.example.ledgercore.model.Currency;
 import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -35,7 +37,7 @@ public class TransferRequest {
     @NotNull(message = "Transfer amount cannot be null")
     @DecimalMin(
             value = "0.01",
-            message = "Transfer amount must be greated than zero"
+            message = "Transfer amount must be greater than zero"
             )
     private BigDecimal amount;
 
@@ -44,16 +46,25 @@ public class TransferRequest {
 
     private String reference;
 
+    // IDEMPOTENCY KEY
+    @NotBlank(message = "Idempotency key cannot be blank")
+    @Size(
+            max = 100,
+            message = "Idempotency key cannot exceed 100 characters"
+    )
+    private String idempotencyKey;
+
     public TransferRequest() {
     }
 
     public TransferRequest(Long sourceAccountId, Long destinationAccountId,
                            BigDecimal amount, Currency currency,
-                           String reference) {
+                           String reference, String idempotencyKey) {
         this.sourceAccountId = sourceAccountId;
         this.destinationAccountId = destinationAccountId;
         this.amount = amount;
         this.currency = currency;
         this.reference = reference;
+        this.idempotencyKey = idempotencyKey;
     }
 }

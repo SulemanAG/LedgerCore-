@@ -142,6 +142,7 @@ class TransferConcurrencyTest {
         transferRequest1.setAmount(new BigDecimal("1000.00"));
         transferRequest1.setCurrency(Currency.INR);
         transferRequest1.setReference("Concurrent transfer test-1");
+        transferRequest1.setIdempotencyKey("CONC-TRANSFER-1-" + java.util.UUID.randomUUID());
 
 
         //Create transfer request 2
@@ -152,6 +153,7 @@ class TransferConcurrencyTest {
         transferRequest2.setAmount(new BigDecimal("1000.00"));
         transferRequest2.setCurrency(Currency.INR);
         transferRequest2.setReference("Concurrent transfer test-2");
+        transferRequest2.setIdempotencyKey("CONC-TRANSFER-2-" + java.util.UUID.randomUUID());
 
 
 

@@ -20,6 +20,6 @@ public record DepositEventPayload(
         Long accountId,
         BigDecimal amount,
         Currency currency,
-        String reference
-) {
-}
+        String reference,
+        BigDecimal balanceAfter
+) {}

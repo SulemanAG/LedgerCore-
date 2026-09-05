@@ -68,7 +68,7 @@ class KafkaConsumerIdempotencyTest {
         // 1. Create a Kafka event.
         KafkaEvent event = new KafkaEvent(
                 eventId,
-                "TRANSFER_COMPLETED",
+                "TEST_EVENT",
                 999L,
                 LocalDateTime.now(),
                 "{\"transactionId\":999,\"amount\":1000.00}"
@@ -94,7 +94,7 @@ class KafkaConsumerIdempotencyTest {
         );
 
         assertEquals(
-                "TRANSFER_COMPLETED",
+                "TEST_EVENT",
                 processedEvent.get().getEventType()
         );
     }
@@ -109,7 +109,7 @@ class KafkaConsumerIdempotencyTest {
         // 1. Create a Kafka event.
         KafkaEvent event = new KafkaEvent(
                 eventId,
-                "TRANSFER_COMPLETED",
+                "TEST_EVENT",
                 999L,
                 LocalDateTime.now(),
                 "{\"transactionId\":999,\"amount\":1000.00}"

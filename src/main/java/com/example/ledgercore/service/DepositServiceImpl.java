@@ -308,11 +308,12 @@ public class DepositServiceImpl implements DepositService {
          */
         DepositEventPayload eventPayload =
                 new DepositEventPayload(
-                        savedTransaction.getTransactionId(),
+                        transaction.getTransactionId(),
                         customerAccount.getAccountId(),
                         request.getAmount(),
                         request.getCurrency(),
-                        request.getReference()
+                        request.getReference(),
+                        customerAccount.getBalance()
                 );
 
         try {

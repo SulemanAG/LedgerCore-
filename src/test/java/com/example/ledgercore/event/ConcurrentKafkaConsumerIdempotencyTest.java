@@ -71,7 +71,7 @@ class ConcurrentKafkaConsumerIdempotencyTest {
         // 1. Create one Kafka event shared by both threads.
         KafkaEvent event = new KafkaEvent(
                 eventId,
-                "TRANSFER_COMPLETED",
+                "TEST_EVENT",
                 999L,
                 LocalDateTime.now(),
                 "{\"transactionId\":999,\"amount\":1000.00}"

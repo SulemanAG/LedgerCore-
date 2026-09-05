@@ -16,6 +16,7 @@ import com.example.ledgercore.model.Transaction;
 import com.example.ledgercore.model.TransactionStatus;
 import com.example.ledgercore.outbox.OutboxEvent;
 import com.example.ledgercore.outbox.OutboxEventStatus;
+import com.example.ledgercore.outbox.TransferEventPayload;
 import com.example.ledgercore.repository.AccountRepository;
 import com.example.ledgercore.repository.LedgerEntryRepository;
 import com.example.ledgercore.repository.OutboxRepository;
@@ -289,12 +290,14 @@ public class TransactionServiceImpl implements TransactionService {
         // 17. CREATE TRANSFER EVENT PAYLOAD
         TransferEventPayload eventPayload =
                 new TransferEventPayload(
-                        savedTransaction.getTransactionId(),
+                        transaction.getTransactionId(),
                         sourceAccount.getAccountId(),
                         destinationAccount.getAccountId(),
-                        savedTransaction.getAmount(),
-                        savedTransaction.getCurrency(),
-                        savedTransaction.getReference()
+                        request.getAmount(),
+                        request.getCurrency(),
+                        request.getReference(),
+                        sourceAccount.getBalance(),
+                        destinationAccount.getBalance()
                 );
 
         // 18. SERIALIZE EVENT PAYLOAD
@@ -334,24 +337,6 @@ public class TransactionServiceImpl implements TransactionService {
                 savedTransaction.getCreatedAt(),
                 savedTransaction.getReference()
         );
-    }
-
-    /**
-     * Payload used by the TRANSFER_COMPLETED outbox event.
-     *
-     * <p>
-     * This record is deliberately separate from the Transaction entity.
-     * The event contract should not be tightly coupled to the JPA model.
-     * </p>
-     */
-    private record TransferEventPayload(
-            Long transactionId,
-            Long sourceAccountId,
-            Long destinationAccountId,
-            BigDecimal amount,
-            Currency currency,
-            String reference
-    ) {
     }
 
     /**

@@ -265,11 +265,12 @@ public class WithdrawalServiceImpl implements WithdrawalService {
          */
         WithdrawalEventPayload eventPayload =
                 new WithdrawalEventPayload(
-                        savedTransaction.getTransactionId(),
+                        transaction.getTransactionId(),
                         customerAccount.getAccountId(),
                         request.getAmount(),
                         request.getCurrency(),
-                        request.getReference()
+                        request.getReference(),
+                        customerAccount.getBalance()
                 );
 
         try {

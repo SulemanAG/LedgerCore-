@@ -15,6 +15,8 @@ import java.time.LocalDateTime;
  * successfully committed financial operation always has a durable
  * event record that can later be published to an external system.
  * </p>
+ * @author Suleman Agasimani
+ * @since 1.0
  */
 @Setter
 @Getter
@@ -82,6 +84,11 @@ public class OutboxEvent {
     @Column(nullable = false)
     private int retryCount;
 
+    private LocalDateTime nextAttempt;
+
+    @Column(columnDefinition = "TEXT")
+    private String lastError;
+
     /**
      * Required by JPA.
      */
@@ -110,6 +117,7 @@ public class OutboxEvent {
         this.status = status;
         this.createdAt = createdAt;
         this.retryCount = 0;
+        this.nextAttempt=createdAt;
     }
 
 }

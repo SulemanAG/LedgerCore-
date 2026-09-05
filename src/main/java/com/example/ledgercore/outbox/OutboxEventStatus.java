@@ -1,27 +1,32 @@
 package com.example.ledgercore.outbox;
 
 /**
- * Represents the processing state of an outbox event.
+ * Represents the lifecycle state of an outbox event.
  *
- * <p>
- * An event starts in the PENDING state. The future outbox relay will
- * publish the event to Kafka and then change its state to PUBLISHED.
- * </p>
+ * <p>An event starts as PENDING after the financial
+ * transaction commits. The relay claims it for processing,
+ * publishes it to Kafka, and finally marks it as PUBLISHED.</p>
  */
 public enum OutboxEventStatus {
 
     /**
-     * Event has been created but has not yet been published.
+     * Event is waiting to be published.
      */
     PENDING,
 
     /**
-     * Event has been successfully published.
+     * Event has been claimed by the relay and is currently
+     * being published.
+     */
+    PROCESSING,
+
+    /**
+     * Event was successfully published to Kafka.
      */
     PUBLISHED,
 
     /**
-     * Event publication has failed permanently.
+     * Event exceeded the allowed retry limit.
      */
     FAILED
 }

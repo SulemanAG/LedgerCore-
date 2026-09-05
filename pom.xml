@@ -110,6 +110,15 @@
 			<scope>test</scope>
 		</dependency>
 
+		<!-- ==================== Kafka ==================== -->
+
+		<!-- Spring Kafka Dependency -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-kafka</artifactId>
+		</dependency>
+
+
 	</dependencies>
 
 

@@ -8,8 +8,9 @@ import tools.jackson.databind.ObjectMapper;
 
 /**
  * Consumes LedgerCore events from Kafka.
- * This consumes the event only once.
+ *
  * @author Suleman Agasimani
+ * @since 1.0
  */
 @Service
 public class KafkaConsumerService {
@@ -17,6 +18,13 @@ public class KafkaConsumerService {
     private final ObjectMapper objectMapper;
     private final EventProcessingService eventProcessingService;
 
+    /**
+     * Creates the Kafka consumer service.
+     *
+     * @param objectMapper Jackson object mapper
+     * @param eventProcessingService service responsible for
+     *                              event processing
+     */
     public KafkaConsumerService(
             ObjectMapper objectMapper,
             EventProcessingService eventProcessingService
@@ -26,10 +34,10 @@ public class KafkaConsumerService {
     }
 
     /**
-     * Consumes an event from the LedgerCore Kafka topic.
+     * Consumes LedgerCore events from Kafka.
      *
      * @param message serialized Kafka event
-     * @throws Exception if event deserialization or processing fails
+     * @throws Exception when event processing fails
      */
     @KafkaListener(
             topics = "ledgercore-transactions",
@@ -37,11 +45,22 @@ public class KafkaConsumerService {
     )
     public void consume(String message) throws Exception {
 
-        // 1. Deserialize the Kafka event envelope.
+        // 1. Deserialize the Kafka event.
         KafkaEvent event =
-                objectMapper.readValue(message, KafkaEvent.class);
+                objectMapper.readValue(
+                        message,
+                        KafkaEvent.class
+                );
 
-        // 2. Process the event through the idempotency layer.
+        // 2. Deliberately fail TEST_FAILURE events.
+        if ("TEST_FAILURE".equals(event.eventType())) {
+
+            throw new RuntimeException(
+                    "Intentional Kafka consumer failure for DLT testing"
+            );
+        }
+
+        // 3. Process normal events.
         eventProcessingService.process(event);
     }
 }

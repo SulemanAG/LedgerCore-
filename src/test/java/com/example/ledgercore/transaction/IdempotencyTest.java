@@ -5,6 +5,7 @@ import com.example.ledgercore.dto.response.TransactionResponse;
 import com.example.ledgercore.model.*;
 import com.example.ledgercore.repository.*;
 import com.example.ledgercore.service.TransactionService;
+import com.example.ledgercore.redis.AccountBalanceRedisService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -62,6 +63,9 @@ public class IdempotencyTest {
 
     @Autowired
     private TransactionService transactionService;
+
+    @Autowired
+    private AccountBalanceRedisService redisService;
 
 
     @Test
@@ -224,7 +228,12 @@ public class IdempotencyTest {
         customerRepository.delete(savedCustomer);
 
 
-        // 19. CLEAR SECURITY CONTEXT
+        // 19. CLEANUP REDIS PROJECTIONS
+        redisService.deleteBalance(savedSourceAccount.getAccountId());
+        redisService.deleteBalance(savedDestinationAccount.getAccountId());
+
+
+        // 20. CLEAR SECURITY CONTEXT
         SecurityContextHolder.clearContext();
     }
 }

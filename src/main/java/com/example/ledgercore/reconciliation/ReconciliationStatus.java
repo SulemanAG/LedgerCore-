@@ -1,8 +1,8 @@
 package com.example.ledgercore.reconciliation;
 
 /**
- * Represents the result of comparing an account's
- * PostgreSQL balance with its Redis projection.
+ * Represents the possible outcomes of reconciling
+ * PostgreSQL account balances against Redis projections.
  *
  * @author Suleman Agasimani
  * @since 1.0
@@ -10,18 +10,26 @@ package com.example.ledgercore.reconciliation;
 public enum ReconciliationStatus {
 
     /**
-     * PostgreSQL and Redis contain the same balance.
+     * PostgreSQL and Redis contain the account
+     * and their balances are equal.
      */
     MATCH,
 
     /**
-     * PostgreSQL and Redis contain different balances.
+     * PostgreSQL and Redis contain the account,
+     * but their balances are different.
      */
     MISMATCH,
 
     /**
-     * PostgreSQL contains an account but Redis does not
-     * contain a corresponding projection.
+     * The account exists in PostgreSQL but its
+     * Redis balance projection does not exist.
      */
-    MISSING_FROM_REDIS
+    MISSING_FROM_REDIS,
+
+    /**
+     * A Redis balance projection exists, but the
+     * corresponding PostgreSQL account no longer exists.
+     */
+    ORPHANED_IN_REDIS
 }

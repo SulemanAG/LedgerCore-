@@ -253,8 +253,8 @@ public class WithdrawalServiceImpl implements WithdrawalService {
         );
 
         // 16. Save both updated account balances
-        accountRepository.save(customerAccount);
-        accountRepository.save(systemAccount);
+        Account savedCustomer = accountRepository.saveAndFlush(customerAccount);
+        accountRepository.saveAndFlush(systemAccount);
 
         /*
          * Step 17:
@@ -266,11 +266,12 @@ public class WithdrawalServiceImpl implements WithdrawalService {
         WithdrawalEventPayload eventPayload =
                 new WithdrawalEventPayload(
                         transaction.getTransactionId(),
-                        customerAccount.getAccountId(),
+                        savedCustomer.getAccountId(),
                         request.getAmount(),
                         request.getCurrency(),
                         request.getReference(),
-                        customerAccount.getBalance()
+                        savedCustomer.getBalance(),
+                        savedCustomer.getVersion()
                 );
 
         try {

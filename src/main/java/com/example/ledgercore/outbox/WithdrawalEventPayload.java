@@ -21,5 +21,6 @@ public record WithdrawalEventPayload(
         BigDecimal amount,
         Currency currency,
         String reference,
-        BigDecimal balanceAfter
+        BigDecimal balanceAfter,
+        Long accountVersion
 ) {}

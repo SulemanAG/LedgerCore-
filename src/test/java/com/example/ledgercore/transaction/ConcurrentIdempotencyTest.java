@@ -17,6 +17,7 @@ import com.example.ledgercore.repository.LedgerEntryRepository;
 import com.example.ledgercore.repository.TransactionRepository;
 import com.example.ledgercore.repository.UserRepository;
 import com.example.ledgercore.service.TransactionService;
+import com.example.ledgercore.redis.AccountBalanceRedisService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -77,6 +78,9 @@ public class ConcurrentIdempotencyTest {
 
     @Autowired
     private TransactionService transactionService;
+
+    @Autowired
+    private AccountBalanceRedisService redisService;
 
 
     /**
@@ -352,5 +356,9 @@ public class ConcurrentIdempotencyTest {
         // 26. CLEANUP ACCOUNTS
         accountRepository.delete(sourceAccountForCleanup);
         accountRepository.delete(destinationAccountForCleanup);
+
+        // 27. CLEANUP REDIS PROJECTIONS
+        redisService.deleteBalance(savedSourceAccount.getAccountId());
+        redisService.deleteBalance(savedDestinationAccount.getAccountId());
     }
 }

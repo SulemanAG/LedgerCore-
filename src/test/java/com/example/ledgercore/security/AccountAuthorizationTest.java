@@ -13,6 +13,7 @@ import com.example.ledgercore.repository.CustomerRepository;
 import com.example.ledgercore.repository.LedgerEntryRepository;
 import com.example.ledgercore.repository.TransactionRepository;
 import com.example.ledgercore.service.TransactionService;
+import com.example.ledgercore.redis.AccountBalanceRedisService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -61,6 +62,9 @@ class AccountAuthorizationTest {
 
     @Autowired
     private TransactionService transactionService;
+
+    @Autowired
+    private AccountBalanceRedisService redisService;
 
 
     /**
@@ -222,6 +226,10 @@ class AccountAuthorizationTest {
             accountRepository.deleteById(
                     destinationAccountId
             );
+
+            // 12. CLEAN UP REDIS PROJECTIONS
+            redisService.deleteBalance(sourceAccountId);
+            redisService.deleteBalance(destinationAccountId);
         }
     }
 

@@ -9,6 +9,7 @@ import com.example.ledgercore.model.Customer;
 import com.example.ledgercore.repository.AccountRepository;
 import com.example.ledgercore.repository.CustomerRepository;
 import com.example.ledgercore.service.TransactionService;
+import com.example.ledgercore.redis.AccountBalanceRedisService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -35,6 +36,9 @@ class TransferConcurrencyTest {
 
     @Autowired
     private TransactionService transactionService;
+
+    @Autowired
+    private AccountBalanceRedisService redisService;
 
 
     /**
@@ -279,6 +283,16 @@ class TransferConcurrencyTest {
         }
         finally {
             executorService.shutdown();
+
+            if (sourceAccountId != null) {
+                redisService.deleteBalance(sourceAccountId);
+            }
+            if (destinationAccountId1 != null) {
+                redisService.deleteBalance(destinationAccountId1);
+            }
+            if (destinationAccountId2 != null) {
+                redisService.deleteBalance(destinationAccountId2);
+            }
         }
 
     }

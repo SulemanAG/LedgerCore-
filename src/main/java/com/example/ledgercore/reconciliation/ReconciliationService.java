@@ -7,23 +7,28 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
- * Reconciles PostgreSQL account balances against Redis projections.
+ * Service responsible for reconciling PostgreSQL account balances
+ * against Redis balance projections.
  *
  * <p>
- * PostgreSQL remains the authoritative source of financial state.
- * Redis is only a read-side projection and therefore must not be
- * treated as the source of truth during reconciliation.
+ * PostgreSQL is treated as the authoritative source of account
+ * and balance information. Redis is treated as a read-side
+ * projection.
  * </p>
  *
  * <p>
- * The service detects discrepancies but does not automatically
- * modify either PostgreSQL or Redis. This keeps reconciliation
- * safe and prevents an incorrect projection from becoming a
- * source of financial corruption.
+ * Reconciliation works in both directions:
  * </p>
+ *
+ * <ol>
+ *     <li>PostgreSQL → Redis: detects missing projections and balance mismatches.</li>
+ *     <li>Redis → PostgreSQL: detects orphaned Redis projections.</li>
+ * </ol>
  *
  * @author Suleman Agasimani
  * @since 1.0
@@ -34,56 +39,30 @@ public class ReconciliationService {
     private final AccountRepository accountRepository;
     private final AccountBalanceRedisService redisService;
 
-    /**
-     * Creates the reconciliation service.
-     *
-     * @param accountRepository repository containing authoritative
-     *                          PostgreSQL account balances
-     * @param redisService service providing Redis balance projections
-     */
     public ReconciliationService(
             AccountRepository accountRepository,
-            AccountBalanceRedisService redisService
-    ) {
+            AccountBalanceRedisService redisService) {
+
         this.accountRepository = accountRepository;
         this.redisService = redisService;
     }
 
     /**
-     * Reconciles a single account.
+     * Reconciles a single PostgreSQL account against its Redis projection.
      *
-     * <p>
-     * PostgreSQL is read first because it is the source of truth.
-     * The corresponding Redis projection is then retrieved and
-     * compared with the database balance.
-     * </p>
-     *
-     * @param accountId account identifier
+     * @param accountId PostgreSQL account identifier
      * @return reconciliation result
      */
-    public ReconciliationResult reconcileAccount(
-            Long accountId
-    ) {
+    public ReconciliationResult reconcileAccount(Long accountId) {
 
-        // 1. Retrieve the authoritative PostgreSQL account.
-        Account account =
-                accountRepository
-                        .findById(accountId)
-                        .orElseThrow(
-                                () -> new IllegalArgumentException(
-                                        "Account not found: "
-                                                + accountId
-                                )
-                        );
+        Account account = accountRepository.findById(accountId)
+                .orElseThrow(() ->
+                        new IllegalArgumentException(
+                                "Account not found: " + accountId));
 
-        BigDecimal databaseBalance =
-                account.getBalance();
+        BigDecimal databaseBalance = account.getBalance();
+        BigDecimal redisBalance = redisService.getBalance(accountId);
 
-        // 2. Retrieve the Redis balance projection.
-        BigDecimal redisBalance =
-                redisService.getBalance(accountId);
-
-        // 3. Redis projection does not exist.
         if (redisBalance == null) {
 
             return new ReconciliationResult(
@@ -94,7 +73,6 @@ public class ReconciliationService {
             );
         }
 
-        // 4. Compare PostgreSQL and Redis balances.
         if (databaseBalance.compareTo(redisBalance) == 0) {
 
             return new ReconciliationResult(
@@ -105,7 +83,6 @@ public class ReconciliationService {
             );
         }
 
-        // 5. A discrepancy exists.
         return new ReconciliationResult(
                 accountId,
                 databaseBalance,
@@ -115,33 +92,59 @@ public class ReconciliationService {
     }
 
     /**
-     * Reconciles every account currently stored in PostgreSQL.
+     * Reconciles all PostgreSQL accounts and detects orphaned
+     * Redis projections.
      *
-     * <p>
-     * Every account is checked independently. The method does not
-     * modify either PostgreSQL or Redis.
-     * </p>
-     *
-     * @return reconciliation results for all accounts
+     * @return complete reconciliation result list
      */
     public List<ReconciliationResult> reconcileAllAccounts() {
 
-        // 1. Retrieve all authoritative accounts.
-        List<Account> accounts =
-                accountRepository.findAll();
+        List<ReconciliationResult> results = new ArrayList<>();
 
-        // 2. Prepare the reconciliation result list.
-        List<ReconciliationResult> results =
-                new ArrayList<>();
+        /*
+         * 1. PostgreSQL → Redis
+         *
+         * Every PostgreSQL account must have a corresponding
+         * Redis balance projection.
+         */
+        List<Account> accounts = accountRepository.findAll();
 
-        // 3. Reconcile each account individually.
+        Set<Long> databaseAccountIds = new HashSet<>();
+
         for (Account account : accounts) {
 
-            results.add(
-                    reconcileAccount(
-                            account.getAccountId()
-                    )
-            );
+            Long accountId = account.getAccountId();
+
+            databaseAccountIds.add(accountId);
+
+            results.add(reconcileAccount(accountId));
+        }
+
+        /*
+         * 2. Redis → PostgreSQL
+         *
+         * Every Redis balance projection should correspond
+         * to an existing PostgreSQL account.
+         */
+        Set<Long> redisAccountIds =
+                redisService.findProjectedAccountIds();
+
+        for (Long redisAccountId : redisAccountIds) {
+
+            if (!databaseAccountIds.contains(redisAccountId)) {
+
+                BigDecimal redisBalance =
+                        redisService.getBalance(redisAccountId);
+
+                results.add(
+                        new ReconciliationResult(
+                                redisAccountId,
+                                null,
+                                redisBalance,
+                                ReconciliationStatus.ORPHANED_IN_REDIS
+                        )
+                );
+            }
         }
 
         return results;

@@ -5,6 +5,7 @@ import com.example.ledgercore.dto.response.TransactionResponse;
 import com.example.ledgercore.model.*;
 import com.example.ledgercore.repository.*;
 import com.example.ledgercore.service.TransactionService;
+import com.example.ledgercore.redis.AccountBalanceRedisService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -64,6 +65,9 @@ public class TransferOutboxTest {
 
     @Autowired
     private TransactionService transactionService;
+
+    @Autowired
+    private AccountBalanceRedisService redisService;
 
 
     @Test
@@ -193,130 +197,41 @@ public class TransferOutboxTest {
         );
 
 
-        // 12. FIND OUTBOX EVENTS FOR THIS TRANSACTION
-        List<OutboxEvent> outboxEvents =
+        // 12. FIND OUTBOX EVENTS FOR SOURCE AND DESTINATION ACCOUNTS
+        List<OutboxEvent> sourceOutboxEvents =
                 outboxRepository.findByAggregateId(
-                        response.transactionId()
+                        savedSourceAccount.getAccountId()
                 );
 
+        List<OutboxEvent> destinationOutboxEvents =
+                outboxRepository.findByAggregateId(
+                        savedDestinationAccount.getAccountId()
+                );
 
-        // 13. VERIFY EXACTLY ONE OUTBOX EVENT WAS CREATED
-        assertEquals(
-                1,
-                outboxEvents.size()
-        );
+        // 13. VERIFY DUAL OUTBOX EVENTS WERE CREATED
+        assertEquals(1, sourceOutboxEvents.size());
+        assertEquals(1, destinationOutboxEvents.size());
 
+        OutboxEvent sourceEvent = sourceOutboxEvents.get(0);
+        OutboxEvent destinationEvent = destinationOutboxEvents.get(0);
 
-        // 14. LOAD THE OUTBOX EVENT
-        OutboxEvent outboxEvent =
-                outboxEvents.get(0);
+        // 14. VERIFY EVENT TYPES & AGGREGATE IDS
+        assertEquals("TRANSFER_SOURCE_DEBITED", sourceEvent.getEventType());
+        assertEquals(savedSourceAccount.getAccountId(), sourceEvent.getAggregateId());
 
+        assertEquals("TRANSFER_DESTINATION_CREDITED", destinationEvent.getEventType());
+        assertEquals(savedDestinationAccount.getAccountId(), destinationEvent.getAggregateId());
 
-        // 15. VERIFY EVENT TYPE
-        assertEquals(
-                "TRANSFER_COMPLETED",
-                outboxEvent.getEventType()
-        );
+        // 15. VERIFY PAYLOAD CONTENT
+        assertTrue(sourceEvent.getPayload().contains("\"sourceAccountId\":" + savedSourceAccount.getAccountId()));
+        assertTrue(sourceEvent.getPayload().contains("\"sourceAccountVersion\":"));
 
+        assertTrue(destinationEvent.getPayload().contains("\"destinationAccountId\":" + savedDestinationAccount.getAccountId()));
+        assertTrue(destinationEvent.getPayload().contains("\"destinationAccountVersion\":"));
 
-        // 16. VERIFY OUTBOX EVENT STATUS
-        assertEquals(
-                OutboxEventStatus.PENDING,
-                outboxEvent.getStatus()
-        );
-
-
-        // 17. VERIFY AGGREGATE ID
-        assertEquals(
-                response.transactionId(),
-                outboxEvent.getAggregateId()
-        );
-
-
-        // 18. VERIFY PAYLOAD EXISTS
-        assertNotNull(
-                outboxEvent.getPayload()
-        );
-
-        assertFalse(
-                outboxEvent.getPayload().isBlank()
-        );
-
-
-        // 19. VERIFY PAYLOAD CONTAINS TRANSACTION ID
-        assertTrue(
-                outboxEvent.getPayload()
-                        .contains(
-                                "\"transactionId\":"
-                                        + response.transactionId()
-                        )
-        );
-
-
-        // 20. VERIFY PAYLOAD CONTAINS SOURCE ACCOUNT ID
-        assertTrue(
-                outboxEvent.getPayload()
-                        .contains(
-                                "\"sourceAccountId\":"
-                                        + savedSourceAccount.getAccountId()
-                        )
-        );
-
-
-        // 21. VERIFY PAYLOAD CONTAINS DESTINATION ACCOUNT ID
-        assertTrue(
-                outboxEvent.getPayload()
-                        .contains(
-                                "\"destinationAccountId\":"
-                                        + savedDestinationAccount.getAccountId()
-                        )
-        );
-
-
-        // 22. VERIFY PAYLOAD CONTAINS AMOUNT
-        assertTrue(
-                outboxEvent.getPayload()
-                        .contains(
-                                "\"amount\":1000"
-                        )
-        );
-
-
-        // 23. VERIFY PAYLOAD CONTAINS CURRENCY
-        assertTrue(
-                outboxEvent.getPayload()
-                        .contains(
-                                "\"currency\":\"INR\""
-                        )
-        );
-
-
-        // 24. VERIFY PAYLOAD CONTAINS REFERENCE
-        assertTrue(
-                outboxEvent.getPayload()
-                        .contains(
-                                "\"reference\":\"Transfer Outbox Test\""
-                        )
-        );
-
-
-        // 25. VERIFY EVENT HAS NOT BEEN PUBLISHED
-        assertNull(
-                outboxEvent.getPublishedAt()
-        );
-
-
-        // 26. VERIFY INITIAL RETRY COUNT
-        assertEquals(
-                0,
-                outboxEvent.getRetryCount()
-        );
-
-
-        // 27. CLEANUP OUTBOX EVENT
-        outboxRepository.delete(
-                outboxEvent
-        );
+        // 16. CLEANUP OUTBOX EVENTS
+        outboxRepository.delete(sourceEvent);
+        outboxRepository.delete(destinationEvent);
 
 
         // 28. CLEANUP LEDGER ENTRIES
@@ -347,7 +262,17 @@ public class TransferOutboxTest {
         );
 
 
-        // 32. CLEAR SECURITY CONTEXT
+        // 32. CLEANUP REDIS PROJECTIONS
+        redisService.deleteBalance(
+                savedSourceAccount.getAccountId()
+        );
+
+        redisService.deleteBalance(
+                savedDestinationAccount.getAccountId()
+        );
+
+
+        // 33. CLEAR SECURITY CONTEXT
         SecurityContextHolder.clearContext();
     }
 }

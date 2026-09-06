@@ -294,8 +294,8 @@ public class DepositServiceImpl implements DepositService {
                         .add(request.getAmount())
         );
 
-        accountRepository.save(systemAccount);
-        accountRepository.save(customerAccount);
+        accountRepository.saveAndFlush(systemAccount);
+        Account savedCustomer = accountRepository.saveAndFlush(customerAccount);
 
         /*
          * Step 15:
@@ -309,11 +309,12 @@ public class DepositServiceImpl implements DepositService {
         DepositEventPayload eventPayload =
                 new DepositEventPayload(
                         transaction.getTransactionId(),
-                        customerAccount.getAccountId(),
+                        savedCustomer.getAccountId(),
                         request.getAmount(),
                         request.getCurrency(),
                         request.getReference(),
-                        customerAccount.getBalance()
+                        savedCustomer.getBalance(),
+                        savedCustomer.getVersion()
                 );
 
         try {

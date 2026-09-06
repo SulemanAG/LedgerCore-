@@ -16,7 +16,9 @@ import com.example.ledgercore.model.Transaction;
 import com.example.ledgercore.model.TransactionStatus;
 import com.example.ledgercore.outbox.OutboxEvent;
 import com.example.ledgercore.outbox.OutboxEventStatus;
+import com.example.ledgercore.outbox.TransferDestinationEventPayload;
 import com.example.ledgercore.outbox.TransferEventPayload;
+import com.example.ledgercore.outbox.TransferSourceEventPayload;
 import com.example.ledgercore.repository.AccountRepository;
 import com.example.ledgercore.repository.LedgerEntryRepository;
 import com.example.ledgercore.repository.OutboxRepository;
@@ -283,50 +285,73 @@ public class TransactionServiceImpl implements TransactionService {
                         .add(request.getAmount())
         );
 
-        // 16. SAVE BOTH ACCOUNT BALANCES
-        accountRepository.save(sourceAccount);
-        accountRepository.save(destinationAccount);
+        // 16. SAVE BOTH ACCOUNT BALANCES & FLUSH TO GET VERSIONS
+        Account savedSource = accountRepository.saveAndFlush(sourceAccount);
+        Account savedDestination = accountRepository.saveAndFlush(destinationAccount);
 
-        // 17. CREATE TRANSFER EVENT PAYLOAD
-        TransferEventPayload eventPayload =
-                new TransferEventPayload(
-                        transaction.getTransactionId(),
-                        sourceAccount.getAccountId(),
-                        destinationAccount.getAccountId(),
+        // 17. CREATE SOURCE & DESTINATION TRANSFER EVENT PAYLOADS
+        TransferSourceEventPayload sourcePayload =
+                new TransferSourceEventPayload(
+                        savedTransaction.getTransactionId(),
+                        savedSource.getAccountId(),
+                        savedDestination.getAccountId(),
                         request.getAmount(),
                         request.getCurrency(),
                         request.getReference(),
-                        sourceAccount.getBalance(),
-                        destinationAccount.getBalance()
+                        savedSource.getBalance(),
+                        savedSource.getVersion()
                 );
 
-        // 18. SERIALIZE EVENT PAYLOAD
-        String payload;
+        TransferDestinationEventPayload destinationPayload =
+                new TransferDestinationEventPayload(
+                        savedTransaction.getTransactionId(),
+                        savedSource.getAccountId(),
+                        savedDestination.getAccountId(),
+                        request.getAmount(),
+                        request.getCurrency(),
+                        request.getReference(),
+                        savedDestination.getBalance(),
+                        savedDestination.getVersion()
+                );
 
+        // 18. SERIALIZE BOTH EVENT PAYLOADS & SAVE DUAL OUTBOX EVENTS
         try {
 
-            payload = objectMapper.writeValueAsString(eventPayload);
+            String sourcePayloadJson =
+                    objectMapper.writeValueAsString(sourcePayload);
+
+            OutboxEvent sourceOutboxEvent =
+                    new OutboxEvent(
+                            "TRANSFER_SOURCE_DEBITED",
+                            savedSource.getAccountId(),
+                            sourcePayloadJson,
+                            OutboxEventStatus.PENDING,
+                            LocalDateTime.now()
+                    );
+
+            outboxRepository.save(sourceOutboxEvent);
+
+            String destinationPayloadJson =
+                    objectMapper.writeValueAsString(destinationPayload);
+
+            OutboxEvent destinationOutboxEvent =
+                    new OutboxEvent(
+                            "TRANSFER_DESTINATION_CREDITED",
+                            savedDestination.getAccountId(),
+                            destinationPayloadJson,
+                            OutboxEventStatus.PENDING,
+                            LocalDateTime.now()
+                    );
+
+            outboxRepository.save(destinationOutboxEvent);
 
         } catch (JacksonException exception) {
 
             throw new IllegalStateException(
-                    "Failed to serialize transfer outbox event",
+                    "Failed to serialize transfer outbox events",
                     exception
             );
         }
-
-        // 19. CREATE OUTBOX EVENT
-        OutboxEvent outboxEvent =
-                new OutboxEvent(
-                        "TRANSFER_COMPLETED",
-                        savedTransaction.getTransactionId(),
-                        payload,
-                        OutboxEventStatus.PENDING,
-                        LocalDateTime.now()
-                );
-
-        // 20. SAVE OUTBOX EVENT
-        outboxRepository.save(outboxEvent);
 
         // 21. RETURN RESPONSE
         return new TransactionResponse(

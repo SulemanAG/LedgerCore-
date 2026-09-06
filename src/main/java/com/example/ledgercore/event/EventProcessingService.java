@@ -1,7 +1,9 @@
 package com.example.ledgercore.event;
 
 import com.example.ledgercore.outbox.DepositEventPayload;
+import com.example.ledgercore.outbox.TransferDestinationEventPayload;
 import com.example.ledgercore.outbox.TransferEventPayload;
+import com.example.ledgercore.outbox.TransferSourceEventPayload;
 import com.example.ledgercore.outbox.WithdrawalEventPayload;
 import com.example.ledgercore.redis.AccountBalanceRedisService;
 import com.example.ledgercore.repository.ProcessedEventRepository;
@@ -20,8 +22,7 @@ import tools.jackson.databind.ObjectMapper;
  *
  * <p>
  * Successfully processed financial events also update the Redis
- * account-balance projection using the authoritative post-transaction
- * balances contained in the event payload.
+ * account-balance projection using atomic version-guarded updates.
  * </p>
  *
  * @author Suleman Agasimani
@@ -38,13 +39,10 @@ public class EventProcessingService {
     /**
      * Creates the event processing service.
      *
-     * @param processedEventRepository repository used to check
-     *                                  processed events
-     * @param processedEventService service responsible for recording
-     *                              processed events
+     * @param processedEventRepository repository used to check processed events
+     * @param processedEventService service responsible for recording processed events
      * @param redisService Redis account-balance projection service
-     * @param objectMapper Jackson object mapper used to deserialize
-     *                     event payloads
+     * @param objectMapper Jackson object mapper used to deserialize event payloads
      */
     public EventProcessingService(
             ProcessedEventRepository processedEventRepository,
@@ -124,9 +122,10 @@ public class EventProcessingService {
                                     DepositEventPayload.class
                             );
 
-                    redisService.setBalance(
+                    redisService.setBalanceIfVersionGreater(
                             payload.accountId(),
-                            payload.balanceAfter()
+                            payload.balanceAfter(),
+                            payload.accountVersion()
                     );
                 }
 
@@ -138,9 +137,40 @@ public class EventProcessingService {
                                     WithdrawalEventPayload.class
                             );
 
-                    redisService.setBalance(
+                    redisService.setBalanceIfVersionGreater(
                             payload.accountId(),
-                            payload.balanceAfter()
+                            payload.balanceAfter(),
+                            payload.accountVersion()
+                    );
+                }
+
+                case "TRANSFER_SOURCE_DEBITED" -> {
+
+                    TransferSourceEventPayload payload =
+                            objectMapper.readValue(
+                                    event.payload(),
+                                    TransferSourceEventPayload.class
+                            );
+
+                    redisService.setBalanceIfVersionGreater(
+                            payload.sourceAccountId(),
+                            payload.sourceBalanceAfter(),
+                            payload.sourceAccountVersion()
+                    );
+                }
+
+                case "TRANSFER_DESTINATION_CREDITED" -> {
+
+                    TransferDestinationEventPayload payload =
+                            objectMapper.readValue(
+                                    event.payload(),
+                                    TransferDestinationEventPayload.class
+                            );
+
+                    redisService.setBalanceIfVersionGreater(
+                            payload.destinationAccountId(),
+                            payload.destinationBalanceAfter(),
+                            payload.destinationAccountVersion()
                     );
                 }
 

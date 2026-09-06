@@ -6,6 +6,7 @@ import com.example.ledgercore.exception.InvalidWithdrawalException;
 import com.example.ledgercore.model.*;
 import com.example.ledgercore.repository.*;
 import com.example.ledgercore.service.WithdrawalService;
+import com.example.ledgercore.redis.AccountBalanceRedisService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -56,6 +57,9 @@ public class WithdrawalIdempotencyTest {
 
     @Autowired
     private WithdrawalService withdrawalService;
+
+    @Autowired
+    private AccountBalanceRedisService redisService;
 
 
     @Test
@@ -148,7 +152,10 @@ public class WithdrawalIdempotencyTest {
         // 16. CLEANUP ACCOUNT
         accountRepository.delete(savedAccount);
 
-        // 17. CLEAR SECURITY CONTEXT
+        // 17. CLEANUP REDIS PROJECTION
+        redisService.deleteBalance(savedAccount.getAccountId());
+
+        // 18. CLEAR SECURITY CONTEXT
         SecurityContextHolder.clearContext();
     }
 }

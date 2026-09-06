@@ -24,27 +24,29 @@ class AccountBalanceRedisServiceTest {
         Long accountId = 999999L;
         BigDecimal balance = new BigDecimal("12500.50");
 
-        // 2. Store balance
-        redisService.setBalance(accountId, balance);
+        try {
+            // 2. Store balance
+            redisService.setBalance(accountId, balance);
 
-        // 3. Retrieve balance
-        BigDecimal retrievedBalance =
-                redisService.getBalance(accountId);
+            // 3. Retrieve balance
+            BigDecimal retrievedBalance =
+                    redisService.getBalance(accountId);
 
-        // 4. Verify
-        assertNotNull(retrievedBalance);
+            // 4. Verify
+            assertNotNull(retrievedBalance);
 
-        assertEquals(
-                0,
-                balance.compareTo(retrievedBalance)
-        );
+            assertEquals(
+                    0,
+                    balance.compareTo(retrievedBalance)
+            );
+        } finally {
+            // 5. Cleanup
+            redisService.deleteBalance(accountId);
 
-        // 5. Cleanup
-        redisService.deleteBalance(accountId);
-
-        // 6. Verify cleanup
-        assertNull(
-                redisService.getBalance(accountId)
-        );
+            // 6. Verify cleanup
+            assertNull(
+                    redisService.getBalance(accountId)
+            );
+        }
     }
 }

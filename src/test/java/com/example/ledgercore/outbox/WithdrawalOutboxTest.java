@@ -5,6 +5,7 @@ import com.example.ledgercore.dto.response.TransactionResponse;
 import com.example.ledgercore.model.*;
 import com.example.ledgercore.repository.*;
 import com.example.ledgercore.service.WithdrawalService;
+import com.example.ledgercore.redis.AccountBalanceRedisService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -65,6 +66,9 @@ public class WithdrawalOutboxTest {
 
     @Autowired
     private WithdrawalService withdrawalService;
+
+    @Autowired
+    private AccountBalanceRedisService redisService;
 
 
     @Test
@@ -379,7 +383,13 @@ public class WithdrawalOutboxTest {
         );
 
 
-        // 35. CLEAR SECURITY CONTEXT
+        // 35. CLEANUP REDIS PROJECTION
+        redisService.deleteBalance(
+                savedCustomerAccount.getAccountId()
+        );
+
+
+        // 36. CLEAR SECURITY CONTEXT
         SecurityContextHolder.clearContext();
     }
 }

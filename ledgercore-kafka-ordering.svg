@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 320" width="100%" height="100%">
+  <defs>
+    <style>
+      <![CDATA[
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+      * { box-sizing: border-box; }
+      .bg { fill: #f8fafc; }
+      .title-main { font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 700; fill: #0f172a; }
+      .title-sub { font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 500; fill: #64748b; }
+      .card-title { font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 700; fill: #0f172a; }
+      .code-text { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; }
+      .body-text { font-family: 'Inter', sans-serif; font-size: 11px; fill: #334155; line-height: 1.3; }
+      .card { fill: #ffffff; stroke: #cbd5e1; stroke-width: 1.5; rx: 8px; filter: drop-shadow(0 2px 4px rgba(15, 23, 42, 0.04)); }
+      .card-purple { fill: #faf5ff; stroke: #e9d5ff; stroke-width: 1.5; rx: 8px; }
+      .card-blue { fill: #f0f9ff; stroke: #bae6fd; stroke-width: 1.5; rx: 8px; }
+      .flow-line { fill: none; stroke-width: 2; stroke-linecap: round; stroke-dasharray: 6 6; animation: pulse 2s linear infinite; }
+      .flow-purple { stroke: #9333ea; }
+      .flow-blue { stroke: #0284c7; }
+      @keyframes pulse { 0% { stroke-dashoffset: 24; } 100% { stroke-dashoffset: 0; } }
+      ]]>
+    </style>
+    <marker id="arrow-purple" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#9333ea" />
+    </marker>
+    <marker id="arrow-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#0284c7" />
+    </marker>
+  </defs>
+
+  <rect class="bg" width="960" height="320" />
+
+  <!-- HEADER -->
+  <g transform="translate(30, 20)">
+    <text class="title-main" x="0" y="16">4. Multi-Partition Kafka Key Streaming &amp; Per-Account Ordering</text>
+    <text class="title-sub" x="0" y="32">KafkaEvent Envelope → Key-Based Routing → Per-Account Partition Ordering</text>
+  </g>
+
+  <!-- FLOW STEPS -->
+  <g transform="translate(30, 70)">
+    <!-- Step 1: KafkaEvent Envelope -->
+    <g transform="translate(0, 0)">
+      <rect class="card-purple" width="200" height="200" />
+      <circle cx="24" cy="24" r="12" fill="#9333ea" />
+      <text x="24" y="28" font-size="11px" font-weight="700" fill="#ffffff" text-anchor="middle">1</text>
+      <text x="44" y="28" class="card-title" fill="#6b21a8">KafkaEvent Envelope</text>
+      <line x1="15" y1="45" x2="185" y2="45" stroke="#e9d5ff" />
+      <text x="15" y="65" class="code-text" fill="#581c87">eventId: "evt_991"</text>
+      <text x="15" y="85" class="code-text" fill="#9333ea" font-weight="700">aggregateId: "101"</text>
+      <text x="15" y="105" class="code-text" fill="#581c87">eventType: DEPOSIT</text>
+      <text x="15" y="125" class="code-text" fill="#581c87">occurredAt: Timestamp</text>
+      <text x="15" y="155" class="body-text" fill="#6b21a8">Polymorphic payload</text>
+      <text x="15" y="175" class="body-text" fill="#6b21a8">(balanceAfter, version)</text>
+    </g>
+
+    <!-- Arrow 1 -> 2 -->
+    <path class="flow-line flow-purple" d="M 205,100 L 235,100" marker-end="url(#arrow-purple)" />
+
+    <!-- Step 2: Kafka Key Router -->
+    <g transform="translate(240, 0)">
+      <rect class="card" width="190" height="200" />
+      <circle cx="24" cy="24" r="12" fill="#475569" />
+      <text x="24" y="28" font-size="11px" font-weight="700" fill="#ffffff" text-anchor="middle">2</text>
+      <text x="44" y="28" class="card-title">Partition Key Router</text>
+      <line x1="15" y1="45" x2="175" y2="45" stroke="#e2e8f0" />
+      <text x="15" y="65" class="code-text" fill="#0f172a">Topic: transactions</text>
+      <text x="15" y="85" class="code-text" fill="#3b82f6">Key = aggregateId</text>
+      <text x="15" y="115" class="body-text" fill="#475569">• Account 101 → Part 0</text>
+      <text x="15" y="135" class="body-text" fill="#475569">• Account 202 → Part 1</text>
+      <text x="15" y="165" class="body-text" fill="#64748b">Ensures order safety</text>
+      <text x="15" y="180" class="body-text" fill="#64748b">for same account</text>
+    </g>
+
+    <!-- Arrow 2 -> 3 -->
+    <path class="flow-line flow-blue" d="M 435,100 L 465,100" marker-end="url(#arrow-blue)" />
+
+    <!-- Step 3: Partition 0 (Account 101) -->
+    <g transform="translate(470, 0)">
+      <rect class="card-blue" width="210" height="200" />
+      <circle cx="24" cy="24" r="12" fill="#0284c7" />
+      <text x="24" y="28" font-size="11px" font-weight="700" fill="#ffffff" text-anchor="middle">3</text>
+      <text x="44" y="28" class="card-title" fill="#0369a1">Partition 0 (Acc 101)</text>
+      <line x1="15" y1="45" x2="195" y2="45" stroke="#bae6fd" />
+      <text x="15" y="65" class="code-text" fill="#0c4a6e">Strict Sequence Stream</text>
+      <text x="15" y="85" class="body-text" fill="#0369a1">1. Deposit (Offset #101)</text>
+      <text x="15" y="105" class="body-text" fill="#0369a1">2. Transfer Debit (#102)</text>
+      <text x="15" y="125" class="body-text" fill="#0369a1">3. Withdrawal (#103)</text>
+      <text x="15" y="155" class="code-text" fill="#0284c7">Sequential Order</text>
+      <text x="15" y="175" class="body-text" fill="#0c4a6e">Guaranteed by Kafka</text>
+    </g>
+
+    <!-- Arrow 3 -> 4 -->
+    <path class="flow-line flow-purple" d="M 685,100 L 715,100" marker-end="url(#arrow-purple)" />
+
+    <!-- Step 4: Partition 1 (Account 202) -->
+    <g transform="translate(720, 0)">
+      <rect class="card-purple" width="180" height="200" />
+      <circle cx="24" cy="24" r="12" fill="#9333ea" />
+      <text x="24" y="28" font-size="11px" font-weight="700" fill="#ffffff" text-anchor="middle">4</text>
+      <text x="44" y="28" class="card-title" fill="#6b21a8">Partition 1 (Acc 202)</text>
+      <line x1="15" y1="45" x2="165" y2="45" stroke="#e9d5ff" />
+      <text x="15" y="65" class="code-text" fill="#581c87">Parallel Stream</text>
+      <text x="15" y="85" class="body-text" fill="#581c87">1. Transfer Credit</text>
+      <text x="15" y="105" class="body-text" fill="#581c87">2. Deposit (#882)</text>
+      <text x="15" y="135" class="body-text" fill="#6b21a8">Independent processing</text>
+      <text x="15" y="155" class="body-text" fill="#6b21a8">without cross-account</text>
+      <text x="15" y="175" class="body-text" fill="#6b21a8">lock contention!</text>
+    </g>
+  </g>
+</svg>

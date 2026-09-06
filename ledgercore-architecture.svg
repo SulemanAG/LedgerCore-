@@ -1,360 +1,126 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2200 1400" width="2200" height="1400">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 540" width="100%" height="100%">
   <defs>
-    <!-- Arrow Markers -->
-    <marker id="arrowBlue" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
-      <path d="M0 1L8 5L0 9z" fill="#2563eb"/>
-    </marker>
-    <marker id="arrowPurple" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
-      <path d="M0 1L8 5L0 9z" fill="#7c3aed"/>
-    </marker>
-    <marker id="arrowGold" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
-      <path d="M0 1L8 5L0 9z" fill="#d97706"/>
-    </marker>
-    <marker id="arrowGreen" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
-      <path d="M0 1L8 5L0 9z" fill="#059669"/>
-    </marker>
-    <marker id="arrowRed" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
-      <path d="M0 1L8 5L0 9z" fill="#dc2626"/>
-    </marker>
-    <marker id="arrowSlate" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
-      <path d="M0 1L8 5L0 9z" fill="#64748b"/>
-    </marker>
-
-    <!-- Filters -->
-    <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
-      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#0f172a" flood-opacity="0.08"/>
-    </filter>
-    <filter id="shadowEmphasized" x="-8%" y="-8%" width="116%" height="116%">
-      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#0f172a" flood-opacity="0.14"/>
-    </filter>
-    <filter id="glowBlue" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur stdDeviation="5" result="blur"/>
-      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
-    </filter>
-    <filter id="glowGreen" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur stdDeviation="5" result="blur"/>
-      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
-    </filter>
-
-    <!-- Gradients -->
-    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#f8fafc"/>
-      <stop offset="100%" stop-color="#f1f5f9"/>
-    </linearGradient>
-    <linearGradient id="pgTxGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#ecfdf5"/>
-      <stop offset="100%" stop-color="#d1fae5"/>
-    </linearGradient>
-    <linearGradient id="errorGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#fef2f2"/>
-      <stop offset="100%" stop-color="#ffe4e6"/>
-    </linearGradient>
-
-    <!-- Embedded CSS Styles & Animations -->
     <style>
-    <![CDATA[
-.title-main { font: 800 34px 'Segoe UI', system-ui, -apple-system, sans-serif; fill: #0f172a; letter-spacing: -0.5px; }
-      .title-sub { font: 500 17px 'Segoe UI', system-ui, -apple-system, sans-serif; fill: #475569; }
-      .zone-header { font: 800 18px 'Segoe UI', system-ui, -apple-system, sans-serif; fill: #1e293b; text-transform: uppercase; letter-spacing: 0.8px; }
-      .card-title { font: 700 18px 'Segoe UI', system-ui, -apple-system, sans-serif; fill: #0f172a; }
-      .card-code { font: 700 14px 'Consolas', 'Courier New', monospace; fill: #2563eb; }
-      .card-code-purple { font: 700 14px 'Consolas', 'Courier New', monospace; fill: #7c3aed; }
-      .card-code-gold { font: 700 14px 'Consolas', 'Courier New', monospace; fill: #d97706; }
-      .card-code-green { font: 700 14px 'Consolas', 'Courier New', monospace; fill: #059669; }
-      .card-code-red { font: 700 14px 'Consolas', 'Courier New', monospace; fill: #dc2626; }
-      .card-text { font: 500 14px 'Segoe UI', system-ui, -apple-system, sans-serif; fill: #334155; }
-      .card-sm { font: 500 13px 'Segoe UI', system-ui, -apple-system, sans-serif; fill: #64748b; }
-      .label-bold { font: 700 13px 'Segoe UI', system-ui, -apple-system, sans-serif; fill: #0f172a; }
-      
-      .card-box { fill: #ffffff; stroke: #cbd5e1; stroke-width: 2; rx: 14; filter: url(#shadow); }
-      .card-box-client { fill: #eff6ff; stroke: #3b82f6; stroke-width: 2.5; rx: 14; filter: url(#shadow); }
-      .card-box-security { fill: #faf5ff; stroke: #8b5cf6; stroke-width: 2.5; rx: 14; filter: url(#shadow); }
-      .card-box-service { fill: #fffbeb; stroke: #f59e0b; stroke-width: 2.5; rx: 14; filter: url(#shadow); }
-      .card-box-database { fill: #ffffff; stroke: #10b981; stroke-width: 2.5; rx: 14; filter: url(#shadow); }
-      .card-box-error { fill: #ffffff; stroke: #f43f5e; stroke-width: 2; rx: 14; filter: url(#shadow); }
-
-      /* Flow Animation Paths */
-      .flow-path-blue { stroke: #2563eb; stroke-width: 3; fill: none; stroke-dasharray: 10 8; animation: flowForward 6s linear infinite; marker-end: url(#arrowBlue); }
-      .flow-path-purple { stroke: #7c3aed; stroke-width: 3; fill: none; stroke-dasharray: 10 8; animation: flowForward 6s linear infinite; marker-end: url(#arrowPurple); }
-      .flow-path-gold { stroke: #d97706; stroke-width: 3; fill: none; stroke-dasharray: 10 8; animation: flowForward 6s linear infinite; marker-end: url(#arrowGold); }
-      .flow-path-green { stroke: #059669; stroke-width: 3; fill: none; stroke-dasharray: 10 8; animation: flowForward 6s linear infinite; marker-end: url(#arrowGreen); }
-      .flow-path-red { stroke: #dc2626; stroke-width: 2.5; fill: none; stroke-dasharray: 8 6; animation: flowForward 5s linear infinite; marker-end: url(#arrowRed); }
-      .flow-path-slate { stroke: #64748b; stroke-width: 2.5; fill: none; stroke-dasharray: 8 6; animation: flowForward 8s linear infinite; marker-end: url(#arrowSlate); }
-
-      @keyframes flowForward { to { stroke-dashoffset: -36; } }
-
-      /* Dynamic Slow Motion Pulses */
-      .pulse-blue { fill: #2563eb; filter: url(#glowBlue); animation: motionBlue 12s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
-      .pulse-gold { fill: #d97706; filter: url(#shadow); animation: motionGold 12s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
-      .pulse-green { fill: #059669; filter: url(#glowGreen); animation: motionGreen 12s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
-
-      @keyframes motionBlue {
-        0% { transform: translate(0, 0); opacity: 0; r: 6; }
-        3% { opacity: 1; }
-        25% { transform: translate(320px, 0); opacity: 1; }
-        50% { transform: translate(670px, 0); opacity: 1; }
-        55% { opacity: 0; }
-        100% { transform: translate(0, 0); opacity: 0; }
-      }
-
-      @keyframes motionGold {
-        0%, 45% { transform: translate(0, 0); opacity: 0; r: 6; }
-        48% { opacity: 1; }
-        70% { transform: translate(350px, 0); opacity: 1; }
-        85% { transform: translate(350px, 200px); opacity: 1; }
-        90% { opacity: 0; }
-        100% { opacity: 0; }
-      }
-
-      @keyframes motionGreen {
-        0%, 80% { transform: translate(0, 0); opacity: 0; r: 6; }
-        83% { opacity: 1; }
-        95% { transform: translate(450px, 0); opacity: 1; }
-        98% { opacity: 0; }
-        100% { opacity: 0; }
-      }
-    ]]>
+      <![CDATA[
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+      * { box-sizing: border-box; }
+      .bg { fill: #f8fafc; }
+      .title-main { font-family: 'Inter', sans-serif; font-size: 18px; font-weight: 800; fill: #0f172a; }
+      .title-sub { font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 500; fill: #475569; }
+      .card-title { font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 700; fill: #0f172a; }
+      .code-text { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; }
+      .body-text { font-family: 'Inter', sans-serif; font-size: 11px; fill: #334155; line-height: 1.35; }
+      .card { fill: #ffffff; stroke: #cbd5e1; stroke-width: 1.5; rx: 10px; filter: drop-shadow(0 4px 6px rgba(15, 23, 42, 0.04)); }
+      .card-blue { fill: #f0f9ff; stroke: #bae6fd; stroke-width: 1.5; rx: 10px; }
+      .card-amber { fill: #fffbeb; stroke: #fde68a; stroke-width: 1.5; rx: 10px; }
+      .card-purple { fill: #faf5ff; stroke: #e9d5ff; stroke-width: 1.5; rx: 10px; }
+      .card-rose { fill: #fff1f2; stroke: #fecdd3; stroke-width: 1.5; rx: 10px; }
+      .flow-line { fill: none; stroke-width: 2; stroke-linecap: round; stroke-dasharray: 6 6; animation: pulse 2.5s linear infinite; }
+      .flow-blue { stroke: #0284c7; }
+      .flow-amber { stroke: #d97706; }
+      .flow-purple { stroke: #9333ea; }
+      @keyframes pulse { 0% { stroke-dashoffset: 24; } 100% { stroke-dashoffset: 0; } }
+      ]]>
     </style>
+    <marker id="arrow-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#0284c7" />
+    </marker>
+    <marker id="arrow-amber" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#d97706" />
+    </marker>
+    <marker id="arrow-purple" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#9333ea" />
+    </marker>
   </defs>
 
-  <!-- Background -->
-  <rect width="2200" height="1400" fill="url(#bgGrad)"/>
+  <rect class="bg" width="1100" height="540" />
 
-  <!-- Top Header Banner -->
-  <text x="1100" y="60" text-anchor="middle" class="title-main">🏦 LedgerCore — Complete Financial Transaction &amp; Outbox Lifecycle</text>
-  <text x="1100" y="95" text-anchor="middle" class="title-sub">Synchronous Application Request Processing • Ownership Authorization • Atomic PostgreSQL ACID Commit • Transactional Outbox Persistence</text>
+  <!-- HEADER -->
+  <g transform="translate(40, 30)">
+    <text class="title-main" x="0" y="20">LedgerCore — Financial Transaction &amp; Outbox Architecture</text>
+    <text class="title-sub" x="0" y="40">Synchronous API Request Handling, Double-Entry Accounting, and Outbox Event Commitment</text>
+  </g>
 
-  <!-- ==================== ARCHITECTURAL ZONES ==================== -->
+  <!-- HIGH LEVEL STACKED STAGES -->
+  <g transform="translate(40, 90)">
+    <!-- Stage 1: API & Security -->
+    <g transform="translate(0, 0)">
+      <rect class="card-blue" width="230" height="340" />
+      <circle cx="28" cy="28" r="14" fill="#0284c7" />
+      <text x="28" y="33" font-size="12px" font-weight="700" fill="#ffffff" text-anchor="middle">1</text>
+      <text x="50" y="33" class="card-title" fill="#0369a1">API &amp; Security Layer</text>
+      <line x1="20" y1="52" x2="210" y2="52" stroke="#bae6fd" />
+      <text x="20" y="75" class="code-text" fill="#0c4a6e">POST /accounts/transfer</text>
+      <text x="20" y="100" class="body-text" fill="#0369a1">1. Spring Security 6 Auth</text>
+      <text x="20" y="120" class="body-text" fill="#0369a1">   (BCrypt credentials check)</text>
+      <text x="20" y="145" class="body-text" fill="#0369a1">2. Ownership Authorization</text>
+      <text x="20" y="165" class="body-text" fill="#0369a1">   (AccountAuthService)</text>
+      <text x="20" y="190" class="body-text" fill="#0369a1">3. Jakarta Bean Validation</text>
+      <text x="20" y="210" class="body-text" fill="#0369a1">   (@Valid DTO constraints)</text>
+      <text x="20" y="245" class="code-text" fill="#0284c7">Idempotency Lock Check</text>
+      <text x="20" y="270" class="body-text" fill="#0c4a6e">Advisory lock prevents</text>
+      <text x="20" y="290" class="body-text" fill="#0c4a6e">duplicate financial retry</text>
+    </g>
 
-  <!-- ZONE 1: API & SECURITY GATEWAY (X: 60 - 680) -->
-  <rect x="60" y="130" width="620" height="720" fill="#ffffff" stroke="#cbd5e1" stroke-width="2" rx="20" filter="url(#shadow)"/>
-  <rect x="60" y="130" width="620" height="45" fill="#eff6ff" rx="20"/>
-  <rect x="60" y="155" width="620" height="20" fill="#eff6ff"/>
-  <text x="370" y="160" text-anchor="middle" class="zone-header" fill="#1e40af">🛡️ Zone 1: Client API, Auth &amp; Ownership Boundary</text>
+    <!-- Flow Arrow 1 -> 2 -->
+    <path class="flow-line flow-blue" d="M 235,170 L 265,170" marker-end="url(#arrow-blue)" />
 
-  <!-- ZONE 2: SERVICE LAYER & BUSINESS VALIDATION (X: 720 - 1380) -->
-  <rect x="720" y="130" width="660" height="720" fill="#ffffff" stroke="#cbd5e1" stroke-width="2" rx="20" filter="url(#shadow)"/>
-  <rect x="720" y="130" width="660" height="45" fill="#fffbeb" rx="20"/>
-  <rect x="720" y="155" width="660" height="20" fill="#fffbeb"/>
-  <text x="1050" y="160" text-anchor="middle" class="zone-header" fill="#92400e">⚙️ Zone 2: Service Layer &amp; Business Rules Engine</text>
+    <!-- Stage 2: PostgreSQL Atomic ACID Transaction -->
+    <g transform="translate(270, 0)">
+      <rect class="card-amber" width="480" height="340" />
+      <circle cx="28" cy="28" r="14" fill="#d97706" />
+      <text x="28" y="33" font-size="12px" font-weight="700" fill="#ffffff" text-anchor="middle">2</text>
+      <text x="50" y="33" class="card-title" fill="#b45309">PostgreSQL @Transactional Boundary</text>
+      <line x1="20" y1="52" x2="460" y2="52" stroke="#fde68a" />
+      
+      <!-- Subcard: Double-Entry Ledger -->
+      <g transform="translate(20, 65)">
+        <rect x="0" y="0" width="440" height="120" fill="#ffffff" stroke="#fde68a" rx="8" />
+        <text x="15" y="22" class="code-text" fill="#78350f" font-weight="700">Atomic Financial Mutations (@Version Optimistic Lock)</text>
+        <text x="15" y="44" class="body-text" fill="#78350f">• Source Account: Balance Debit + Version Bump</text>
+        <text x="15" y="64" class="body-text" fill="#78350f">• Destination Account: Balance Credit + Version Bump</text>
+        <text x="15" y="84" class="body-text" fill="#78350f">• Ledger Journal: DEBIT &amp; CREDIT entries (Sum Debits = Sum Credits)</text>
+        <text x="15" y="104" class="body-text" fill="#78350f">• Transaction Record: State set to COMPLETED</text>
+      </g>
 
-  <!-- ZONE 3: POSTGRESQL TRANSACTION BOUNDARY (X: 1420 - 2140) -->
-  <rect x="1420" y="130" width="720" height="720" fill="url(#pgTxGrad)" stroke="#059669" stroke-width="3" rx="20" filter="url(#shadowEmphasized)"/>
-  <rect x="1420" y="130" width="720" height="45" fill="#10b981" rx="20"/>
-  <rect x="1420" y="155" width="720" height="20" fill="#10b981"/>
-  <text x="1780" y="160" text-anchor="middle" class="zone-header" fill="#ffffff">🐘 Zone 3: PostgreSQL Atomic Database Transaction Boundary (@Transactional)</text>
+      <!-- Subcard: Transactional Outbox Insert -->
+      <g transform="translate(20, 195)">
+        <rect x="0" y="0" width="440" height="125" fill="#ffffff" stroke="#fde68a" rx="8" />
+        <text x="15" y="22" class="code-text" fill="#b45309" font-weight="700">Atomic Outbox Event Creation (state = 'PENDING')</text>
+        <text x="15" y="44" class="body-text" fill="#78350f">• Financial state &amp; outbox event persist in SAME database transaction</text>
+        <text x="15" y="64" class="body-text" fill="#78350f">• Optimistic lock failure or error triggers total transaction rollback</text>
+        <text x="15" y="84" class="body-text" fill="#78350f">• Outbox insert rolls back automatically → Zero orphan events!</text>
+        <text x="15" y="108" class="code-text" fill="#d97706">ACID Commitment Completed → HTTP 200 Response</text>
+      </g>
+    </g>
 
-  <!-- ==================== ZONE 1 COMPONENTS ==================== -->
-  
-  <!-- Client Box -->
-  <rect x="90" y="210" width="240" height="170" class="card-box-client"/>
-  <text x="210" y="245" text-anchor="middle" class="card-title">📱 Client / Consumer</text>
-  <text x="210" y="275" text-anchor="middle" class="card-code">POST /transactions/transfer</text>
-  <text x="210" y="302" text-anchor="middle" class="card-text">HTTP Basic Auth Header</text>
-  <text x="210" y="327" text-anchor="middle" class="card-text">Idempotency Key Included</text>
-  <text x="210" y="355" text-anchor="middle" class="card-sm">Transfer / Deposit / Withdraw</text>
+    <!-- Flow Arrow 2 -> 3 -->
+    <path class="flow-line flow-amber" d="M 755,170 L 785,170" marker-end="url(#arrow-amber)" />
 
-  <!-- Spring Security Box -->
-  <rect x="390" y="210" width="260" height="170" class="card-box-security"/>
-  <text x="520" y="245" text-anchor="middle" class="card-title">🛡️ Spring Security 6</text>
-  <text x="520" y="275" text-anchor="middle" class="card-code-purple">DaoAuthenticationProvider</text>
-  <text x="520" y="302" text-anchor="middle" class="card-text">CustomUserDetailsService</text>
-  <text x="520" y="327" text-anchor="middle" class="card-text">BCrypt Password Verification</text>
-  <text x="520" y="355" text-anchor="middle" class="card-sm">Loads User Entity from DB</text>
+    <!-- Stage 3: Outbox Relay & Kafka Producer -->
+    <g transform="translate(790, 0)">
+      <rect class="card-purple" width="230" height="340" />
+      <circle cx="28" cy="28" r="14" fill="#9333ea" />
+      <text x="28" y="33" font-size="12px" font-weight="700" fill="#ffffff" text-anchor="middle">3</text>
+      <text x="50" y="33" class="card-title" fill="#6b21a8">Outbox Relay Engine</text>
+      <line x1="20" y1="52" x2="210" y2="52" stroke="#e9d5ff" />
+      <text x="20" y="75" class="code-text" fill="#581c87">OutboxRelayService</text>
+      <text x="20" y="95" class="body-text" fill="#581c87">1. Polling Task (@Scheduled)</text>
+      <text x="20" y="115" class="code-text" fill="#9333ea">FOR UPDATE SKIP LOCKED</text>
+      <text x="20" y="140" class="body-text" fill="#581c87">2. Atomic row locking</text>
+      <text x="20" y="160" class="body-text" fill="#581c87">   (State → PROCESSING)</text>
+      <text x="20" y="185" class="body-text" fill="#581c87">3. KafkaProducerService</text>
+      <text x="20" y="205" class="body-text" fill="#581c87">   (acks = all, retries = 3)</text>
+      <text x="20" y="235" class="code-text" fill="#9333ea">State → PUBLISHED</text>
+      <text x="20" y="260" class="body-text" fill="#6b21a8">Reliable handoff to</text>
+      <text x="20" y="280" class="body-text" fill="#6b21a8">Kafka topic partitions</text>
+    </g>
+  </g>
 
-  <!-- DTO Boundary & Bean Validation -->
-  <rect x="90" y="440" width="560" height="140" class="card-box"/>
-  <text x="370" y="475" text-anchor="middle" class="card-title">📦 DTO Boundary &amp; Jakarta Bean Validation (@Valid)</text>
-  <text x="370" y="505" text-anchor="middle" class="card-code">TransferRequest / DepositRequest / WithdrawalRequest</text>
-  <text x="370" y="535" text-anchor="middle" class="card-text">Validates: @NotNull, @NotBlank, @DecimalMin("0.01"), @Size(max=100), @Pattern</text>
-  <text x="370" y="560" text-anchor="middle" class="card-sm">Prevents Mass-Assignment Vulnerabilities &amp; Sanitizes Input Boundary</text>
-
-  <!-- Account Authorization Service Guard -->
-  <rect x="90" y="620" width="560" height="180" class="card-box-security"/>
-  <text x="370" y="655" text-anchor="middle" class="card-title">👮 Ownership Guard (AccountAuthorizationService)</text>
-  <text x="370" y="685" text-anchor="middle" class="card-code-purple">isOwner(sourceAccount) / isCustomerOwner(customerId)</text>
-  <text x="370" y="715" text-anchor="middle" class="card-text">Verifies: Authenticated user.customer.id == account.customer.id</text>
-  <text x="370" y="745" text-anchor="middle" class="card-text">Prevents cross-customer account tampering &amp; path-variable manipulation</text>
-  <text x="370" y="775" text-anchor="middle" class="card-sm" fill="#7c3aed">IF Auth Failure ──► Throws AccessDeniedException (HTTP 403 Forbidden)</text>
-
-  <!-- CONNECTORS ZONE 1 -->
-  <path d="M330 295 L390 295" class="flow-path-blue"/>
-  <path d="M520 380 L520 440" class="flow-path-purple"/>
-  <path d="M370 580 L370 620" class="flow-path-purple"/>
-  <path d="M650 710 L750 710" class="flow-path-gold"/>
-
-  <!-- ==================== ZONE 2 COMPONENTS ==================== -->
-
-  <!-- Service Layer Entry -->
-  <rect x="750" y="210" width="280" height="170" class="card-box-service"/>
-  <text x="890" y="245" text-anchor="middle" class="card-title">⚙️ Service Layer</text>
-  <text x="890" y="275" text-anchor="middle" class="card-code-gold">TransactionServiceImpl</text>
-  <text x="890" y="302" text-anchor="middle" class="card-text">Orchestrates Financial Transfer</text>
-  <text x="890" y="327" text-anchor="middle" class="card-text">Deposit &amp; Withdrawal Services</text>
-  <text x="890" y="355" text-anchor="middle" class="card-sm">Enforces Domain &amp; Idempotency</text>
-
-  <!-- Idempotency Engine -->
-  <rect x="1080" y="210" width="270" height="170" class="card-box-service"/>
-  <text x="1215" y="245" text-anchor="middle" class="card-title">🔒 Idempotency Engine</text>
-  <text x="1215" y="275" text-anchor="middle" class="card-code-gold">lockIdempotencyKey(key)</text>
-  <text x="1215" y="302" text-anchor="middle" class="card-text">DB Advisory Lock Serialization</text>
-  <text x="1215" y="327" text-anchor="middle" class="card-text">Checks transactions.idempotency_key</text>
-  <text x="1215" y="355" text-anchor="middle" class="card-sm">Duplicate Key ──► Return Stored DTO</text>
-
-  <!-- Business Validation Rules Card -->
-  <rect x="750" y="440" width="600" height="360" class="card-box"/>
-  <text x="1050" y="475" text-anchor="middle" class="card-title">📋 Business Rules &amp; Financial Validation</text>
-  
-  <rect x="780" y="500" width="540" height="70" rx="10" fill="#fef3c7" stroke="#f59e0b"/>
-  <text x="800" y="530" class="label-bold" fill="#92400e">1. Account Status Validation:</text>
-  <text x="800" y="552" class="card-text">Both Source &amp; Destination Accounts must be ACTIVE (FROZEN/CLOSED ──► 409 Conflict)</text>
-
-  <rect x="780" y="585" width="540" height="70" rx="10" fill="#fef3c7" stroke="#f59e0b"/>
-  <text x="800" y="615" class="label-bold" fill="#92400e">2. Currency Parity Check:</text>
-  <text x="800" y="637" class="card-text">Transfer currency must match Account currency (e.g. INR == INR)</text>
-
-  <rect x="780" y="670" width="540" height="110" rx="10" fill="#fee2e2" stroke="#ef4444"/>
-  <text x="800" y="700" class="label-bold" fill="#991b1b">3. Balance Sufficiency Rule (Withdrawal &amp; Transfer):</text>
-  <text x="800" y="725" class="card-code-red">sourceAccount.getBalance().compareTo(amount) &gt;= 0</text>
-  <text x="800" y="750" class="card-text">IF Balance &lt; Amount ──► Throw InsufficientFundsException (HTTP 400 Bad Request)</text>
-  <text x="800" y="770" class="card-sm" fill="#991b1b">Triggers Immediate PostgreSQL Transaction Rollback!</text>
-
-  <!-- CONNECTORS ZONE 2 -->
-  <path d="M1030 295 L1080 295" class="flow-path-gold"/>
-  <path d="M1215 380 L1215 440" class="flow-path-gold"/>
-  <path d="M1350 620 L1450 620" class="flow-path-green"/>
-
-  <!-- ==================== ZONE 3 COMPONENTS ==================== -->
-
-  <!-- Account Entities & Optimistic Locking -->
-  <rect x="1450" y="210" width="320" height="180" class="card-box-database"/>
-  <text x="1610" y="245" text-anchor="middle" class="card-title">💳 Account Mutations</text>
-  <text x="1610" y="275" text-anchor="middle" class="card-code-green">@Version private Long version;</text>
-  <text x="1610" y="302" text-anchor="middle" class="card-text">Source Debit: -₹1,000 (v10 ──► v11)</text>
-  <text x="1610" y="327" text-anchor="middle" class="card-text">Dest Credit: +₹1,000 (v4 ──► v5)</text>
-  <text x="1610" y="355" text-anchor="middle" class="card-sm" fill="#059669">Conflict ──► OptimisticLockException (409)</text>
-
-  <!-- Transaction Record -->
-  <rect x="1800" y="210" width="310" height="180" class="card-box-database"/>
-  <text x="1955" y="245" text-anchor="middle" class="card-title">📝 Transaction Record</text>
-  <text x="1955" y="275" text-anchor="middle" class="card-code-green">transactions table</text>
-  <text x="1955" y="302" text-anchor="middle" class="card-text">Type: TRANSFER / DEPOSIT / WITHDRAWAL</text>
-  <text x="1955" y="327" text-anchor="middle" class="card-text">Status: TransactionStatus.COMPLETED</text>
-  <text x="1955" y="355" text-anchor="middle" class="card-sm">Unique idempotency_key stored</text>
-
-  <!-- Double-Entry Ledger Journal -->
-  <rect x="1450" y="420" width="660" height="180" class="card-box-database"/>
-  <text x="1780" y="455" text-anchor="middle" class="card-title">⚖️ Double-Entry Ledger Journal (ledger_entries table)</text>
-  <rect x="1480" y="475" width="280" height="85" rx="8" fill="#d1fae5" stroke="#10b981"/>
-  <text x="1620" y="500" text-anchor="middle" class="label-bold" fill="#065f46">DEBIT Entry (Source Account 101)</text>
-  <text x="1620" y="525" text-anchor="middle" class="card-code-green">entryType = DEBIT | amount = ₹1,000</text>
-  <text x="1620" y="545" text-anchor="middle" class="card-sm">Decreases Source Balance</text>
-
-  <rect x="1800" y="475" width="280" height="85" rx="8" fill="#d1fae5" stroke="#10b981"/>
-  <text x="1940" y="500" text-anchor="middle" class="label-bold" fill="#065f46">CREDIT Entry (Dest Account 202)</text>
-  <text x="1940" y="525" text-anchor="middle" class="card-code-green">entryType = CREDIT | amount = ₹1,000</text>
-  <text x="1940" y="545" text-anchor="middle" class="card-sm">Increases Destination Balance</text>
-  <text x="1780" y="585" text-anchor="middle" class="label-bold" fill="#047857">Balance Invariant: Sum(DEBIT) == Sum(CREDIT) [₹1,000.00 == ₹1,000.00 BALANCED ✅]</text>
-
-  <!-- Transactional Outbox Persistence -->
-  <rect x="1450" y="630" width="660" height="190" class="card-box-database" stroke="#047857" stroke-width="3"/>
-  <text x="1780" y="665" text-anchor="middle" class="card-title">📦 Transactional Outbox Persistence (outbox_events table)</text>
-  
-  <rect x="1480" y="685" width="280" height="90" rx="8" fill="#ecfdf5" stroke="#059669"/>
-  <text x="1620" y="710" text-anchor="middle" class="label-bold">Event 1: TRANSFER_SOURCE_DEBITED</text>
-  <text x="1620" y="732" text-anchor="middle" class="card-code-green">aggregateId = 101 (Source)</text>
-  <text x="1620" y="752" text-anchor="middle" class="card-sm">payload: sourceAccountVersion = 11</text>
-
-  <rect x="1800" y="685" width="280" height="90" rx="8" fill="#ecfdf5" stroke="#059669"/>
-  <text x="1940" y="710" text-anchor="middle" class="label-bold">Event 2: TRANSFER_DESTINATION_CREDITED</text>
-  <text x="1940" y="732" text-anchor="middle" class="card-code-green">aggregateId = 202 (Dest)</text>
-  <text x="1940" y="752" text-anchor="middle" class="card-sm">payload: destinationAccountVersion = 5</text>
-
-  <text x="1780" y="802" text-anchor="middle" class="label-bold" fill="#065f46">Saved with status = PENDING inside the exact same DB transaction as financial state!</text>
-
-  <!-- CONNECTORS ZONE 3 -->
-  <path d="M1610 390 L1610 420" class="flow-path-green"/>
-  <path d="M1955 390 L1955 420" class="flow-path-green"/>
-  <path d="M1780 600 L1780 630" class="flow-path-green"/>
-
-  <!-- ==================== POST-COMMIT & RELAY HANDOFF ==================== -->
-  
-  <rect x="1420" y="870" width="720" height="150" fill="#ffffff" stroke="#0284c7" stroke-width="2.5" rx="18" filter="url(#shadow)"/>
-  <text x="1780" y="905" text-anchor="middle" class="card-title" fill="#0369a1">🔄 Asynchronous Post-Commit Relay Engine (OutboxRelayService)</text>
-  
-  <text x="1780" y="938" text-anchor="middle" class="card-code">SELECT * FROM outbox_events WHERE status = 'PENDING' ORDER BY event_id FOR UPDATE SKIP LOCKED</text>
-  <text x="1780" y="968" text-anchor="middle" class="card-text">Polled every 5,000ms • Claims pending events without row lock contention • Status: PENDING ──► PROCESSING</text>
-  <text x="1780" y="995" text-anchor="middle" class="card-sm" fill="#0284c7">Reliably hands off events to Apache Kafka streaming pipeline (ledgercore-transactions)</text>
-
-  <path d="M1780 820 L1780 870" class="flow-path-blue"/>
-
-  <!-- ==================== ERROR & ROLLBACK BOUNDARY REGION ==================== -->
-  
-  <rect x="60" y="870" width="1320" height="150" fill="url(#errorGrad)" stroke="#f43f5e" stroke-width="2.5" rx="18" filter="url(#shadow)"/>
-  <text x="720" y="905" text-anchor="middle" class="card-title" fill="#9f1239">🚨 Error, Exception &amp; Transactional Rollback Boundary</text>
-  
-  <rect x="90" y="920" width="280" height="80" class="card-box-error"/>
-  <text x="230" y="945" text-anchor="middle" class="card-code-red">AccessDeniedException</text>
-  <text x="230" y="968" text-anchor="middle" class="card-text">HTTP 403 Forbidden</text>
-  <text x="230" y="988" text-anchor="middle" class="card-sm">Zero DB mutation occurs</text>
-
-  <rect x="390" y="920" width="310" height="80" class="card-box-error"/>
-  <text x="545" y="945" text-anchor="middle" class="card-code-red">MethodArgumentNotValidException</text>
-  <text x="545" y="968" text-anchor="middle" class="card-text">HTTP 400 Bad Request</text>
-  <text x="545" y="988" text-anchor="middle" class="card-sm">Sanitized Field Validation Errors</text>
-
-  <rect x="720" y="920" width="310" height="80" class="card-box-error"/>
-  <text x="875" y="945" text-anchor="middle" class="card-code-red">InsufficientFundsException</text>
-  <text x="875" y="968" text-anchor="middle" class="card-text">HTTP 400 Bad Request</text>
-  <text x="875" y="988" text-anchor="middle" class="card-sm">Complete @Transactional Rollback</text>
-
-  <rect x="1050" y="920" width="300" height="80" class="card-box-error"/>
-  <text x="1200" y="945" text-anchor="middle" class="card-code-red">OptimisticLockingException</text>
-  <text x="1200" y="968" text-anchor="middle" class="card-text">HTTP 409 Conflict</text>
-  <text x="1200" y="988" text-anchor="middle" class="card-sm">Outbox &amp; Ledger entries roll back</text>
-
-  <!-- Error Flow Connectors -->
-  <path d="M370 800 L370 870" class="flow-path-red"/>
-  <path d="M1050 800 L1050 870" class="flow-path-red"/>
-  <path d="M1500 820 L1500 850 L1380 850 L1380 870" class="flow-path-red"/>
-
-  <!-- Dynamic Motion Pulse Indicators -->
-  <circle cx="90" cy="295" r="6" class="pulse-blue"/>
-  <circle cx="750" cy="295" r="6" class="pulse-gold"/>
-  <circle cx="1350" cy="620" r="6" class="pulse-green"/>
-
-  <!-- ==================== FOOTER: CORE PHILOSOPHY & RULES ==================== -->
-  
-  <rect x="60" y="1050" width="2080" height="300" fill="#ffffff" stroke="#cbd5e1" stroke-width="2" rx="20" filter="url(#shadow)"/>
-  <text x="1100" y="1095" text-anchor="middle" class="title-main" font-size="26">Core Architectural Rules &amp; Non-Negotiable Invariants</text>
-  <text x="1100" y="1125" text-anchor="middle" class="title-sub">Enforced at the system boundary to prevent financial loss, lost updates, and dual-write anomalies</text>
-
-  <!-- Rule 1 -->
-  <rect x="100" y="1150" width="470" height="160" class="card-box-client"/>
-  <text x="335" y="1190" text-anchor="middle" class="card-title">🔑 1. Identity &amp; Auth Separation</text>
-  <text x="335" y="1220" text-anchor="middle" class="card-code">User ↔ Customer ↔ Account Hierarchy</text>
-  <text x="335" y="1250" text-anchor="middle" class="card-text">Authentication proves identity (`User`). Authorization verifies account ownership (`AccountAuthorizationService`).</text>
-  <text x="335" y="1280" text-anchor="middle" class="card-sm">Knowing an Account ID is never sufficient to execute a transaction.</text>
-
-  <!-- Rule 2 -->
-  <rect x="600" y="1150" width="470" height="160" class="card-box-security"/>
-  <text x="835" y="1190" text-anchor="middle" class="card-title">🔒 2. Idempotency &amp; Concurrency</text>
-  <text x="615" y="1220" class="card-code-purple">PostgreSQL Advisory Lock + @Version</text>
-  <text x="835" y="1250" text-anchor="middle" class="card-text">Database advisory locks serialize duplicate network retries. JPA `@Version` rejects concurrent race conditions cleanly.</text>
-  <text x="835" y="1280" text-anchor="middle" class="card-sm">Network retry != permission to create duplicate financial transactions.</text>
-
-  <!-- Rule 3 -->
-  <rect x="1100" y="1150" width="470" height="160" class="card-box-service"/>
-  <text x="1335" y="1190" text-anchor="middle" class="card-title">⚖️ 3. Double-Entry Parity Invariant</text>
-  <text x="1335" y="1220" text-anchor="middle" class="card-code-gold">Sum(DEBIT) == Sum(CREDIT)</text>
-  <text x="1335" y="1250" text-anchor="middle" class="card-text">Every movement generates matching `DEBIT` and `CREDIT` entries in `ledger_entries`. Money is never spawned or deleted in isolation.</text>
-  <text x="1335" y="1280" text-anchor="middle" class="card-sm">Provides an immutable, auditable log of balance history.</text>
-
-  <!-- Rule 4 -->
-  <rect x="1600" y="1150" width="510" height="160" class="card-box-database"/>
-  <text x="1855" y="1190" text-anchor="middle" class="card-title">📦 4. Transactional Outbox Boundary</text>
-  <text x="1855" y="1220" text-anchor="middle" class="card-code-green">PostgreSQL ACID Transaction Coupling</text>
-  <text x="1855" y="1250" text-anchor="middle" class="card-text">Financial state and outbox events commit together atomically. If DB transaction fails, outbox event rolls back cleanly.</text>
-  <text x="1855" y="1280" text-anchor="middle" class="card-sm">Eliminates dual-write anomalies between database and Kafka.</text>
+  <!-- SUMMARY FOOTER -->
+  <g transform="translate(40, 455)">
+    <rect class="card-rose" width="1020" height="55" />
+    <text x="20" y="24" class="card-title" fill="#9f1239">Failure &amp; Rollback Safety Invariant</text>
+    <text x="20" y="42" class="body-text" fill="#881337">Authentication failure, authorization denial, constraint invalidation, or JPA optimistic locking conflict triggers immediate transaction rollback. Financial mutations and outbox records revert together, preventing orphan events or inconsistent database states.</text>
+  </g>
 </svg>

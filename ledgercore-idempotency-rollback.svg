@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 320" width="100%" height="100%">
+  <defs>
+    <style>
+      <![CDATA[
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+      * { box-sizing: border-box; }
+      .bg { fill: #f8fafc; }
+      .title-main { font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 700; fill: #0f172a; }
+      .title-sub { font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 500; fill: #64748b; }
+      .card-title { font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 700; fill: #0f172a; }
+      .code-text { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; }
+      .body-text { font-family: 'Inter', sans-serif; font-size: 11px; fill: #334155; line-height: 1.3; }
+      .card { fill: #ffffff; stroke: #cbd5e1; stroke-width: 1.5; rx: 8px; filter: drop-shadow(0 2px 4px rgba(15, 23, 42, 0.04)); }
+      .card-blue { fill: #f0f9ff; stroke: #bae6fd; stroke-width: 1.5; rx: 8px; }
+      .card-amber { fill: #fffbeb; stroke: #fde68a; stroke-width: 1.5; rx: 8px; }
+      .card-rose { fill: #fff1f2; stroke: #fecdd3; stroke-width: 1.5; rx: 8px; }
+      .flow-line { fill: none; stroke-width: 2; stroke-linecap: round; stroke-dasharray: 6 6; animation: pulse 2s linear infinite; }
+      .flow-blue { stroke: #0284c7; }
+      .flow-amber { stroke: #d97706; }
+      .flow-rose { stroke: #e11d48; }
+      @keyframes pulse { 0% { stroke-dashoffset: 24; } 100% { stroke-dashoffset: 0; } }
+      ]]>
+    </style>
+    <marker id="arrow-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#0284c7" />
+    </marker>
+    <marker id="arrow-amber" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#d97706" />
+    </marker>
+    <marker id="arrow-rose" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#e11d48" />
+    </marker>
+  </defs>
+
+  <rect class="bg" width="960" height="320" />
+
+  <!-- HEADER -->
+  <g transform="translate(30, 20)">
+    <text class="title-main" x="0" y="16">3. Idempotency, Optimistic Locking &amp; Rollback Protection</text>
+    <text class="title-sub" x="0" y="32">Advisory Lock Check → Optimistic Version Guard → Atomic Rollback Safety</text>
+  </g>
+
+  <!-- FLOW STEPS -->
+  <g transform="translate(30, 70)">
+    <!-- Step 1: Idempotency Key Lock -->
+    <g transform="translate(0, 0)">
+      <rect class="card-blue" width="190" height="200" />
+      <circle cx="24" cy="24" r="12" fill="#0284c7" />
+      <text x="24" y="28" font-size="11px" font-weight="700" fill="#ffffff" text-anchor="middle">1</text>
+      <text x="44" y="28" class="card-title" fill="#0369a1">Idempotency Lock</text>
+      <line x1="15" y1="45" x2="175" y2="45" stroke="#bae6fd" />
+      <text x="15" y="65" class="code-text" fill="#0c4a6e">IdempotencyKey</text>
+      <text x="15" y="85" class="body-text" fill="#0369a1">• Checks key in DB</text>
+      <text x="15" y="105" class="body-text" fill="#0369a1">• If processed before:</text>
+      <text x="15" y="125" class="code-text" fill="#0284c7">Return Stored Result</text>
+      <text x="15" y="155" class="body-text" fill="#0c4a6e">Prevents duplicate</text>
+      <text x="15" y="175" class="body-text" fill="#0c4a6e">financial mutation!</text>
+    </g>
+
+    <!-- Arrow 1 -> 2 -->
+    <path class="flow-line flow-blue" d="M 195,100 L 225,100" marker-end="url(#arrow-blue)" />
+
+    <!-- Step 2: Optimistic Lock Check -->
+    <g transform="translate(230, 0)">
+      <rect class="card-amber" width="200" height="200" />
+      <circle cx="24" cy="24" r="12" fill="#d97706" />
+      <text x="24" y="28" font-size="11px" font-weight="700" fill="#ffffff" text-anchor="middle">2</text>
+      <text x="44" y="28" class="card-title" fill="#b45309">Optimistic Lock</text>
+      <line x1="15" y1="45" x2="185" y2="45" stroke="#fde68a" />
+      <text x="15" y="65" class="code-text" fill="#78350f">Account @Version</text>
+      <text x="15" y="85" class="body-text" fill="#78350f">• Reads version N</text>
+      <text x="15" y="105" class="body-text" fill="#78350f">• Concurrent update?</text>
+      <text x="15" y="125" class="code-text" fill="#b45309">Version mismatch!</text>
+      <text x="15" y="155" class="body-text" fill="#78350f">Throws JPA Exception:</text>
+      <text x="15" y="175" class="code-text" fill="#d97706">OptimisticLockFail</text>
+    </g>
+
+    <!-- Arrow 2 -> 3 -->
+    <path class="flow-line flow-amber" d="M 435,100 L 465,100" marker-end="url(#arrow-amber)" />
+
+    <!-- Step 3: Transaction Rollback -->
+    <g transform="translate(470, 0)">
+      <rect class="card-rose" width="200" height="200" />
+      <circle cx="24" cy="24" r="12" fill="#e11d48" />
+      <text x="24" y="28" font-size="11px" font-weight="700" fill="#ffffff" text-anchor="middle">3</text>
+      <text x="44" y="28" class="card-title" fill="#9f1239">Atomic Rollback</text>
+      <line x1="15" y1="45" x2="185" y2="45" stroke="#fecdd3" />
+      <text x="15" y="65" class="code-text" fill="#be123c">Rollback Boundary</text>
+      <text x="15" y="85" class="body-text" fill="#881337">• Balance reverts</text>
+      <text x="15" y="105" class="body-text" fill="#881337">• Transaction reverts</text>
+      <text x="15" y="125" class="body-text" fill="#881337">• Ledger reverts</text>
+      <text x="15" y="145" class="body-text" fill="#881337">• Outbox insert reverts</text>
+      <text x="15" y="175" class="code-text" fill="#e11d48">Zero Orphan Events</text>
+    </g>
+
+    <!-- Arrow 3 -> 4 -->
+    <path class="flow-line flow-rose" d="M 675,100 L 705,100" marker-end="url(#arrow-rose)" />
+
+    <!-- Step 4: Clean Error Response -->
+    <g transform="translate(710, 0)">
+      <rect class="card" width="190" height="200" />
+      <circle cx="24" cy="24" r="12" fill="#475569" />
+      <text x="24" y="28" font-size="11px" font-weight="700" fill="#ffffff" text-anchor="middle">4</text>
+      <text x="44" y="28" class="card-title">Clean Error API</text>
+      <line x1="15" y1="45" x2="175" y2="45" stroke="#e2e8f0" />
+      <text x="15" y="65" class="code-text" fill="#0f172a">GlobalException</text>
+      <text x="15" y="85" class="body-text" fill="#475569">• HTTP 409 Conflict</text>
+      <text x="15" y="105" class="body-text" fill="#475569">• Standard Error DTO</text>
+      <text x="15" y="125" class="body-text" fill="#475569">• Timestamp &amp; Message</text>
+      <text x="15" y="155" class="code-text" fill="#64748b">Safe Retry Request</text>
+      <text x="15" y="175" class="body-text" fill="#334155">No corrupt state</text>
+    </g>
+  </g>
+</svg>

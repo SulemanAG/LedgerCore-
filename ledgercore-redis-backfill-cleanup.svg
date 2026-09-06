@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 320" width="100%" height="100%">
+  <defs>
+    <style>
+      <![CDATA[
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+      * { box-sizing: border-box; }
+      .bg { fill: #f8fafc; }
+      .title-main { font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 700; fill: #0f172a; }
+      .title-sub { font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 500; fill: #64748b; }
+      .card-title { font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 700; fill: #0f172a; }
+      .code-text { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; }
+      .body-text { font-family: 'Inter', sans-serif; font-size: 11px; fill: #334155; line-height: 1.3; }
+      .card { fill: #ffffff; stroke: #cbd5e1; stroke-width: 1.5; rx: 8px; filter: drop-shadow(0 2px 4px rgba(15, 23, 42, 0.04)); }
+      .card-emerald { fill: #f0fdf4; stroke: #bbf7d0; stroke-width: 1.5; rx: 8px; }
+      .card-rose { fill: #fff1f2; stroke: #fecdd3; stroke-width: 1.5; rx: 8px; }
+      .flow-line { fill: none; stroke-width: 2; stroke-linecap: round; stroke-dasharray: 6 6; animation: pulse 2s linear infinite; }
+      .flow-emerald { stroke: #16a34a; }
+      .flow-rose { stroke: #e11d48; }
+      @keyframes pulse { 0% { stroke-dashoffset: 24; } 100% { stroke-dashoffset: 0; } }
+      ]]>
+    </style>
+    <marker id="arrow-emerald" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#16a34a" />
+    </marker>
+    <marker id="arrow-rose" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#e11d48" />
+    </marker>
+  </defs>
+
+  <rect class="bg" width="960" height="320" />
+
+  <!-- HEADER -->
+  <g transform="translate(30, 20)">
+    <text class="title-main" x="0" y="16">9. Projection Backfill &amp; Safe Targeted Orphan Cleanup</text>
+    <text class="title-sub" x="0" y="32">Drift Detected → Backfill Missing Projections OR Perform Targeted Key Deletion</text>
+  </g>
+
+  <!-- FLOW STEPS -->
+  <g transform="translate(30, 70)">
+    <!-- Step 1: Drift Input -->
+    <g transform="translate(0, 0)">
+      <rect class="card" width="190" height="200" />
+      <circle cx="24" cy="24" r="12" fill="#475569" />
+      <text x="24" y="28" font-size="11px" font-weight="700" fill="#ffffff" text-anchor="middle">1</text>
+      <text x="44" y="28" class="card-title">Drift Signal</text>
+      <line x1="15" y1="45" x2="175" y2="45" stroke="#e2e8f0" />
+      <text x="15" y="65" class="code-text" fill="#0f172a">Reconciliation Audit</text>
+      <text x="15" y="85" class="body-text" fill="#334155">Flags key drift:</text>
+      <text x="15" y="105" class="code-text" fill="#16a34a">MISSING_FROM_REDIS</text>
+      <text x="15" y="125" class="body-text" fill="#334155">or</text>
+      <text x="15" y="145" class="code-text" fill="#e11d48">ORPHANED_IN_REDIS</text>
+      <text x="15" y="175" class="body-text" fill="#64748b">Triggers repair service</text>
+    </g>
+
+    <!-- Arrow 1 -> 2 (Branching Backfill / Cleanup) -->
+    <path class="flow-line flow-emerald" d="M 195,70 L 225,70" marker-end="url(#arrow-emerald)" />
+    <path class="flow-line flow-rose" d="M 195,130 L 225,130" marker-end="url(#arrow-rose)" />
+
+    <!-- Step 2A: Backfill Service -->
+    <g transform="translate(230, 0)">
+      <rect class="card-emerald" width="220" height="95" />
+      <circle cx="20" cy="20" r="10" fill="#16a34a" />
+      <text x="20" y="24" font-size="10px" font-weight="700" fill="#ffffff" text-anchor="middle">2A</text>
+      <text x="36" y="24" class="card-title" fill="#15803d">Projection Backfill Service</text>
+      <line x1="10" y1="36" x2="210" y2="36" stroke="#bbf7d0" />
+      <text x="10" y="54" class="code-text" fill="#14532d">backfillAccount(accountId)</text>
+      <text x="10" y="74" class="body-text" fill="#166534">Reads DB → Sets Redis balance &amp; version</text>
+
+      <!-- Step 2B: Orphan Cleanup Service -->
+      <g transform="translate(0, 105)">
+        <rect class="card-rose" width="220" height="95" />
+        <circle cx="20" cy="20" r="10" fill="#e11d48" />
+        <text x="20" y="24" font-size="10px" font-weight="700" fill="#ffffff" text-anchor="middle">2B</text>
+        <text x="36" y="24" class="card-title" fill="#9f1239">Orphan Cleanup Service</text>
+        <line x1="10" y1="36" x2="210" y2="36" stroke="#fecdd3" />
+        <text x="10" y="54" class="code-text" fill="#be123c">cleanupOrphanedKeys(ids)</text>
+        <text x="10" y="74" class="body-text" fill="#881337">Verifies DB → Deletes ledgercore:account:{id}:*</text>
+      </g>
+    </g>
+
+    <!-- Arrow 2A & 2B -> 3 -->
+    <path class="flow-line flow-emerald" d="M 450,117 L 480,117" marker-end="url(#arrow-emerald)" />
+
+    <!-- Step 3: Targeted Safe Key Management -->
+    <g transform="translate(485, 0)">
+      <rect class="card" width="210" height="200" />
+      <circle cx="24" cy="24" r="12" fill="#475569" />
+      <text x="24" y="28" font-size="11px" font-weight="700" fill="#ffffff" text-anchor="middle">3</text>
+      <text x="44" y="28" class="card-title">Targeted Key Safety</text>
+      <line x1="15" y1="45" x2="195" y2="45" stroke="#e2e8f0" />
+      <text x="15" y="65" class="code-text" fill="#0f172a">Explicit Key Scoping</text>
+      <text x="15" y="85" class="body-text" fill="#475569">• Zero destructive flush</text>
+      <text x="15" y="105" class="code-text" fill="#e11d48">No FLUSHALL / FLUSHDB</text>
+      <text x="15" y="135" class="body-text" fill="#475569">• Only targeted key mutations</text>
+      <text x="15" y="155" class="body-text" fill="#475569">• Zero impact on other data</text>
+      <text x="15" y="175" class="code-text" fill="#16a34a">Safe Operations</text>
+    </g>
+
+    <!-- Arrow 3 -> 4 -->
+    <path class="flow-line flow-emerald" d="M 695,100 L 725,100" marker-end="url(#arrow-emerald)" />
+
+    <!-- Step 4: Consistency Restored -->
+    <g transform="translate(730, 0)">
+      <rect class="card-emerald" width="175" height="200" />
+      <circle cx="24" cy="24" r="12" fill="#16a34a" />
+      <text x="24" y="28" font-size="11px" font-weight="700" fill="#ffffff" text-anchor="middle">4</text>
+      <text x="44" y="28" class="card-title" fill="#15803d">Consistency</text>
+      <line x1="15" y1="45" x2="160" y2="45" stroke="#bbf7d0" />
+      <text x="15" y="65" class="code-text" fill="#14532d">State Restored</text>
+      <text x="15" y="85" class="body-text" fill="#14532d">• Redis read cache</text>
+      <text x="15" y="105" class="body-text" fill="#14532d">matches PostgreSQL</text>
+      <text x="15" y="125" class="body-text" fill="#14532d">authoritative DB</text>
+      <text x="15" y="155" class="code-text" fill="#16a34a">Self-Healing OK</text>
+      <text x="15" y="175" class="body-text" fill="#15803d">Zero downtime repair</text>
+    </g>
+  </g>
+</svg>

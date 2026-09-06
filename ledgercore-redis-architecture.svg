@@ -1,438 +1,129 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2200 1400" width="100%" height="100%">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 540" width="100%" height="100%">
   <defs>
-    <!-- Fonts & Global Styles -->
     <style>
-    <![CDATA[
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap');
-
+      <![CDATA[
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
       * { box-sizing: border-box; }
-      
       .bg { fill: #f8fafc; }
-      
-      /* Typography */
-      .title-main { font-family: 'Inter', system-ui, -apple-system, sans-serif; font-size: 26px; font-weight: 800; fill: #0f172a; letter-spacing: -0.02em; }
-      .title-sub { font-family: 'Inter', system-ui, -apple-system, sans-serif; font-size: 14px; font-weight: 500; fill: #475569; }
-      .zone-header { font-family: 'Inter', system-ui, -apple-system, sans-serif; font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; }
-      .card-title { font-family: 'Inter', system-ui, -apple-system, sans-serif; font-size: 14px; font-weight: 700; fill: #0f172a; }
-      .card-subtitle { font-family: 'Inter', system-ui, -apple-system, sans-serif; font-size: 12px; font-weight: 500; fill: #64748b; }
-      .code-text { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; }
-      .body-text { font-family: 'Inter', system-ui, -apple-system, sans-serif; font-size: 12px; fill: #334155; line-height: 1.4; }
-      .badge-text { font-family: 'Inter', system-ui, -apple-system, sans-serif; font-size: 11px; font-weight: 700; }
-      
-      /* Card Styles */
-      .card { fill: #ffffff; stroke: #e2e8f0; stroke-width: 1.5; rx: 12; filter: drop-shadow(0 4px 6px rgba(15, 23, 42, 0.03)); }
-      .card-red { fill: #fef2f2; stroke: #fca5a5; stroke-width: 1.5; rx: 12; }
-      .card-blue { fill: #f0f9ff; stroke: #bae6fd; stroke-width: 1.5; rx: 12; }
-      .card-purple { fill: #faf5ff; stroke: #e9d5ff; stroke-width: 1.5; rx: 12; }
-      .card-amber { fill: #fffbeb; stroke: #fde68a; stroke-width: 1.5; rx: 12; }
-      .card-emerald { fill: #f0fdf4; stroke: #bbf7d0; stroke-width: 1.5; rx: 12; }
-      .card-rose { fill: #fff1f2; stroke: #fecdd3; stroke-width: 1.5; rx: 12; }
-      .card-dark { fill: #0f172a; stroke: #1e293b; stroke-width: 1.5; rx: 12; }
-
-      /* Arrow Paths and Connectors */
-      .flow-line { fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+      .title-main { font-family: 'Inter', sans-serif; font-size: 18px; font-weight: 800; fill: #0f172a; }
+      .title-sub { font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 500; fill: #475569; }
+      .card-title { font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 700; fill: #0f172a; }
+      .code-text { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; }
+      .body-text { font-family: 'Inter', sans-serif; font-size: 11px; fill: #334155; line-height: 1.35; }
+      .card { fill: #ffffff; stroke: #cbd5e1; stroke-width: 1.5; rx: 10px; filter: drop-shadow(0 4px 6px rgba(15, 23, 42, 0.04)); }
+      .card-red { fill: #fef2f2; stroke: #fca5a5; stroke-width: 1.5; rx: 10px; }
+      .card-amber { fill: #fffbeb; stroke: #fde68a; stroke-width: 1.5; rx: 10px; }
+      .card-blue { fill: #f0f9ff; stroke: #bae6fd; stroke-width: 1.5; rx: 10px; }
+      .card-emerald { fill: #f0fdf4; stroke: #bbf7d0; stroke-width: 1.5; rx: 10px; }
+      .flow-line { fill: none; stroke-width: 2; stroke-linecap: round; stroke-dasharray: 6 6; animation: pulse 2.5s linear infinite; }
       .flow-red { stroke: #dc2626; }
-      .flow-blue { stroke: #0284c7; }
-      .flow-purple { stroke: #9333ea; }
-      .flow-emerald { stroke: #16a34a; }
       .flow-amber { stroke: #d97706; }
-      .flow-rose { stroke: #e11d48; }
-
-      /* Animation Definitions */
-      @keyframes pulse-flow {
-        0% { stroke-dashoffset: 24; }
-        100% { stroke-dashoffset: 0; }
-      }
-
-      .animated-pulse {
-        stroke-dasharray: 8 8;
-        animation: pulse-flow 2.5s linear infinite;
-      }
-      
-      .shadow { filter: drop-shadow(0 10px 15px rgba(15, 23, 42, 0.06)); }
-    ]]>
+      .flow-blue { stroke: #0284c7; }
+      @keyframes pulse { 0% { stroke-dashoffset: 24; } 100% { stroke-dashoffset: 0; } }
+      ]]>
     </style>
-
-    <!-- Markers -->
     <marker id="arrow-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
       <path d="M 0 1 L 10 5 L 0 9 z" fill="#dc2626" />
+    </marker>
+    <marker id="arrow-amber" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#d97706" />
     </marker>
     <marker id="arrow-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
       <path d="M 0 1 L 10 5 L 0 9 z" fill="#0284c7" />
     </marker>
-    <marker id="arrow-purple" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-      <path d="M 0 1 L 10 5 L 0 9 z" fill="#9333ea" />
-    </marker>
-    <marker id="arrow-emerald" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-      <path d="M 0 1 L 10 5 L 0 9 z" fill="#16a34a" />
-    </marker>
-
-    <!-- Linear Gradients -->
-    <linearGradient id="header-grad" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#dc2626" />
-      <stop offset="50%" stop-color="#0284c7" />
-      <stop offset="100%" stop-color="#16a34a" />
-    </linearGradient>
   </defs>
 
-  <!-- Background -->
-  <rect class="bg" width="2200" height="1400" />
+  <rect class="bg" width="1100" height="540" />
 
-  <!-- HEADER BAR -->
-  <g transform="translate(60, 40)">
-    <rect x="0" y="0" width="8" height="50" fill="url(#header-grad)" rx="4" />
-    <text x="24" y="28" class="title-main">LedgerCore — Redis Projection, Version Guard, Reconciliation &amp; Backfill</text>
-    <text x="24" y="48" class="title-sub">Eventually Consistent Read-Side Caching, Atomic Lua Version Guards, Self-Healing State Reconciliation &amp; Orphan Cleanup</text>
+  <!-- HEADER -->
+  <g transform="translate(40, 30)">
+    <text class="title-main" x="0" y="20">LedgerCore — Redis Projection, Version Guard &amp; Reconciliation</text>
+    <text class="title-sub" x="0" y="40">Atomic Lua Version Guards, Scheduled State Reconciliation, and Self-Healing Backfill / Cleanup</text>
   </g>
 
-  <!-- ==================================================================== -->
-  <!-- ZONE 1: EVENT INPUT & REDIS KEY MODEL (X: 60 to 650) -->
-  <!-- ==================================================================== -->
-  <g transform="translate(60, 120)">
-    <!-- Zone Boundary Container -->
-    <rect x="0" y="0" width="590" height="740" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="6 6" rx="16" />
-    <rect x="20" y="20" width="340" height="32" fill="#fef2f2" rx="6" />
-    <text x="32" y="41" class="zone-header" fill="#991b1b">1. Event Consumption &amp; Redis Keys</text>
+  <!-- STAGES -->
+  <g transform="translate(40, 90)">
+    <!-- Stage 1: Redis Key Model & Storage -->
+    <g transform="translate(0, 0)">
+      <rect class="card-red" width="310" height="340" />
+      <circle cx="28" cy="28" r="14" fill="#dc2626" />
+      <text x="28" y="33" font-size="12px" font-weight="700" fill="#ffffff" text-anchor="middle">1</text>
+      <text x="50" y="33" class="card-title" fill="#991b1b">Redis Read-Side Model</text>
+      <line x1="20" y1="52" x2="290" y2="52" stroke="#fca5a5" />
 
-    <!-- 1.1 Kafka Event Consumer Input -->
-    <g transform="translate(30, 75)">
-      <rect class="card-purple shadow" width="530" height="150" />
-      <text x="20" y="28" class="card-title" fill="#6b21a8">Kafka Event Stream Input</text>
-      <line x1="20" y1="38" x2="510" y2="38" stroke="#e9d5ff" stroke-width="1" />
+      <text x="20" y="75" class="code-text" fill="#7f1d1d">AccountBalanceRedisService</text>
+      <text x="20" y="95" class="body-text" fill="#7f1d1d">• Serves balance read queries in &lt;1ms</text>
 
-      <g transform="translate(20, 50)">
-        <rect x="0" y="0" width="470" height="80" fill="#ffffff" stroke="#d8b4fe" rx="6" />
-        <text x="15" y="22" class="code-text" fill="#581c87">EventProcessingService → AccountBalanceRedisService</text>
-        <text x="15" y="44" class="body-text" fill="#6b21a8">Extracts: <tspan class="code-text" font-weight="700">accountId</tspan>, <tspan class="code-text" font-weight="700">balanceAfter</tspan>, and <tspan class="code-text" font-weight="700">accountVersion</tspan></text>
-        <text x="15" y="64" class="body-text" fill="#4a044e">Handles Deposit, Withdrawal, Transfer Source &amp; Transfer Dest events</text>
+      <g transform="translate(20, 110)">
+        <rect x="0" y="0" width="270" height="95" fill="#ffffff" stroke="#fca5a5" rx="6" />
+        <text x="12" y="20" class="code-text" fill="#dc2626" font-weight="700">Key 1: Balance String</text>
+        <text x="12" y="38" class="code-text" fill="#7f1d1d">ledgercore:account:{id}:balance</text>
+        <text x="12" y="58" class="code-text" fill="#dc2626" font-weight="700">Key 2: Version Guard String</text>
+        <text x="12" y="78" class="code-text" fill="#7f1d1d">ledgercore:account:{id}:version</text>
       </g>
+
+      <text x="20" y="230" class="code-text" fill="#dc2626">Eventually Consistent Read Model</text>
+      <text x="20" y="255" class="body-text" fill="#991b1b">PostgreSQL remains authoritative single financial source of truth!</text>
     </g>
 
-    <!-- Flow Arrow 1.1 -> 1.2 -->
-    <path class="flow-line flow-red animated-pulse" d="M 295,225 L 295,255" marker-end="url(#arrow-red)" />
+    <!-- Flow Arrow 1 -> 2 -->
+    <path class="flow-line flow-red" d="M 315,170 L 345,170" marker-end="url(#arrow-red)" />
 
-    <!-- 1.2 AccountBalanceRedisService & Key Schema -->
-    <g transform="translate(30, 260)">
-      <rect class="card-red shadow" width="530" height="450" />
-      <text x="20" y="28" class="card-title" fill="#991b1b">AccountBalanceRedisService &amp; Storage Model</text>
-      <rect x="380" y="12" width="130" height="22" fill="#dc2626" rx="11" />
-      <text x="445" y="27" class="badge-text" fill="#ffffff" text-anchor="middle">REDIS READ MODEL</text>
-      <line x1="20" y1="38" x2="510" y2="38" stroke="#fca5a5" stroke-width="1" />
+    <!-- Stage 2: Atomic Lua Script Guard -->
+    <g transform="translate(350, 0)">
+      <rect class="card-amber" width="360" height="340" />
+      <circle cx="28" cy="28" r="14" fill="#d97706" />
+      <text x="28" y="33" font-size="12px" font-weight="700" fill="#ffffff" text-anchor="middle">2</text>
+      <text x="50" y="33" class="card-title" fill="#b45309">Atomic Lua Version Guard</text>
+      <line x1="20" y1="52" x2="340" y2="52" stroke="#fde68a" />
 
-      <!-- Redis Key 1: Balance -->
-      <g transform="translate(20, 50)">
-        <rect x="0" y="0" width="490" height="110" fill="#ffffff" stroke="#fca5a5" rx="8" />
-        <text x="15" y="24" class="code-text" fill="#991b1b" font-weight="700">Key 1: Balance String Key</text>
-        <text x="15" y="48" class="code-text" fill="#7f1d1d">ledgercore:account:{accountId}:balance</text>
-        <line x1="15" y1="56" x2="475" y2="56" stroke="#fee2e2" stroke-width="1" />
-        <text x="15" y="78" class="body-text" fill="#991b1b">Value: <tspan class="code-text">"1200.00"</tspan> (BigDecimal scale = 2)</text>
-        <text x="15" y="96" class="body-text" fill="#7f1d1d">Stores cached financial balance for sub-millisecond API read access</text>
+      <text x="20" y="75" class="code-text" fill="#78350f">setBalanceIfVersionGreater.lua</text>
+      <text x="20" y="95" class="body-text" fill="#78350f">• Single-threaded atomic evaluation inside Redis</text>
+
+      <g transform="translate(20, 110)">
+        <rect x="0" y="0" width="320" height="110" fill="#ffffff" stroke="#fde68a" rx="6" />
+        <text x="12" y="20" class="code-text" fill="#be123c" font-weight="700">Case A: Stale Event (incomingVer &lt;= curVer)</text>
+        <text x="12" y="38" class="body-text" fill="#881337">→ REJECTED (Returns 0, Redis state unchanged)</text>
+        <text x="12" y="60" class="code-text" fill="#16a34a" font-weight="700">Case B: Monotonic Event (incomingVer &gt; curVer)</text>
+        <text x="12" y="78" class="body-text" fill="#14532d">→ ACCEPTED (Returns 1, Atomic SET balance &amp; ver)</text>
       </g>
 
-      <!-- Redis Key 2: Version -->
-      <g transform="translate(20, 175)">
-        <rect x="0" y="0" width="490" height="110" fill="#ffffff" stroke="#fca5a5" rx="8" />
-        <text x="15" y="24" class="code-text" fill="#991b1b" font-weight="700">Key 2: Version Guard String Key</text>
-        <text x="15" y="48" class="code-text" fill="#7f1d1d">ledgercore:account:{accountId}:version</text>
-        <line x1="15" y1="56" x2="475" y2="56" stroke="#fee2e2" stroke-width="1" />
-        <text x="15" y="78" class="body-text" fill="#991b1b">Value: <tspan class="code-text">"7"</tspan> (Monotonic Long account version)</text>
-        <text x="15" y="96" class="body-text" fill="#7f1d1d">Used by Lua script to enforce strict version monotonicity</text>
-      </g>
-
-      <!-- API Operations -->
-      <g transform="translate(20, 300)">
-        <rect x="0" y="0" width="490" height="130" fill="#ffffff" stroke="#fca5a5" rx="8" />
-        <text x="15" y="24" class="card-title" fill="#991b1b">Service Interface Methods</text>
-        <text x="15" y="46" class="code-text" fill="#7f1d1d">• updateBalanceIfVersionGreater(accId, bal, ver)</text>
-        <text x="15" y="66" class="code-text" fill="#7f1d1d">• getBalance(accountId) → Optional&lt;BigDecimal&gt;</text>
-        <text x="15" y="86" class="code-text" fill="#7f1d1d">• getVersion(accountId) → Optional&lt;Long&gt;</text>
-        <text x="15" y="106" class="code-text" fill="#7f1d1d">• deleteProjection(accountId)</text>
-      </g>
-    </g>
-  </g>
-
-  <!-- Flow Connector Zone 1 -> Zone 2 -->
-  <path class="flow-line flow-red animated-pulse" d="M 650,520 L 680,520" marker-end="url(#arrow-red)" />
-
-  <!-- ==================================================================== -->
-  <!-- ZONE 2: LUA VERSION GUARD & STALE REJECTION (X: 680 to 1420) -->
-  <!-- ==================================================================== -->
-  <g transform="translate(680, 120)">
-    <!-- Zone Boundary Container -->
-    <rect x="0" y="0" width="740" height="740" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="6 6" rx="16" />
-    <rect x="20" y="20" width="410" height="32" fill="#fffbeb" rx="6" />
-    <text x="32" y="41" class="zone-header" fill="#b45309">2. Atomic Lua Version Guard Engine</text>
-
-    <!-- 2.1 Lua Script Execution Card -->
-    <g transform="translate(30, 75)">
-      <rect class="card shadow" width="680" height="230" />
-      <text x="20" y="28" class="card-title" fill="#0f172a">setBalanceIfVersionGreater.lua Script</text>
-      <rect x="520" y="12" width="140" height="22" fill="#d97706" rx="11" />
-      <text x="590" y="27" class="badge-text" fill="#ffffff" text-anchor="middle">ATOMIC EXECUTION</text>
-      <line x1="20" y1="38" x2="660" y2="38" stroke="#e2e8f0" stroke-width="1" />
-
-      <!-- Lua Code Snippet -->
-      <rect x="20" y="48" width="640" height="165" fill="#0f172a" rx="8" />
-      <text x="32" y="70" class="code-text" fill="#f59e0b">local currentVer = tonumber(redis.call('GET', KEYS[2]) or '0')</text>
-      <text x="32" y="92" class="code-text" fill="#f59e0b">local incomingVer = tonumber(ARGV[2])</text>
-      <text x="32" y="114" class="code-text" fill="#38bdf8">if incomingVer &gt; currentVer then</text>
-      <text x="52" y="136" class="code-text" fill="#4ade80">  redis.call('SET', KEYS[1], ARGV[1]) -- update balance</text>
-      <text x="52" y="156" class="code-text" fill="#4ade80">  redis.call('SET', KEYS[2], ARGV[2]) -- update version</text>
-      <text x="52" y="176" class="code-text" fill="#4ade80">  return 1 -- ACCEPTED</text>
-      <text x="32" y="196" class="code-text" fill="#f43f5e">else return 0 end -- REJECTED (STALE)</text>
+      <text x="20" y="245" class="code-text" fill="#d97706">Zero Balance Regression</text>
+      <text x="20" y="265" class="body-text" fill="#78350f">Redelivered or out-of-order events cannot roll back cache balance</text>
     </g>
 
-    <!-- Flow Arrow 2.1 -> 2.2 Split -->
-    <path class="flow-line flow-amber animated-pulse" d="M 370,305 L 370,335" marker-end="url(#arrow-amber)" />
+    <!-- Flow Arrow 2 -> 3 -->
+    <path class="flow-line flow-amber" d="M 715,170 L 745,170" marker-end="url(#arrow-amber)" />
 
-    <!-- 2.2 Dual Visual Examples: Stale vs Valid -->
-    <g transform="translate(30, 340)">
-      <!-- Case A: Stale Event Rejection -->
-      <g transform="translate(0, 0)">
-        <rect class="card-rose shadow" width="330" height="370" />
-        <text x="18" y="28" class="card-title" fill="#be123c">Case A: Stale Event Rejection</text>
-        <rect x="230" y="12" width="85" height="20" fill="#e11d48" rx="10" />
-        <text x="272" y="26" class="badge-text" fill="#ffffff" text-anchor="middle">REJECTED</text>
-        <line x1="18" y1="36" x2="312" y2="36" stroke="#fecdd3" stroke-width="1" />
+    <!-- Stage 3: Reconciliation & Self-Healing -->
+    <g transform="translate(750, 0)">
+      <rect class="card-blue" width="270" height="340" />
+      <circle cx="28" cy="28" r="14" fill="#0284c7" />
+      <text x="28" y="33" font-size="12px" font-weight="700" fill="#ffffff" text-anchor="middle">3</text>
+      <text x="50" y="33" class="card-title" fill="#0369a1">Audit &amp; Self-Healing</text>
+      <line x1="20" y1="52" x2="250" y2="52" stroke="#bae6fd" />
 
-        <!-- Current State -->
-        <rect x="18" y="48" width="294" height="65" fill="#ffffff" stroke="#fda4af" rx="6" />
-        <text x="10" y="20" class="code-text" fill="#9f1239" transform="translate(10,5)">Current Redis State:</text>
-        <text x="10" y="40" class="code-text" fill="#881337" transform="translate(10,5)">version = 7 | balance = ₹1,200</text>
+      <text x="20" y="75" class="code-text" fill="#0c4a6e">ReconciliationScheduler</text>
+      <text x="20" y="95" class="body-text" fill="#0369a1">• Periodic background poller</text>
+      <text x="20" y="115" class="body-text" fill="#0369a1">• 4 Audit States: MATCH, MISMATCH, MISSING, ORPHANED</text>
 
-        <!-- Incoming Stale Event -->
-        <rect x="18" y="125" width="294" height="75" fill="#fff1f2" stroke="#fecdd3" rx="6" />
-        <text x="10" y="20" class="code-text" fill="#be123c" transform="translate(10,5)">Incoming Redelivered Event:</text>
-        <text x="10" y="40" class="code-text" fill="#9f1239" transform="translate(10,5)">incomingVersion = 6</text>
-        <text x="10" y="60" class="code-text" fill="#9f1239" transform="translate(10,5)">balanceAfter = ₹1,100</text>
-
-        <!-- Evaluation -->
-        <g transform="translate(18, 212)">
-          <rect x="0" y="0" width="294" height="65" fill="#ffffff" stroke="#fda4af" rx="6" />
-          <text x="12" y="24" class="code-text" fill="#be123c">6 &lt;= 7 → Evaluation FALSE</text>
-          <text x="12" y="46" class="body-text" fill="#881337">Lua returns 0 (No Redis keys modified)</text>
-        </g>
-
-        <!-- Final Result -->
-        <g transform="translate(18, 288)">
-          <rect x="0" y="0" width="294" height="65" fill="#9f1239" rx="6" />
-          <text x="12" y="24" class="code-text" fill="#ffffff">Redis Unchanged:</text>
-          <text x="12" y="46" class="code-text" fill="#fecdd3">version = 7 | balance = ₹1,200</text>
-        </g>
+      <g transform="translate(20, 135)">
+        <rect x="0" y="0" width="230" height="95" fill="#ffffff" stroke="#bae6fd" rx="6" />
+        <text x="10" y="20" class="code-text" fill="#16a34a" font-weight="700">Backfill Service</text>
+        <text x="10" y="38" class="body-text" fill="#14532d">Rebuilds keys from PostgreSQL</text>
+        <text x="10" y="58" class="code-text" fill="#e11d48" font-weight="700">Safe Orphan Cleanup</text>
+        <text x="10" y="78" class="body-text" fill="#881337">Deletes stale keys safely</text>
       </g>
 
-      <!-- Case B: Valid Monotonic Update -->
-      <g transform="translate(350, 0)">
-        <rect class="card-emerald shadow" width="330" height="370" />
-        <text x="18" y="28" class="card-title" fill="#15803d">Case B: Monotonic Update</text>
-        <rect x="230" y="12" width="85" height="20" fill="#16a34a" rx="10" />
-        <text x="272" y="26" class="badge-text" fill="#ffffff" text-anchor="middle">ACCEPTED</text>
-        <line x1="18" y1="36" x2="312" y2="36" stroke="#bbf7d0" stroke-width="1" />
-
-        <!-- Current State -->
-        <rect x="18" y="48" width="294" height="65" fill="#ffffff" stroke="#a7f3d0" rx="6" />
-        <text x="10" y="20" class="code-text" fill="#166534" transform="translate(10,5)">Current Redis State:</text>
-        <text x="10" y="40" class="code-text" fill="#14532d" transform="translate(10,5)">version = 7 | balance = ₹1,200</text>
-
-        <!-- Incoming Valid Event -->
-        <rect x="18" y="125" width="294" height="75" fill="#f0fdf4" stroke="#bbf7d0" rx="6" />
-        <text x="10" y="20" class="code-text" fill="#15803d" transform="translate(10,5)">Incoming Sequential Event:</text>
-        <text x="10" y="40" class="code-text" fill="#166534" transform="translate(10,5)">incomingVersion = 8</text>
-        <text x="10" y="60" class="code-text" fill="#166534" transform="translate(10,5)">balanceAfter = ₹1,500</text>
-
-        <!-- Evaluation -->
-        <g transform="translate(18, 212)">
-          <rect x="0" y="0" width="294" height="65" fill="#ffffff" stroke="#a7f3d0" rx="6" />
-          <text x="12" y="24" class="code-text" fill="#16a34a">8 &gt; 7 → Evaluation TRUE</text>
-          <text x="12" y="46" class="body-text" fill="#14532d">Lua sets both keys atomically</text>
-        </g>
-
-        <!-- Final Result -->
-        <g transform="translate(18, 288)">
-          <rect x="0" y="0" width="294" height="65" fill="#15803d" rx="6" />
-          <text x="12" y="24" class="code-text" fill="#ffffff">Redis Updated Atomically:</text>
-          <text x="12" y="46" class="code-text" fill="#bbf7d0">version = 8 | balance = ₹1,500</text>
-        </g>
-      </g>
+      <text x="20" y="255" class="code-text" fill="#0284c7">Self-Healing Integrity</text>
+      <text x="20" y="275" class="body-text" fill="#0c4a6e">Detects &amp; repairs drift without downtime!</text>
     </g>
   </g>
 
-  <!-- Flow Connector Zone 2 -> Zone 3 -->
-  <path class="flow-line flow-blue animated-pulse" d="M 1420,520 L 1450,520" marker-end="url(#arrow-blue)" />
-
-  <!-- ==================================================================== -->
-  <!-- ZONE 3: RECONCILIATION, BACKFILL & ORPHAN CLEANUP (X: 1450 to 2140) -->
-  <!-- ==================================================================== -->
-  <g transform="translate(1450, 120)">
-    <!-- Zone Boundary Container -->
-    <rect x="0" y="0" width="690" height="740" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="6 6" rx="16" />
-    <rect x="20" y="20" width="410" height="32" fill="#f0f9ff" rx="6" />
-    <text x="32" y="41" class="zone-header" fill="#0369a1">3. Reconciliation, Backfill &amp; Cleanup</text>
-
-    <!-- 3.1 ReconciliationScheduler & ReconciliationService -->
-    <g transform="translate(30, 75)">
-      <rect class="card-blue shadow" width="630" height="210" />
-      <text x="20" y="28" class="card-title" fill="#0369a1">ReconciliationScheduler &amp; Audit Engine</text>
-      <rect x="470" y="12" width="140" height="22" fill="#0284c7" rx="11" />
-      <text x="540" y="27" class="badge-text" fill="#ffffff" text-anchor="middle">PERIODIC AUDIT</text>
-      <line x1="20" y1="38" x2="610" y2="38" stroke="#bae6fd" stroke-width="1" />
-
-      <text x="20" y="58" class="code-text" fill="#0c4a6e">ReconciliationScheduler (@Scheduled cron: "0 */15 * * * *")</text>
-      <text x="20" y="78" class="body-text" fill="#0369a1">Compares PostgreSQL authoritative accounts against Redis read projections</text>
-
-      <!-- 4 Reconciliation States -->
-      <g transform="translate(20, 92)">
-        <!-- State 1: MATCH -->
-        <rect x="0" y="0" width="140" height="100" fill="#ffffff" stroke="#bbf7d0" rx="6" />
-        <text x="10" y="20" class="code-text" fill="#16a34a" font-weight="700">MATCH</text>
-        <text x="10" y="40" class="body-text" fill="#14532d">DB exists +</text>
-        <text x="10" y="58" class="body-text" fill="#14532d">Redis exists +</text>
-        <text x="10" y="76" class="body-text" fill="#14532d">Values agree</text>
-
-        <!-- State 2: MISMATCH -->
-        <rect x="150" y="0" width="140" height="100" fill="#ffffff" stroke="#fde68a" rx="6" />
-        <text x="10" y="20" class="code-text" fill="#d97706" font-weight="700">MISMATCH</text>
-        <text x="10" y="40" class="body-text" fill="#78350f">Values differ</text>
-        <text x="10" y="58" class="body-text" fill="#78350f">(Drift detected)</text>
-        <text x="10" y="76" class="body-text" fill="#b45309">Triggers repair</text>
-
-        <!-- State 3: MISSING -->
-        <rect x="300" y="0" width="140" height="100" fill="#ffffff" stroke="#bae6fd" rx="6" />
-        <text x="10" y="20" class="code-text" fill="#0284c7" font-weight="700">MISSING</text>
-        <text x="10" y="40" class="body-text" fill="#0c4a6e">DB exists,</text>
-        <text x="10" y="58" class="body-text" fill="#0c4a6e">Redis key</text>
-        <text x="10" y="76" class="body-text" fill="#0369a1">missing</text>
-
-        <!-- State 4: ORPHANED -->
-        <rect x="450" y="0" width="140" height="100" fill="#ffffff" stroke="#fecdd3" rx="6" />
-        <text x="10" y="20" class="code-text" fill="#e11d48" font-weight="700">ORPHANED</text>
-        <text x="10" y="40" class="body-text" fill="#881337">Redis key exists,</text>
-        <text x="10" y="58" class="body-text" fill="#881337">no DB account</text>
-        <text x="10" y="76" class="body-text" fill="#be123c">Safe deletion</text>
-      </g>
-    </g>
-
-    <!-- Flow Arrow 3.1 -> 3.2 Dual Self-Healing Services -->
-    <path class="flow-line flow-blue animated-pulse" d="M 345,285 L 345,315" marker-end="url(#arrow-blue)" />
-
-    <!-- 3.2 AccountProjectionBackfillService -->
-    <g transform="translate(30, 320)">
-      <rect class="card-emerald shadow" width="630" height="185" />
-      <text x="20" y="28" class="card-title" fill="#15803d">AccountProjectionBackfillService (Self-Healing Backfill)</text>
-      <line x1="20" y1="38" x2="610" y2="38" stroke="#bbf7d0" stroke-width="1" />
-
-      <text x="20" y="58" class="body-text" fill="#14532d">Triggered when <tspan class="code-text" font-weight="700">MISSING_FROM_REDIS</tspan> or <tspan class="code-text" font-weight="700">MISMATCH</tspan> is detected during audit.</text>
-
-      <rect x="20" y="72" width="590" height="95" fill="#ffffff" stroke="#a7f3d0" rx="8" />
-      <text x="15" y="22" class="code-text" fill="#166534">backfillAccount(accountId) / backfillAccounts(accountIds)</text>
-      <text x="15" y="44" class="body-text" fill="#14532d">1. Reads authoritative balance &amp; version from PostgreSQL <tspan class="code-text">accounts</tspan> table</text>
-      <text x="15" y="64" class="body-text" fill="#14532d">2. Invokes Redis service to populate keys: <tspan class="code-text">balance</tspan> &amp; <tspan class="code-text">version</tspan></text>
-      <text x="15" y="82" class="body-text" fill="#16a34a" font-weight="600">Restores full eventual consistency without application downtime!</text>
-    </g>
-
-    <!-- Flow Arrow 3.2 -> 3.3 -->
-    <path class="flow-line flow-emerald animated-pulse" d="M 345,505 L 345,530" marker-end="url(#arrow-emerald)" />
-
-    <!-- 3.3 RedisOrphanCleanupService -->
-    <g transform="translate(30, 535)">
-      <rect class="card-rose shadow" width="630" height="180" />
-      <text x="20" y="28" class="card-title" fill="#9f1239">RedisOrphanCleanupService (Safe Targeted Cleanup)</text>
-      <line x1="20" y1="38" x2="610" y2="38" stroke="#fecdd3" stroke-width="1" />
-
-      <text x="20" y="58" class="body-text" fill="#881337">Triggered when <tspan class="code-text" font-weight="700">ORPHANED_IN_REDIS</tspan> keys are found during reconciliation.</text>
-
-      <rect x="20" y="72" width="590" height="90" fill="#ffffff" stroke="#fda4af" rx="8" />
-      <text x="15" y="22" class="code-text" fill="#be123c">cleanupOrphanedKeys(orphanedAccountIds)</text>
-      <text x="15" y="44" class="body-text" fill="#881337">1. Performs double-check verification against PostgreSQL DB</text>
-      <text x="15" y="64" class="body-text" fill="#881337">2. Deletes ONLY specific keys: <tspan class="code-text">ledgercore:account:{id}:*</tspan></text>
-      <text x="15" y="82" class="body-text" fill="#e11d48" font-weight="600">SAFETY: Never executes FLUSHALL or FLUSHDB; zero collateral risk!</text>
-    </g>
-  </g>
-
-  <!-- ==================================================================== -->
-  <!-- CONSISTENCY BOUNDARY & DATA FLOW ARCHITECTURE (Y: 880 to 1050) -->
-  <!-- ==================================================================== -->
-  <g transform="translate(60, 880)">
-    <rect x="0" y="0" width="2080" height="170" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" rx="14" class="shadow" />
-    <text x="25" y="28" class="card-title" fill="#0f172a">Financial System State &amp; Consistency Boundaries</text>
-    <line x1="25" y1="38" x2="2055" y2="38" stroke="#f1f5f9" stroke-width="1" />
-
-    <g transform="translate(25, 50)">
-      <!-- Box 1: PostgreSQL Source of Truth -->
-      <rect class="card-emerald" width="620" height="100" />
-      <text x="20" y="24" class="card-title" fill="#15803d">PostgreSQL (Primary Financial Source of Truth)</text>
-      <text x="20" y="46" class="body-text" fill="#14532d">• Strong ACID Guarantees with serializable isolation &amp; optimistic locks</text>
-      <text x="20" y="66" class="body-text" fill="#14532d">• Persists Account Balances, Immutable Ledger Journal &amp; Outbox Events</text>
-      <text x="20" y="86" class="body-text" fill="#16a34a" font-weight="600">AUTHORITATIVE STATE — Survives infrastructure re-boots &amp; crashes.</text>
-
-      <path class="flow-line flow-purple animated-pulse" d="M 650,50 L 720,50" marker-end="url(#arrow-purple)" />
-
-      <!-- Box 2: Kafka Async Transport -->
-      <g transform="translate(730, 0)">
-        <rect class="card-purple" width="600" height="100" />
-        <text x="20" y="24" class="card-title" fill="#6b21a8">Kafka Event Streaming (Asynchronous Transport)</text>
-        <text x="20" y="46" class="body-text" fill="#581c87">• Decouples synchronous API transactions from read-side indexing</text>
-        <text x="20" y="66" class="body-text" fill="#581c87">• Guarantees key-ordered delivery per account partition</text>
-        <text x="20" y="86" class="body-text" fill="#9333ea" font-weight="600">EVENT BUS — Asynchronous Event-Driven Propagation.</text>
-      </g>
-
-      <path class="flow-line flow-red animated-pulse" d="M 1340,50 L 1410,50" marker-end="url(#arrow-red)" />
-
-      <!-- Box 3: Redis Read Projection -->
-      <g transform="translate(1420, 0)">
-        <rect class="card-red" width="610" height="100" />
-        <text x="20" y="24" class="card-title" fill="#991b1b">Redis Projections (Eventually Consistent Cache)</text>
-        <text x="20" y="46" class="body-text" fill="#7f1d1d">• High-throughput read model serving balance queries in &lt;1ms</text>
-        <text x="20" y="66" class="body-text" fill="#7f1d1d">• Version-guarded by Lua scripts &amp; continuously audited by background tasks</text>
-        <text x="20" y="86" class="body-text" fill="#dc2626" font-weight="600">READ PROJECTION — Eventually consistent with PostgreSQL.</text>
-      </g>
-    </g>
-  </g>
-
-  <!-- ==================================================================== -->
-  <!-- CORE ARCHITECTURAL INVARIANTS FOOTER (Y: 1070 to 1340) -->
-  <!-- ==================================================================== -->
-  <g transform="translate(60, 1070)">
-    <rect class="card-dark shadow" width="2080" height="250" />
-    <text x="30" y="38" class="card-title" fill="#ffffff" font-size="16px">CORE REDIS PROJECTION &amp; RECONCILIATION INVARIANTS</text>
-    <line x1="30" y1="48" x2="2050" y2="48" stroke="#334155" stroke-width="1" />
-
-    <g transform="translate(30, 70)">
-      <!-- Rule 1 -->
-      <g transform="translate(0, 0)">
-        <rect x="0" y="0" width="480" height="150" fill="#1e293b" rx="8" stroke="#334155" />
-        <circle cx="30" cy="30" r="14" fill="#dc2626" />
-        <text x="30" y="35" class="badge-text" fill="#ffffff" text-anchor="middle">1</text>
-        <text x="55" y="35" class="card-title" fill="#fef2f2">Atomic Lua Script Safety</text>
-        <text x="20" y="65" class="body-text" fill="#94a3b8">Balance and version keys are set atomically inside Redis single-threaded engine. No intermediate or un-versioned states are ever visible to readers.</text>
-      </g>
-
-      <!-- Rule 2 -->
-      <g transform="translate(510, 0)">
-        <rect x="0" y="0" width="480" height="150" fill="#1e293b" rx="8" stroke="#334155" />
-        <circle cx="30" cy="30" r="14" fill="#d97706" />
-        <text x="30" y="35" class="badge-text" fill="#ffffff" text-anchor="middle">2</text>
-        <text x="55" y="35" class="card-title" fill="#fffbeb">Strict Version Monotonicity</text>
-        <text x="20" y="65" class="body-text" fill="#94a3b8">Stale or out-of-order Kafka events (<tspan class="code-text" fill="#f59e0b">incomingVer &lt;= currentVer</tspan>) are rejected automatically, guaranteeing cache balance never regresses to a past state.</text>
-      </g>
-
-      <!-- Rule 3 -->
-      <g transform="translate(1020, 0)">
-        <rect x="0" y="0" width="480" height="150" fill="#1e293b" rx="8" stroke="#334155" />
-        <circle cx="30" cy="30" r="14" fill="#0284c7" />
-        <text x="30" y="35" class="badge-text" fill="#ffffff" text-anchor="middle">3</text>
-        <text x="55" y="35" class="card-title" fill="#e0f2fe">Self-Healing Reconciliation</text>
-        <text x="20" y="65" class="body-text" fill="#94a3b8">The scheduled auditor continuously verifies state agreement across PostgreSQL and Redis, auto-repairing missing or drifted keys via <tspan class="code-text" fill="#38bdf8">backfillAccount</tspan>.</text>
-      </g>
-
-      <!-- Rule 4 -->
-      <g transform="translate(1530, 0)">
-        <rect x="0" y="0" width="490" height="150" fill="#1e293b" rx="8" stroke="#334155" />
-        <circle cx="30" cy="30" r="14" fill="#16a34a" />
-        <text x="30" y="35" class="badge-text" fill="#ffffff" text-anchor="middle">4</text>
-        <text x="55" y="35" class="card-title" fill="#f0fdf4">Targeted Safe Cleanup</text>
-        <text x="20" y="65" class="body-text" fill="#94a3b8">Orphaned keys undergo DB confirmation before explicit key deletion. The system never executes destructive global commands like <tspan class="code-text" fill="#4ade80">FLUSHALL</tspan>.</text>
-      </g>
-    </g>
+  <!-- SUMMARY FOOTER -->
+  <g transform="translate(40, 455)">
+    <rect class="card-emerald" width="1020" height="55" />
+    <text x="20" y="24" class="card-title" fill="#15803d">Redis Subsystem Guarantees</text>
+    <text x="20" y="42" class="body-text" fill="#14532d">Redis projections provide fast read performance, protected by atomic Lua script version guards against out-of-order event regression, and continuously self-healed by scheduled background reconciliation services.</text>
   </g>
 </svg>

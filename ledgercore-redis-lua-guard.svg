@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 320" width="100%" height="100%">
+  <defs>
+    <style>
+      <![CDATA[
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+      * { box-sizing: border-box; }
+      .bg { fill: #f8fafc; }
+      .title-main { font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 700; fill: #0f172a; }
+      .title-sub { font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 500; fill: #64748b; }
+      .card-title { font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 700; fill: #0f172a; }
+      .code-text { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; }
+      .body-text { font-family: 'Inter', sans-serif; font-size: 11px; fill: #334155; line-height: 1.3; }
+      .card { fill: #ffffff; stroke: #cbd5e1; stroke-width: 1.5; rx: 8px; filter: drop-shadow(0 2px 4px rgba(15, 23, 42, 0.04)); }
+      .card-red { fill: #fef2f2; stroke: #fca5a5; stroke-width: 1.5; rx: 8px; }
+      .card-emerald { fill: #f0fdf4; stroke: #bbf7d0; stroke-width: 1.5; rx: 8px; }
+      .card-rose { fill: #fff1f2; stroke: #fecdd3; stroke-width: 1.5; rx: 8px; }
+      .flow-line { fill: none; stroke-width: 2; stroke-linecap: round; stroke-dasharray: 6 6; animation: pulse 2s linear infinite; }
+      .flow-red { stroke: #dc2626; }
+      .flow-emerald { stroke: #16a34a; }
+      .flow-rose { stroke: #e11d48; }
+      @keyframes pulse { 0% { stroke-dashoffset: 24; } 100% { stroke-dashoffset: 0; } }
+      ]]>
+    </style>
+    <marker id="arrow-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#dc2626" />
+    </marker>
+    <marker id="arrow-emerald" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#16a34a" />
+    </marker>
+    <marker id="arrow-rose" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#e11d48" />
+    </marker>
+  </defs>
+
+  <rect class="bg" width="960" height="320" />
+
+  <!-- HEADER -->
+  <g transform="translate(30, 20)">
+    <text class="title-main" x="0" y="16">7. Redis Atomic Lua Script Version Guard</text>
+    <text class="title-sub" x="0" y="32">Event Payload → Atomic Lua Script Comparison → Stale Event Rejection / Monotonic Update</text>
+  </g>
+
+  <!-- FLOW STEPS -->
+  <g transform="translate(30, 70)">
+    <!-- Step 1: Event Input -->
+    <g transform="translate(0, 0)">
+      <rect class="card-red" width="190" height="200" />
+      <circle cx="24" cy="24" r="12" fill="#dc2626" />
+      <text x="24" y="28" font-size="11px" font-weight="700" fill="#ffffff" text-anchor="middle">1</text>
+      <text x="44" y="28" class="card-title" fill="#991b1b">Event Input</text>
+      <line x1="15" y1="45" x2="175" y2="45" stroke="#fca5a5" />
+      <text x="15" y="65" class="code-text" fill="#7f1d1d">Kafka Event Payload</text>
+      <text x="15" y="85" class="body-text" fill="#7f1d1d">• accountId: 101</text>
+      <text x="15" y="105" class="body-text" fill="#7f1d1d">• balanceAfter: 1200</text>
+      <text x="15" y="125" class="body-text" fill="#7f1d1d">• accountVersion: N</text>
+      <text x="15" y="155" class="code-text" fill="#dc2626">Redis Read Model</text>
+      <text x="15" y="175" class="body-text" fill="#991b1b">Dispatches to Redis</text>
+    </g>
+
+    <!-- Arrow 1 -> 2 -->
+    <path class="flow-line flow-red" d="M 195,100 L 225,100" marker-end="url(#arrow-red)" />
+
+    <!-- Step 2: Lua Script Execution -->
+    <g transform="translate(230, 0)">
+      <rect class="card" width="210" height="200" />
+      <circle cx="24" cy="24" r="12" fill="#475569" />
+      <text x="24" y="28" font-size="11px" font-weight="700" fill="#ffffff" text-anchor="middle">2</text>
+      <text x="44" y="28" class="card-title">Lua Version Guard</text>
+      <line x1="15" y1="45" x2="195" y2="45" stroke="#e2e8f0" />
+      <text x="15" y="65" class="code-text" fill="#0f172a">setBalanceIfVersion...</text>
+      <text x="15" y="85" class="body-text" fill="#334155">Compares incomingVer</text>
+      <text x="15" y="105" class="body-text" fill="#334155">with Redis currentVer</text>
+      <text x="15" y="135" class="code-text" fill="#0f172a">Single-Threaded</text>
+      <text x="15" y="155" class="body-text" fill="#64748b">Atomic evaluation inside</text>
+      <text x="15" y="175" class="body-text" fill="#64748b">Redis engine core</text>
+    </g>
+
+    <!-- Arrow 2 -> 3 Branching -->
+    <path class="flow-line flow-rose" d="M 445,70 L 475,70" marker-end="url(#arrow-rose)" />
+    <path class="flow-line flow-emerald" d="M 445,130 L 475,130" marker-end="url(#arrow-emerald)" />
+
+    <!-- Step 3A: Stale Event REJECTED -->
+    <g transform="translate(480, 0)">
+      <rect class="card-rose" width="200" height="95" />
+      <circle cx="20" cy="20" r="10" fill="#e11d48" />
+      <text x="20" y="24" font-size="10px" font-weight="700" fill="#ffffff" text-anchor="middle">3A</text>
+      <text x="36" y="24" class="card-title" fill="#9f1239">Stale Event (ver &lt;= cur)</text>
+      <line x1="10" y1="36" x2="190" y2="36" stroke="#fecdd3" />
+      <text x="10" y="54" class="code-text" fill="#be123c">REJECTED (Returns 0)</text>
+      <text x="10" y="74" class="body-text" fill="#881337">Redis state remains unchanged</text>
+
+      <!-- Step 3B: Valid Event ACCEPTED -->
+      <g transform="translate(0, 105)">
+        <rect class="card-emerald" width="200" height="95" />
+        <circle cx="20" cy="20" r="10" fill="#16a34a" />
+        <text x="20" y="24" font-size="10px" font-weight="700" fill="#ffffff" text-anchor="middle">3B</text>
+        <text x="36" y="24" class="card-title" fill="#15803d">Valid Event (ver &gt; cur)</text>
+        <line x1="10" y1="36" x2="190" y2="36" stroke="#bbf7d0" />
+        <text x="10" y="54" class="code-text" fill="#14532d">ACCEPTED (Returns 1)</text>
+        <text x="10" y="74" class="body-text" fill="#166534">Atomic SET balance &amp; version</text>
+      </g>
+    </g>
+
+    <!-- Arrow 3B -> 4 -->
+    <path class="flow-line flow-emerald" d="M 685,152 L 715,152" marker-end="url(#arrow-emerald)" />
+
+    <!-- Step 4: Consistency Safety -->
+    <g transform="translate(720, 0)">
+      <rect class="card" width="180" height="200" />
+      <circle cx="24" cy="24" r="12" fill="#475569" />
+      <text x="24" y="28" font-size="11px" font-weight="700" fill="#ffffff" text-anchor="middle">4</text>
+      <text x="44" y="28" class="card-title">Version Invariant</text>
+      <line x1="15" y1="45" x2="165" y2="45" stroke="#e2e8f0" />
+      <text x="15" y="65" class="code-text" fill="#0f172a">Zero Regression</text>
+      <text x="15" y="85" class="body-text" fill="#475569">• Redelivered events</text>
+      <text x="15" y="105" class="body-text" fill="#475569">cannot roll back balance</text>
+      <text x="15" y="135" class="code-text" fill="#16a34a">Monotonic Cache</text>
+      <text x="15" y="155" class="body-text" fill="#334155">Always reflects latest</text>
+      <text x="15" y="175" class="body-text" fill="#334155">known DB version!</text>
+    </g>
+  </g>
+</svg>

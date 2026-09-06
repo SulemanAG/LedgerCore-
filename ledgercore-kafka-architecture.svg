@@ -1,479 +1,130 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2200 1400" width="100%" height="100%">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 540" width="100%" height="100%">
   <defs>
-    <!-- Fonts & Global Styles -->
     <style>
-    <![CDATA[
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap');
-
+      <![CDATA[
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
       * { box-sizing: border-box; }
-      
       .bg { fill: #f8fafc; }
-      
-      /* Typography */
-      .title-main { font-family: 'Inter', system-ui, -apple-system, sans-serif; font-size: 26px; font-weight: 800; fill: #0f172a; letter-spacing: -0.02em; }
-      .title-sub { font-family: 'Inter', system-ui, -apple-system, sans-serif; font-size: 14px; font-weight: 500; fill: #475569; }
-      .zone-header { font-family: 'Inter', system-ui, -apple-system, sans-serif; font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; }
-      .card-title { font-family: 'Inter', system-ui, -apple-system, sans-serif; font-size: 14px; font-weight: 700; fill: #0f172a; }
-      .card-subtitle { font-family: 'Inter', system-ui, -apple-system, sans-serif; font-size: 12px; font-weight: 500; fill: #64748b; }
-      .code-text { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; }
-      .body-text { font-family: 'Inter', system-ui, -apple-system, sans-serif; font-size: 12px; fill: #334155; line-height: 1.4; }
-      .badge-text { font-family: 'Inter', system-ui, -apple-system, sans-serif; font-size: 11px; font-weight: 700; }
-      
-      /* Card Styles */
-      .card { fill: #ffffff; stroke: #e2e8f0; stroke-width: 1.5; rx: 12; filter: drop-shadow(0 4px 6px rgba(15, 23, 42, 0.03)); }
-      .card-blue { fill: #f0f9ff; stroke: #bae6fd; stroke-width: 1.5; rx: 12; }
-      .card-purple { fill: #faf5ff; stroke: #e9d5ff; stroke-width: 1.5; rx: 12; }
-      .card-amber { fill: #fffbeb; stroke: #fde68a; stroke-width: 1.5; rx: 12; }
-      .card-emerald { fill: #f0fdf4; stroke: #bbf7d0; stroke-width: 1.5; rx: 12; }
-      .card-rose { fill: #fff1f2; stroke: #fecdd3; stroke-width: 1.5; rx: 12; }
-      .card-dark { fill: #0f172a; stroke: #1e293b; stroke-width: 1.5; rx: 12; }
-
-      /* Arrow Paths and Connectors */
-      .flow-line { fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
-      .flow-blue { stroke: #0284c7; }
+      .title-main { font-family: 'Inter', sans-serif; font-size: 18px; font-weight: 800; fill: #0f172a; }
+      .title-sub { font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 500; fill: #475569; }
+      .card-title { font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 700; fill: #0f172a; }
+      .code-text { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; }
+      .body-text { font-family: 'Inter', sans-serif; font-size: 11px; fill: #334155; line-height: 1.35; }
+      .card { fill: #ffffff; stroke: #cbd5e1; stroke-width: 1.5; rx: 10px; filter: drop-shadow(0 4px 6px rgba(15, 23, 42, 0.04)); }
+      .card-purple { fill: #faf5ff; stroke: #e9d5ff; stroke-width: 1.5; rx: 10px; }
+      .card-blue { fill: #f0f9ff; stroke: #bae6fd; stroke-width: 1.5; rx: 10px; }
+      .card-emerald { fill: #f0fdf4; stroke: #bbf7d0; stroke-width: 1.5; rx: 10px; }
+      .card-rose { fill: #fff1f2; stroke: #fecdd3; stroke-width: 1.5; rx: 10px; }
+      .flow-line { fill: none; stroke-width: 2; stroke-linecap: round; stroke-dasharray: 6 6; animation: pulse 2.5s linear infinite; }
       .flow-purple { stroke: #9333ea; }
       .flow-emerald { stroke: #16a34a; }
-      .flow-amber { stroke: #d97706; }
       .flow-rose { stroke: #e11d48; }
-      .flow-dashed { stroke-dasharray: 6 6; }
-
-      /* Animation Definitions */
-      @keyframes pulse-flow {
-        0% { stroke-dashoffset: 24; }
-        100% { stroke-dashoffset: 0; }
-      }
-
-      .animated-pulse {
-        stroke-dasharray: 8 8;
-        animation: pulse-flow 2.5s linear infinite;
-      }
-      
-      /* Drop Shadows */
-      .shadow { filter: drop-shadow(0 10px 15px rgba(15, 23, 42, 0.06)); }
-    ]]>
+      @keyframes pulse { 0% { stroke-dashoffset: 24; } 100% { stroke-dashoffset: 0; } }
+      ]]>
     </style>
-
-    <!-- Markers -->
-    <marker id="arrow-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-      <path d="M 0 1 L 10 5 L 0 9 z" fill="#0284c7" />
-    </marker>
     <marker id="arrow-purple" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
       <path d="M 0 1 L 10 5 L 0 9 z" fill="#9333ea" />
     </marker>
     <marker id="arrow-emerald" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
       <path d="M 0 1 L 10 5 L 0 9 z" fill="#16a34a" />
     </marker>
-    <marker id="arrow-amber" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-      <path d="M 0 1 L 10 5 L 0 9 z" fill="#d97706" />
-    </marker>
     <marker id="arrow-rose" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
       <path d="M 0 1 L 10 5 L 0 9 z" fill="#e11d48" />
     </marker>
-
-    <!-- Linear Gradients -->
-    <linearGradient id="header-grad" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#4f46e5" />
-      <stop offset="50%" stop-color="#9333ea" />
-      <stop offset="100%" stop-color="#0284c7" />
-    </linearGradient>
-
-    <linearGradient id="kafka-dark-grad" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#1e1e2e" />
-      <stop offset="100%" stop-color="#0f172a" />
-    </linearGradient>
   </defs>
 
-  <!-- Background -->
-  <rect class="bg" width="2200" height="1400" />
+  <rect class="bg" width="1100" height="540" />
 
-  <!-- HEADER BAR -->
-  <g transform="translate(60, 40)">
-    <rect x="0" y="0" width="8" height="50" fill="url(#header-grad)" rx="4" />
-    <text x="24" y="28" class="title-main">LedgerCore — Kafka Event Streaming, Ordering, Retry &amp; DLT Lifecycle</text>
-    <text x="24" y="48" class="title-sub">Asynchronous Event Publishing, Per-Account Key Partitioning, Idempotent Processing &amp; Dead-Letter Fault Recovery</text>
+  <!-- HEADER -->
+  <g transform="translate(40, 30)">
+    <text class="title-main" x="0" y="20">LedgerCore — Kafka Streaming, Ordering &amp; DLT Architecture</text>
+    <text class="title-sub" x="0" y="40">Multi-Partition Keyed Streaming, Consumer Idempotency, and Bounded Dead-Letter Recovery</text>
   </g>
 
-  <!-- ==================================================================== -->
-  <!-- ZONE 1: OUTBOX CLAIMING & PRODUCER RELIABILITY (X: 60 to 680) -->
-  <!-- ==================================================================== -->
-  <g transform="translate(60, 120)">
-    <!-- Zone Boundary Container -->
-    <rect x="0" y="0" width="620" height="740" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="6 6" rx="16" />
-    <rect x="20" y="20" width="340" height="32" fill="#e0f2fe" rx="6" />
-    <text x="32" y="41" class="zone-header" fill="#0369a1">1. Outbox Relay &amp; Kafka Producer</text>
-
-    <!-- 1.1 Outbox Event Table (DB) -->
-    <g transform="translate(30, 75)">
-      <rect class="card-amber shadow" width="560" height="145" />
-      <text x="20" y="28" class="card-title" fill="#b45309">PostgreSQL outbox_events Table</text>
-      <text x="400" y="28" class="code-text" fill="#d97706">Status: PENDING</text>
-      <line x1="20" y1="38" x2="540" y2="38" stroke="#fde68a" stroke-width="1" />
+  <!-- STAGES -->
+  <g transform="translate(40, 90)">
+    <!-- Stage 1: Topic Partition Ordering -->
+    <g transform="translate(0, 0)">
+      <rect class="card-purple" width="310" height="340" />
+      <circle cx="28" cy="28" r="14" fill="#9333ea" />
+      <text x="28" y="33" font-size="12px" font-weight="700" fill="#ffffff" text-anchor="middle">1</text>
+      <text x="50" y="33" class="card-title" fill="#6b21a8">Keyed Partition Streaming</text>
+      <line x1="20" y1="52" x2="290" y2="52" stroke="#e9d5ff" />
       
-      <rect x="20" y="50" width="520" height="78" fill="#ffffff" stroke="#fef3c7" rx="8" />
-      <text x="35" y="72" class="code-text" fill="#451a03">id: 9481 | event_id: "evt_9901a" | event_type: "TRANSFER_SOURCE_DEBITED"</text>
-      <text x="35" y="94" class="code-text" fill="#451a03">aggregate_id: "101" | payload: {"balanceAfter": 400.00, "version": 4}</text>
-      <text x="35" y="116" class="code-text" fill="#d97706">created_at: 2026-09-06T18:30:00Z | state: PENDING</text>
-    </g>
-
-    <!-- Flow Arrow 1.1 -> 1.2 -->
-    <path class="flow-line flow-amber animated-pulse" d="M 310,220 L 310,250" marker-end="url(#arrow-amber)" />
-
-    <!-- 1.2 OutboxRelayService Worker -->
-    <g transform="translate(30, 255)">
-      <rect class="card-blue shadow" width="560" height="140" />
-      <text x="20" y="28" class="card-title" fill="#0369a1">OutboxRelayService (@Scheduled Poller)</text>
-      <rect x="420" y="12" width="120" height="22" fill="#0284c7" rx="11" />
-      <text x="480" y="27" class="badge-text" fill="#ffffff" text-anchor="middle">ATOMIC CLAIM</text>
-      <line x1="20" y1="38" x2="540" y2="38" stroke="#bae6fd" stroke-width="1" />
+      <text x="20" y="75" class="code-text" fill="#581c87">KafkaEvent&lt;T&gt; Envelope</text>
+      <text x="20" y="95" class="body-text" fill="#581c87">• eventId, eventType, aggregateId, occurredAt</text>
       
-      <text x="20" y="58" class="code-text" fill="#0c4a6e">SELECT * FROM outbox_events WHERE state = 'PENDING'</text>
-      <text x="20" y="76" class="code-text" fill="#0284c7" font-weight="700">ORDER BY created_at ASC LIMIT 100 FOR UPDATE SKIP LOCKED</text>
-      
-      <rect x="20" y="88" width="520" height="38" fill="#ffffff" stroke="#e0f2fe" rx="6" />
-      <text x="30" y="112" class="body-text" fill="#0369a1">Transitions state to <tspan class="code-text" font-weight="700">PROCESSING</tspan> &amp; dispatches to KafkaProducerService</text>
+      <g transform="translate(20, 110)">
+        <rect x="0" y="0" width="270" height="95" fill="#ffffff" stroke="#e9d5ff" rx="6" />
+        <text x="12" y="20" class="code-text" fill="#9333ea" font-weight="700">Partition 0 (Acc 101 Stream)</text>
+        <text x="12" y="40" class="body-text" fill="#581c87">#101 DEPOSIT → #102 TRANSFER_SOURCE</text>
+        <text x="12" y="60" class="code-text" fill="#9333ea" font-weight="700">Partition 1 (Acc 202 Stream)</text>
+        <text x="12" y="80" class="body-text" fill="#581c87">#881 TRANSFER_DEST → #882 DEPOSIT</text>
+      </g>
+
+      <text x="20" y="230" class="code-text" fill="#9333ea">Key = aggregateId (AccountId)</text>
+      <text x="20" y="255" class="body-text" fill="#6b21a8">Guarantees strict sequential ordering per account partition without global topic lock!</text>
     </g>
 
-    <!-- Flow Arrow 1.2 -> 1.3 -->
-    <path class="flow-line flow-blue animated-pulse" d="M 310,395 L 310,425" marker-end="url(#arrow-blue)" />
+    <!-- Flow Arrow 1 -> 2 -->
+    <path class="flow-line flow-purple" d="M 315,170 L 345,170" marker-end="url(#arrow-purple)" />
 
-    <!-- 1.3 KafkaProducerService & Producer Config -->
-    <g transform="translate(30, 430)">
-      <rect class="card shadow" width="560" height="280" />
-      <text x="20" y="28" class="card-title" fill="#0f172a">KafkaProducerService &amp; Reliable Producer</text>
-      <line x1="20" y1="38" x2="540" y2="38" stroke="#e2e8f0" stroke-width="1" />
+    <!-- Stage 2: Consumer & Idempotency -->
+    <g transform="translate(350, 0)">
+      <rect class="card-emerald" width="360" height="340" />
+      <circle cx="28" cy="28" r="14" fill="#16a34a" />
+      <text x="28" y="33" font-size="12px" font-weight="700" fill="#ffffff" text-anchor="middle">2</text>
+      <text x="50" y="33" class="card-title" fill="#15803d">Consumer &amp; Idempotency</text>
+      <line x1="20" y1="52" x2="340" y2="52" stroke="#bbf7d0" />
 
-      <!-- Code Execution -->
-      <rect x="20" y="48" width="520" height="60" fill="#0f172a" rx="6" />
-      <text x="32" y="70" class="code-text" fill="#38bdf8">kafkaTemplate.send(topic, event.getAggregateId(), event)</text>
-      <text x="32" y="92" class="code-text" fill="#94a3b8">  .whenComplete((result, ex) -> outboxStateService.markPublished(id))</text>
+      <text x="20" y="75" class="code-text" fill="#14532d">KafkaConsumerService (@KafkaListener)</text>
+      <text x="20" y="95" class="body-text" fill="#14532d">• Polls transactions topic asynchronously</text>
 
-      <!-- Configuration Card -->
-      <g transform="translate(20, 120)">
-        <rect class="card-purple" width="520" height="145" />
-        <text x="15" y="24" class="card-title" fill="#6b21a8">Implemented Producer Reliability Settings</text>
-        <line x1="15" y1="32" x2="505" y2="32" stroke="#e9d5ff" stroke-width="1" />
-
-        <text x="20" y="52" class="code-text" fill="#581c87">acks = "all"</text>
-        <text x="240" y="52" class="body-text" fill="#4a044e">(Wait for all ISR replicas to ack)</text>
-
-        <text x="20" y="74" class="code-text" fill="#581c87">enable.idempotence = true</text>
-        <text x="240" y="74" class="body-text" fill="#4a044e">(Prevents producer-side network duplicates)</text>
-
-        <text x="20" y="96" class="code-text" fill="#581c87">retries = 3</text>
-        <text x="240" y="96" class="body-text" fill="#4a044e">(Automatic transient send retries)</text>
-
-        <text x="20" y="118" class="code-text" fill="#581c87">max.in.flight... = 5</text>
-        <text x="240" y="118" class="body-text" fill="#4a044e">(High throughput with idempotence order safety)</text>
-      </g>
-    </g>
-  </g>
-
-  <!-- Flow Connector Zone 1 -> Zone 2 -->
-  <path class="flow-line flow-purple animated-pulse" d="M 680,550 L 710,550" marker-end="url(#arrow-purple)" />
-
-  <!-- ==================================================================== -->
-  <!-- ZONE 2: EVENT ENVELOPE & KAFKA PARTITION ORDERING (X: 710 to 1430) -->
-  <!-- ==================================================================== -->
-  <g transform="translate(710, 120)">
-    <!-- Zone Boundary Container -->
-    <rect x="0" y="0" width="720" height="740" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="6 6" rx="16" />
-    <rect x="20" y="20" width="390" height="32" fill="#faf5ff" rx="6" />
-    <text x="32" y="41" class="zone-header" fill="#7e22ce">2. Kafka Envelope &amp; Partition Ordering</text>
-
-    <!-- 2.1 KafkaEvent<T> Envelope Blueprint -->
-    <g transform="translate(30, 75)">
-      <rect class="card-purple shadow" width="660" height="185" />
-      <text x="20" y="28" class="card-title" fill="#6b21a8">Generic KafkaEvent&lt;T&gt; Structure</text>
-      <rect x="520" y="12" width="120" height="22" fill="#9333ea" rx="11" />
-      <text x="580" y="27" class="badge-text" fill="#ffffff" text-anchor="middle">SERIALIZED JSON</text>
-      <line x1="20" y1="38" x2="640" y2="38" stroke="#e9d5ff" stroke-width="1" />
-
-      <g transform="translate(20, 50)">
-        <rect x="0" y="0" width="300" height="120" fill="#ffffff" stroke="#d8b4fe" rx="8" />
-        <text x="15" y="24" class="code-text" fill="#581c87">eventId: "evt_9901a" (UUID)</text>
-        <text x="15" y="46" class="code-text" fill="#581c87">eventType: TRANSFER_SOURCE_DEBITED</text>
-        <text x="15" y="68" class="code-text" fill="#9333ea" font-weight="700">aggregateId: "101" (Kafka Key)</text>
-        <text x="15" y="90" class="code-text" fill="#581c87">occurredAt: 2026-09-06T18:30:00Z</text>
-        <text x="15" y="108" class="code-text" fill="#581c87">payload: { TransferSourcePayload }</text>
+      <g transform="translate(20, 110)">
+        <rect x="0" y="0" width="320" height="120" fill="#ffffff" stroke="#bbf7d0" rx="6" />
+        <text x="12" y="20" class="code-text" fill="#16a34a" font-weight="700">processed_events DB Lookup</text>
+        <text x="12" y="42" class="body-text" fill="#9f1239">• Duplicate ID? Log warning &amp; skip processing</text>
+        <text x="12" y="62" class="body-text" fill="#14532d">• New Event ID? Update Redis Read Projection</text>
+        <text x="12" y="82" class="body-text" fill="#14532d">• Insert ProcessedEvent record in PostgreSQL</text>
+        <text x="12" y="104" class="code-text" fill="#16a34a">Durable Exactly-Once Business Semantics</text>
       </g>
 
-      <g transform="translate(330, 50)">
-        <rect x="0" y="0" width="310" height="120" fill="#ffffff" stroke="#d8b4fe" rx="8" />
-        <text x="15" y="20" class="card-subtitle" fill="#7e22ce">Concrete Payload Polymorphic Types:</text>
-        <text x="15" y="40" class="code-text" fill="#3b0764">• DepositEventPayload</text>
-        <text x="15" y="60" class="code-text" fill="#3b0764">• WithdrawalEventPayload</text>
-        <text x="15" y="80" class="code-text" fill="#3b0764">• TransferSourceEventPayload</text>
-        <text x="15" y="100" class="code-text" fill="#3b0764">• TransferDestinationEventPayload</text>
-      </g>
+      <text x="20" y="255" class="code-text" fill="#16a34a">At-Least-Once Delivery Safe</text>
+      <text x="20" y="275" class="body-text" fill="#15803d">Redelivered events cause zero double-credit effect</text>
     </g>
 
-    <!-- Flow Arrow 2.1 -> 2.2 -->
-    <path class="flow-line flow-purple animated-pulse" d="M 360,260 L 360,290" marker-end="url(#arrow-purple)" />
+    <!-- Flow Arrow 2 -> 3 -->
+    <path class="flow-line flow-emerald" d="M 715,170 L 745,170" marker-end="url(#arrow-emerald)" />
 
-    <!-- 2.2 Kafka Broker Topic Container -->
-    <g transform="translate(30, 295)">
-      <rect x="0" y="0" width="660" height="420" fill="url(#kafka-dark-grad)" rx="14" class="shadow" />
-      <text x="25" y="32" class="card-title" fill="#ffffff">Kafka Cluster — Topic: ledgercore-transactions</text>
-      <rect x="470" y="15" width="165" height="24" fill="#38bdf8" rx="12" />
-      <text x="552" y="31" class="badge-text" fill="#0f172a" text-anchor="middle">KEY-BASED PARTITIONING</text>
-      <line x1="25" y1="45" x2="635" y2="45" stroke="#334155" stroke-width="1" />
+    <!-- Stage 3: Bounded Retry & DLT Recovery -->
+    <g transform="translate(750, 0)">
+      <rect class="card-rose" width="270" height="340" />
+      <circle cx="28" cy="28" r="14" fill="#e11d48" />
+      <text x="28" y="33" font-size="12px" font-weight="700" fill="#ffffff" text-anchor="middle">3</text>
+      <text x="50" y="33" class="card-title" fill="#9f1239">Retry Loop &amp; DLT</text>
+      <line x1="20" y1="52" x2="250" y2="52" stroke="#fecdd3" />
 
-      <!-- PARTITION 0 -->
-      <g transform="translate(25, 60)">
-        <rect x="0" y="0" width="610" height="160" fill="#1e293b" stroke="#38bdf8" stroke-width="1.5" rx="10" />
-        <text x="15" y="24" class="code-text" fill="#38bdf8" font-size="13px" font-weight="700">Partition 0 — Account 101 Events (Kafka Key = "101")</text>
-        <text x="440" y="24" class="code-text" fill="#94a3b8">Strict In-Order Stream</text>
-        
-        <!-- Queue Events -->
-        <g transform="translate(15, 38)">
-          <!-- Event 1 -->
-          <rect x="0" y="0" width="175" height="100" fill="#0f172a" stroke="#0284c7" rx="6" />
-          <text x="10" y="22" class="code-text" fill="#e0f2fe">Offset #1041</text>
-          <text x="10" y="42" class="code-text" fill="#38bdf8">DEPOSIT_COMPLETED</text>
-          <text x="10" y="62" class="code-text" fill="#94a3b8">amount: ₹1,000</text>
-          <text x="10" y="82" class="code-text" fill="#94a3b8">balanceAfter: ₹1,000</text>
+      <text x="20" y="75" class="code-text" fill="#be123c">DefaultErrorHandler</text>
+      <text x="20" y="95" class="body-text" fill="#881337">• 3 Total Attempts (1s backoff)</text>
+      <text x="20" y="115" class="body-text" fill="#881337">• Retries transient errors</text>
 
-          <path class="flow-line flow-blue" d="M 180,50 L 195,50" marker-end="url(#arrow-blue)" />
-
-          <!-- Event 2 -->
-          <rect x="200" y="0" width="185" height="100" fill="#0f172a" stroke="#9333ea" rx="6" />
-          <text x="10" y="22" class="code-text" fill="#faf5ff">Offset #1042</text>
-          <text x="10" y="42" class="code-text" fill="#c084fc">TRANSFER_SOURCE...</text>
-          <text x="10" y="62" class="code-text" fill="#94a3b8">debited: ₹600</text>
-          <text x="10" y="82" class="code-text" fill="#94a3b8">balanceAfter: ₹400</text>
-
-          <path class="flow-line flow-purple" d="M 390,50 L 405,50" marker-end="url(#arrow-purple)" />
-
-          <!-- Event 3 -->
-          <rect x="410" y="0" width="170" height="100" fill="#0f172a" stroke="#16a34a" rx="6" />
-          <text x="10" y="22" class="code-text" fill="#f0fdf4">Offset #1043</text>
-          <text x="10" y="42" class="code-text" fill="#4ade80">WITHDRAWAL_C...</text>
-          <text x="10" y="62" class="code-text" fill="#94a3b8">amount: ₹100</text>
-          <text x="10" y="82" class="code-text" fill="#94a3b8">balanceAfter: ₹300</text>
-        </g>
+      <g transform="translate(20, 135)">
+        <rect x="0" y="0" width="230" height="95" fill="#ffffff" stroke="#fecdd3" rx="6" />
+        <text x="10" y="20" class="code-text" fill="#e11d48" font-weight="700">DeadLetterPublishing...</text>
+        <text x="10" y="40" class="body-text" fill="#881337">• Routes to DLT topic:</text>
+        <text x="10" y="60" class="code-text" fill="#be123c">transactions.DLT</text>
+        <text x="10" y="80" class="body-text" fill="#881337">• Preserves headers &amp; stack trace</text>
       </g>
 
-      <!-- PARTITION 1 -->
-      <g transform="translate(25, 235)">
-        <rect x="0" y="0" width="610" height="160" fill="#1e293b" stroke="#a855f7" stroke-width="1.5" rx="10" />
-        <text x="15" y="24" class="code-text" fill="#c084fc" font-size="13px" font-weight="700">Partition 1 — Account 202 Events (Kafka Key = "202")</text>
-        <text x="440" y="24" class="code-text" fill="#94a3b8">Independent Parallel Stream</text>
-        
-        <!-- Queue Events -->
-        <g transform="translate(15, 38)">
-          <!-- Event 1 -->
-          <rect x="0" y="0" width="185" height="100" fill="#0f172a" stroke="#9333ea" rx="6" />
-          <text x="10" y="22" class="code-text" fill="#faf5ff">Offset #881</text>
-          <text x="10" y="42" class="code-text" fill="#c084fc">TRANSFER_DEST...</text>
-          <text x="10" y="62" class="code-text" fill="#94a3b8">credited: ₹600</text>
-          <text x="10" y="82" class="code-text" fill="#94a3b8">balanceAfter: ₹1,100</text>
-
-          <path class="flow-line flow-purple" d="M 190,50 L 205,50" marker-end="url(#arrow-purple)" />
-
-          <!-- Event 2 -->
-          <rect x="210" y="0" width="185" height="100" fill="#0f172a" stroke="#0284c7" rx="6" />
-          <text x="10" y="22" class="code-text" fill="#e0f2fe">Offset #882</text>
-          <text x="10" y="42" class="code-text" fill="#38bdf8">DEPOSIT_COMPLETED</text>
-          <text x="10" y="62" class="code-text" fill="#94a3b8">amount: ₹500</text>
-          <text x="10" y="82" class="code-text" fill="#94a3b8">balanceAfter: ₹1,600</text>
-
-          <!-- Label -->
-          <g transform="translate(410, 20)">
-            <rect x="0" y="0" width="170" height="60" fill="#0f172a" stroke="#334155" rx="6" />
-            <text x="12" y="24" class="body-text" fill="#94a3b8">Dual Transfer Design:</text>
-            <text x="12" y="44" class="body-text" fill="#cbd5e1" font-weight="600">Per-account order safety</text>
-          </g>
-        </g>
-      </g>
+      <text x="20" y="255" class="code-text" fill="#e11d48">Non-Blocking Isolation</text>
+      <text x="20" y="275" class="body-text" fill="#9f1239">Poison pill messages never block healthy streams!</text>
     </g>
   </g>
 
-  <!-- Flow Connector Zone 2 -> Zone 3 -->
-  <path class="flow-line flow-emerald animated-pulse" d="M 1430,550 L 1460,550" marker-end="url(#arrow-emerald)" />
-
-  <!-- ==================================================================== -->
-  <!-- ZONE 3: CONSUMER IDEMPOTENCY & RETRY ENGINE (X: 1460 to 2140) -->
-  <!-- ==================================================================== -->
-  <g transform="translate(1460, 120)">
-    <!-- Zone Boundary Container -->
-    <rect x="0" y="0" width="680" height="740" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="6 6" rx="16" />
-    <rect x="20" y="20" width="410" height="32" fill="#f0fdf4" rx="6" />
-    <text x="32" y="41" class="zone-header" fill="#15803d">3. Consumer Idempotency &amp; Fault Handling</text>
-
-    <!-- 3.1 KafkaConsumerService -->
-    <g transform="translate(30, 75)">
-      <rect class="card-emerald shadow" width="620" height="130" />
-      <text x="20" y="28" class="card-title" fill="#15803d">KafkaConsumerService (@KafkaListener)</text>
-      <rect x="460" y="12" width="140" height="22" fill="#16a34a" rx="11" />
-      <text x="530" y="27" class="badge-text" fill="#ffffff" text-anchor="middle">AT-LEAST-ONCE</text>
-      <line x1="20" y1="38" x2="600" y2="38" stroke="#bbf7d0" stroke-width="1" />
-
-      <text x="20" y="58" class="code-text" fill="#14532d">@KafkaListener(topics = "ledgercore-transactions", groupId = "ledgercore-group")</text>
-      <text x="20" y="78" class="code-text" fill="#16a34a">public void listen(KafkaEvent&lt;?&gt; event) {</text>
-      <text x="40" y="98" class="code-text" fill="#0f172a">  eventProcessingService.processEvent(event);</text>
-      <text x="20" y="114" class="code-text" fill="#16a34a">}</text>
-    </g>
-
-    <!-- Flow Arrow 3.1 -> 3.2 -->
-    <path class="flow-line flow-emerald animated-pulse" d="M 340,205 L 340,235" marker-end="url(#arrow-emerald)" />
-
-    <!-- 3.2 EventProcessingService & Idempotency Store -->
-    <g transform="translate(30, 240)">
-      <rect class="card shadow" width="620" height="250" />
-      <text x="20" y="28" class="card-title" fill="#0f172a">EventProcessingService &amp; PostgreSQL processed_events</text>
-      <line x1="20" y1="38" x2="600" y2="38" stroke="#e2e8f0" stroke-width="1" />
-
-      <!-- Lookup Flow -->
-      <rect x="20" y="48" width="580" height="85" fill="#f8fafc" stroke="#e2e8f0" rx="8" />
-      <text x="35" y="70" class="code-text" fill="#0f172a">processedEventRepository.existsById(event.getEventId())</text>
-      
-      <!-- Branch YES / NO -->
-      <g transform="translate(35, 82)">
-        <rect x="0" y="0" width="260" height="40" fill="#fff1f2" stroke="#fecdd3" rx="6" />
-        <text x="12" y="24" class="code-text" fill="#9f1239">YES → Duplicate! Skip processing</text>
-
-        <rect x="280" y="0" width="270" height="40" fill="#f0fdf4" stroke="#bbf7d0" rx="6" />
-        <text x="12" y="24" class="code-text" fill="#166534">NO → Update Redis &amp; Save ID</text>
-      </g>
-
-      <!-- Code Details -->
-      <g transform="translate(20, 145)">
-        <rect class="card-blue" width="580" height="90" />
-        <text x="15" y="24" class="card-title" fill="#0369a1">Durable Idempotency Contract</text>
-        <text x="15" y="46" class="body-text" fill="#0c4a6e">1. Update Redis read-model balance via atomic Lua script version guard</text>
-        <text x="15" y="66" class="body-text" fill="#0c4a6e">2. Insert <tspan class="code-text">ProcessedEvent(eventId, eventType, processedAt)</tspan> into PostgreSQL</text>
-        <text x="15" y="84" class="body-text" fill="#0284c7" font-weight="600">Guarantees zero duplicate execution even during redelivery!</text>
-      </g>
-    </g>
-
-    <!-- Flow Arrow 3.2 -> 3.3 -->
-    <path class="flow-line flow-rose animated-pulse" d="M 340,490 L 340,515" marker-end="url(#arrow-rose)" />
-
-    <!-- 3.3 Spring Kafka Retry Policy & DLT Recovery -->
-    <g transform="translate(30, 520)">
-      <rect class="card-rose shadow" width="620" height="195" />
-      <text x="20" y="28" class="card-title" fill="#9f1239">Spring Kafka DefaultErrorHandler &amp; DLT Flow</text>
-      <rect x="460" y="12" width="140" height="22" fill="#e11d48" rx="11" />
-      <text x="530" y="27" class="badge-text" fill="#ffffff" text-anchor="middle">3 TOTAL ATTEMPTS</text>
-      <line x1="20" y1="38" x2="600" y2="38" stroke="#fecdd3" stroke-width="1" />
-
-      <!-- Retry Execution Loop -->
-      <g transform="translate(20, 48)">
-        <rect x="0" y="0" width="175" height="60" fill="#ffffff" stroke="#fda4af" rx="6" />
-        <text x="12" y="22" class="code-text" fill="#be123c">Initial Attempt</text>
-        <text x="12" y="44" class="body-text" fill="#9f1239">Fails → Wait 1000ms</text>
-
-        <path class="flow-line flow-rose" d="M 180,30 L 195,30" marker-end="url(#arrow-rose)" />
-
-        <rect x="200" y="0" width="175" height="60" fill="#ffffff" stroke="#fda4af" rx="6" />
-        <text x="12" y="22" class="code-text" fill="#be123c">Retries (1 &amp; 2)</text>
-        <text x="12" y="44" class="body-text" fill="#9f1239">Backoff: 1000ms fixed</text>
-
-        <path class="flow-line flow-rose" d="M 380,30 L 395,30" marker-end="url(#arrow-rose)" />
-
-        <rect x="400" y="0" width="180" height="60" fill="#9f1239" rx="6" />
-        <text x="12" y="22" class="code-text" fill="#ffffff">Exhausted → DLT</text>
-        <text x="12" y="44" class="body-text" fill="#fecdd3">DeadLetterPublishing...</text>
-      </g>
-
-      <!-- DLT Topic Details -->
-      <g transform="translate(20, 120)">
-        <rect x="0" y="0" width="580" height="60" fill="#ffffff" stroke="#fecdd3" rx="6" />
-        <text x="15" y="24" class="code-text" fill="#881337">DLT Target Topic: ledgercore-transactions.DLT</text>
-        <text x="15" y="46" class="body-text" fill="#9f1239">Preserves original message payload + exception stack trace in Kafka headers for audit</text>
-      </g>
-    </g>
-  </g>
-
-  <!-- ==================================================================== -->
-  <!-- FAILURE & RECOVERY EDGE CASES MATRIX (Y: 880 to 1050) -->
-  <!-- ==================================================================== -->
-  <g transform="translate(60, 880)">
-    <rect x="0" y="0" width="2080" height="170" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" rx="14" class="shadow" />
-    <text x="25" y="28" class="card-title" fill="#0f172a">Failure &amp; Redelivery Scenarios Safety Matrix</text>
-    <line x1="25" y1="38" x2="2055" y2="38" stroke="#f1f5f9" stroke-width="1" />
-
-    <g transform="translate(25, 50)">
-      <!-- Scenario 1 -->
-      <rect class="card-blue" width="490" height="100" />
-      <text x="15" y="24" class="card-title" fill="#0369a1">A. Transient Producer Network Glitch</text>
-      <text x="15" y="46" class="body-text" fill="#0c4a6e">• Outbox poller detects un-acked event in <tspan class="code-text">PROCESSING</tspan></text>
-      <text x="15" y="66" class="body-text" fill="#0c4a6e">• Stale processing timeout (&gt;5m) resets state to <tspan class="code-text">PENDING</tspan></text>
-      <text x="15" y="86" class="body-text" fill="#0284c7" font-weight="600">Result: Automatically retried &amp; published safely.</text>
-
-      <!-- Scenario 2 -->
-      <g transform="translate(510, 0)">
-        <rect class="card-rose" width="490" height="100" />
-        <text x="15" y="24" class="card-title" fill="#9f1239">B. Permanent Serialization / Deserialization Bug</text>
-        <text x="15" y="46" class="body-text" fill="#881337">• Consumer fails 3 times across retries</text>
-        <text x="15" y="66" class="body-text" fill="#881337">• <tspan class="code-text">DeadLetterPublishingRecoverer</tspan> routes event to DLT topic</text>
-        <text x="15" y="86" class="body-text" fill="#e11d48" font-weight="600">Result: Pipeline continues; bad event isolated in DLT.</text>
-      </g>
-
-      <!-- Scenario 3 -->
-      <g transform="translate(1020, 0)">
-        <rect class="card-amber" width="490" height="100" />
-        <text x="15" y="24" class="card-title" fill="#b45309">C. Network Retry Duplicate Kafka Redelivery</text>
-        <text x="15" y="46" class="body-text" fill="#78350f">• Producer retries send due to missing ack; duplicate arrives</text>
-        <text x="15" y="66" class="body-text" fill="#78350f">• <tspan class="code-text">processed_events</tspan> table detects existing <tspan class="code-text">eventId</tspan></text>
-        <text x="15" y="86" class="body-text" fill="#d97706" font-weight="600">Result: Duplicate skipped; zero double-credit effect.</text>
-      </g>
-
-      <!-- Scenario 4 -->
-      <g transform="translate(1530, 0)">
-        <rect class="card-emerald" width="500" height="100" />
-        <text x="15" y="24" class="card-title" fill="#15803d">D. Consumer Crash Post-Redis / Pre-DB Save</text>
-        <text x="15" y="46" class="body-text" fill="#14532d">• Redis balance updated, but server dies before DB insert</text>
-        <text x="15" y="66" class="body-text" fill="#14532d">• Kafka redelivers event; Lua Version Guard evaluates version</text>
-        <text x="15" y="86" class="body-text" fill="#16a34a" font-weight="600">Result: Version Guard rejects stale update; DB record completes.</text>
-      </g>
-    </g>
-  </g>
-
-  <!-- ==================================================================== -->
-  <!-- CORE ARCHITECTURAL INVARIANTS FOOTER (Y: 1070 to 1340) -->
-  <!-- ==================================================================== -->
-  <g transform="translate(60, 1070)">
-    <rect class="card-dark shadow" width="2080" height="250" />
-    <text x="30" y="38" class="card-title" fill="#ffffff" font-size="16px">CORE KAFKA EVENT STREAMING INVARIANTS</text>
-    <line x1="30" y1="48" x2="2050" y2="48" stroke="#334155" stroke-width="1" />
-
-    <g transform="translate(30, 70)">
-      <!-- Rule 1 -->
-      <g transform="translate(0, 0)">
-        <rect x="0" y="0" width="480" height="150" fill="#1e293b" rx="8" stroke="#334155" />
-        <circle cx="30" cy="30" r="14" fill="#0284c7" />
-        <text x="30" y="35" class="badge-text" fill="#ffffff" text-anchor="middle">1</text>
-        <text x="55" y="35" class="card-title" fill="#e0f2fe">At-Least-Once + Idempotency</text>
-        <text x="20" y="65" class="body-text" fill="#94a3b8">Kafka guarantees message delivery. Application-level <tspan class="code-text" fill="#38bdf8">processed_events</tspan> tracking in PostgreSQL converts at-least-once transport into exactly-once business semantics.</text>
-      </g>
-
-      <!-- Rule 2 -->
-      <g transform="translate(510, 0)">
-        <rect x="0" y="0" width="480" height="150" fill="#1e293b" rx="8" stroke="#334155" />
-        <circle cx="30" cy="30" r="14" fill="#9333ea" />
-        <text x="30" y="35" class="badge-text" fill="#ffffff" text-anchor="middle">2</text>
-        <text x="55" y="35" class="card-title" fill="#faf5ff">Per-Account Key Partitioning</text>
-        <text x="20" y="65" class="body-text" fill="#94a3b8">Events are keyed by <tspan class="code-text" fill="#c084fc">aggregateId</tspan> (Account ID). Kafka guarantees strict sequential ordering within a single partition, allowing parallel cross-account processing without race conditions.</text>
-      </g>
-
-      <!-- Rule 3 -->
-      <g transform="translate(1020, 0)">
-        <rect x="0" y="0" width="480" height="150" fill="#1e293b" rx="8" stroke="#334155" />
-        <circle cx="30" cy="30" r="14" fill="#e11d48" />
-        <text x="30" y="35" class="badge-text" fill="#ffffff" text-anchor="middle">3</text>
-        <text x="55" y="35" class="card-title" fill="#fff1f2">Non-Blocking DLT Isolation</text>
-        <text x="20" y="65" class="body-text" fill="#94a3b8">Events failing after 3 attempts are routed to <tspan class="code-text" fill="#f43f5e">ledgercore-transactions.DLT</tspan>. Poison-pill messages never block processing of healthy account events.</text>
-      </g>
-
-      <!-- Rule 4 -->
-      <g transform="translate(1530, 0)">
-        <rect x="0" y="0" width="490" height="150" fill="#1e293b" rx="8" stroke="#334155" />
-        <circle cx="30" cy="30" r="14" fill="#16a34a" />
-        <text x="30" y="35" class="badge-text" fill="#ffffff" text-anchor="middle">4</text>
-        <text x="55" y="35" class="card-title" fill="#f0fdf4">Decoupled Financial Tx</text>
-        <text x="20" y="65" class="body-text" fill="#94a3b8">PostgreSQL commits account balances &amp; outbox events synchronously. Kafka network partition or broker downtime never rolls back committed financial transactions.</text>
-      </g>
-    </g>
+  <!-- SUMMARY FOOTER -->
+  <g transform="translate(40, 455)">
+    <rect class="card-purple" width="1020" height="55" />
+    <text x="20" y="24" class="card-title" fill="#6b21a8">Kafka Subsystem Guarantees</text>
+    <text x="20" y="42" class="body-text" fill="#581c87">Events are ordered by account ID, processed with DB-backed idempotency, and protected by a bounded 3-attempt retry loop with automated DLT forwarding to isolate invalid messages without pipeline downtime.</text>
   </g>
 </svg>

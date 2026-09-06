@@ -101,31 +101,89 @@ The system enforces a clear separation of concerns across its persistence, messa
 
 ## 🏛️ System Architecture & Data Flow
 
-The architecture of LedgerCore is documented across three comprehensive lifecycle diagrams representing the core subsystems of the platform:
+The architecture of LedgerCore is documented through clear, modular lifecycle diagrams explaining each core subsystem of the platform:
 
 ---
 
-### 🏛️ Complete Financial Transaction & Outbox Lifecycle
+### 1. Synchronous Financial Transaction & Double-Entry Ledger
 
-![LedgerCore Complete Financial Transaction and Outbox Lifecycle](./ledgercore-architecture.svg)
+![Synchronous Financial Transaction Flow](./ledgercore-financial-flow.svg)
 
-> The complete synchronous financial lifecycle—from authentication and ownership validation through atomic account, transaction, ledger, and outbox persistence—showing idempotency, optimistic concurrency control, rollback boundaries, and reliable handoff to asynchronous event processing.
-
----
-
-### 📨 Kafka Event Streaming, Ordering & Failure Lifecycle
-
-![LedgerCore Kafka Event Streaming Architecture](./ledgercore-kafka-architecture.svg)
-
-> The asynchronous Kafka lifecycle showing transactional-outbox publication, per-account event ordering, transfer source/destination events, consumer idempotency, retry handling, and dead-letter recovery.
+> Client HTTP request authentication, ownership validation, `@Transactional` business rules, and PostgreSQL atomic double-entry balance mutation.
 
 ---
 
-### ⚡ Redis Projection, Version Guard & Reconciliation Lifecycle
+### 2. Transactional Outbox Pattern & Relay Engine
 
-![LedgerCore Redis Projection and Reconciliation Architecture](./ledgercore-redis-architecture.svg)
+![Transactional Outbox Relay Flow](./ledgercore-outbox-relay.svg)
 
-> The Redis read-side lifecycle showing version-guarded balance projections, stale-event rejection, reconciliation, missing-projection backfill, orphan detection and safe cleanup.
+> Persisting outbox events within the database transaction boundary, `SKIP LOCKED` row poller claiming, and reliable handoff to Kafka producers.
+
+---
+
+### 3. Idempotency, Optimistic Locking & Rollback Safety
+
+![Idempotency Optimistic Locking and Rollback Safety](./ledgercore-idempotency-rollback.svg)
+
+> Idempotency key advisory locking, JPA `@Version` optimistic concurrency control, and atomic transaction rollback protecting against orphan outbox records.
+
+---
+
+### 4. Multi-Partition Kafka Streaming & Per-Account Ordering
+
+![Multi-Partition Kafka Key Streaming](./ledgercore-kafka-ordering.svg)
+
+> Envelope JSON payload design, key-based partition routing (`KafkaKey = aggregateId`), and independent per-account stream ordering.
+
+---
+
+### 5. Consumer Event Processing & Durable Idempotency
+
+![Consumer Event Processing and Durable Idempotency](./ledgercore-consumer-idempotency.svg)
+
+> `KafkaConsumerService` polling, PostgreSQL `processed_events` table deduplication check, and safe read-side projection updates.
+
+---
+
+### 6. Bounded Consumer Retries & Dead-Letter Topic (DLT) Fault Recovery
+
+![Bounded Consumer Retries and DLT Recovery](./ledgercore-kafka-retry-dlt.svg)
+
+> Spring Kafka `DefaultErrorHandler` loop (3 total attempts with 1s backoff) and `DeadLetterPublishingRecoverer` routing invalid messages to `ledgercore-transactions.DLT`.
+
+---
+
+### 7. Redis Atomic Lua Script Version Guard
+
+![Redis Atomic Lua Script Version Guard](./ledgercore-redis-lua-guard.svg)
+
+> `setBalanceIfVersionGreater.lua` atomic evaluation in Redis, rejecting stale out-of-order events while accepting valid monotonic balance updates.
+
+---
+
+### 8. Reconciliation Audit Engine & 4-State Drift Detection
+
+![Reconciliation Audit Engine](./ledgercore-redis-reconciliation.svg)
+
+> Scheduled background audit comparing PostgreSQL authoritative accounts against Redis read projections across 4 states (`MATCH`, `MISMATCH`, `MISSING`, `ORPHANED`).
+
+---
+
+### 9. Projection Backfill & Safe Targeted Orphan Cleanup
+
+![Projection Backfill and Safe Orphan Cleanup](./ledgercore-redis-backfill-cleanup.svg)
+
+> `AccountProjectionBackfillService` rebuilding missing keys from database state and `RedisOrphanCleanupService` executing safe targeted key deletions without global flush operations.
+
+---
+
+### 🏛️ Complete Subsystem Lifecycle Overviews
+
+For complete subsystem architectural overviews:
+
+* **Complete Financial & Outbox Architecture**: [`ledgercore-architecture.svg`](./ledgercore-architecture.svg)
+* **Complete Kafka Event Streaming Architecture**: [`ledgercore-kafka-architecture.svg`](./ledgercore-kafka-architecture.svg)
+* **Complete Redis Projection & Reconciliation Architecture**: [`ledgercore-redis-architecture.svg`](./ledgercore-redis-architecture.svg)
 
 ---
 

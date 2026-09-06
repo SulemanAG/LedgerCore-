@@ -13,12 +13,6 @@
 
 ---
 
-<p align="center">
-  <img src="./ledgercore-architecture.svg" alt="LedgerCore System Architecture and Flow" width="100%" />
-</p>
-
----
-
 ## 📌 Project Overview
 
 **LedgerCore** is a high-throughput, enterprise-grade banking backend and double-entry financial ledger engine developed with **Java 17** and **Spring Boot 3**. Designed specifically for mission-critical financial software engineering, LedgerCore rejects simplified "CRUD-style" account balance updates in favor of strict double-entry ledger accounting, transactional outbox delivery, multi-partition event streaming, atomic read-side balance projections, and robust failure-recovery mechanisms.

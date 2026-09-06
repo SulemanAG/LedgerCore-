@@ -53,7 +53,8 @@
 
     <!-- Embedded CSS Styles & Animations -->
     <style>
-      .title-main { font: 800 34px 'Segoe UI', system-ui, -apple-system, sans-serif; fill: #0f172a; letter-spacing: -0.5px; }
+    <![CDATA[
+.title-main { font: 800 34px 'Segoe UI', system-ui, -apple-system, sans-serif; fill: #0f172a; letter-spacing: -0.5px; }
       .title-sub { font: 500 17px 'Segoe UI', system-ui, -apple-system, sans-serif; fill: #475569; }
       .zone-header { font: 800 18px 'Segoe UI', system-ui, -apple-system, sans-serif; fill: #1e293b; text-transform: uppercase; letter-spacing: 0.8px; }
       .card-title { font: 700 18px 'Segoe UI', system-ui, -apple-system, sans-serif; fill: #0f172a; }
@@ -113,6 +114,7 @@
         98% { opacity: 0; }
         100% { opacity: 0; }
       }
+    ]]>
     </style>
   </defs>
 

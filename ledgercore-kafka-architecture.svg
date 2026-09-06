@@ -2,7 +2,8 @@
   <defs>
     <!-- Fonts & Global Styles -->
     <style>
-      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap');
+    <![CDATA[
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap');
 
       * { box-sizing: border-box; }
       
@@ -27,7 +28,7 @@
       .card-rose { fill: #fff1f2; stroke: #fecdd3; stroke-width: 1.5; rx: 12; }
       .card-dark { fill: #0f172a; stroke: #1e293b; stroke-width: 1.5; rx: 12; }
 
-      /* Arrow Paths & Connectors */
+      /* Arrow Paths and Connectors */
       .flow-line { fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
       .flow-blue { stroke: #0284c7; }
       .flow-purple { stroke: #9333ea; }
@@ -49,6 +50,7 @@
       
       /* Drop Shadows */
       .shadow { filter: drop-shadow(0 10px 15px rgba(15, 23, 42, 0.06)); }
+    ]]>
     </style>
 
     <!-- Markers -->

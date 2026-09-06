@@ -14,15 +14,26 @@ import java.util.List;
  * Relays transactional outbox events from PostgreSQL to Kafka.
  *
  * <p>
- * The relay periodically searches for PENDING outbox events whose
- * retry time has arrived. Each event is converted into a Kafka event
- * envelope and published asynchronously.
+ * The relay atomically claims PENDING events from the outbox table
+ * and marks them as PROCESSING before publishing them to Kafka.
  * </p>
  *
  * <p>
- * Successful events are marked as PUBLISHED. Failed events remain
- * retryable until the maximum retry count is reached, after which
- * they are marked as FAILED.
+ * Kafka message keys are based on the aggregate account ID so that
+ * events belonging to the same account are routed to the same Kafka
+ * partition, allowing Kafka to preserve their ordering.
+ * </p>
+ *
+ * <p>
+ * Successfully published events are marked as PUBLISHED.
+ * Failed events are returned to PENDING with exponential backoff,
+ * or marked as FAILED after the maximum retry count is reached.
+ * </p>
+ *
+ * <p>
+ * The relay also recovers stale PROCESSING events in case the
+ * application crashes after claiming an event but before Kafka
+ * publication completes.
  * </p>
  *
  * @author Suleman Agasimani
@@ -31,44 +42,43 @@ import java.util.List;
 @Service
 public class OutboxRelayService {
 
-    /**
-     * Maximum number of failed publication attempts allowed
-     * before an event is permanently marked as FAILED.
-     */
-    private static final int MAX_RETRIES = 5;
+    private static final int BATCH_SIZE = 100;
 
-    /**
-     * Initial retry delay in seconds.
-     */
-    private static final long INITIAL_RETRY_DELAY_SECONDS = 2;
+    private static final long PROCESSING_TIMEOUT_SECONDS = 30;
 
     private final OutboxRepository outboxRepository;
     private final KafkaProducerService kafkaProducerService;
     private final ObjectMapper objectMapper;
+    private final OutboxStateService outboxStateService;
 
     /**
      * Creates the outbox relay service.
      *
-     * @param outboxRepository repository used to access outbox events
+     * @param outboxRepository repository used to claim and recover events
      * @param kafkaProducerService service used to publish events to Kafka
-     * @param objectMapper Jackson object mapper used to create Kafka envelopes
+     * @param objectMapper mapper used to serialize Kafka events
+     * @param outboxStateService service used to manage outbox event states
      */
     public OutboxRelayService(
             OutboxRepository outboxRepository,
             KafkaProducerService kafkaProducerService,
-            ObjectMapper objectMapper
+            ObjectMapper objectMapper,
+            OutboxStateService outboxStateService
     ) {
         this.outboxRepository = outboxRepository;
         this.kafkaProducerService = kafkaProducerService;
         this.objectMapper = objectMapper;
+        this.outboxStateService = outboxStateService;
     }
 
     /**
-     * Polls PostgreSQL for pending outbox events whose retry time
-     * has arrived.
+     * Claims a batch of pending outbox events and publishes them to Kafka.
      *
      * <p>
-     * The relay runs every five seconds during development.
+     * Events are atomically claimed using PostgreSQL row locking and
+     * {@code SKIP LOCKED}. This allows multiple application instances
+     * to process different events concurrently without claiming the
+     * same event.
      * </p>
      */
     @Scheduled(fixedDelay = 5000)
@@ -76,26 +86,103 @@ public class OutboxRelayService {
 
         LocalDateTime now = LocalDateTime.now();
 
+        System.out.println(
+                "OUTBOX RELAY: polling at " + now
+        );
+
         List<OutboxEvent> events =
-                outboxRepository
-                        .findByStatusAndNextAttemptLessThanEqualOrderByCreatedAtAsc(
-                                OutboxEventStatus.PENDING,
-                                now
-                        );
+                outboxRepository.claimPendingEvents(
+                        now,
+                        BATCH_SIZE
+                );
+
+        System.out.println(
+                "OUTBOX RELAY: claimed "
+                        + events.size()
+                        + " pending events"
+        );
 
         for (OutboxEvent event : events) {
 
-            // 1. Mark the event as PROCESSING before publishing.
-            event.setStatus(OutboxEventStatus.PROCESSING);
-            outboxRepository.save(event);
+            System.out.println(
+                    "OUTBOX RELAY: processing event "
+                            + event.getEventId()
+                            + " ["
+                            + event.getEventType()
+                            + "]"
+            );
 
-            // 2. Publish the event asynchronously.
+            /*
+             * The event has already been marked PROCESSING
+             * by claimPendingEvents().
+             *
+             * Therefore, we do NOT call markProcessing() here.
+             */
+
             publishEvent(event);
         }
     }
 
     /**
-     * Publishes a single outbox event to Kafka.
+     * Recovers outbox events that have remained in PROCESSING state
+     * beyond the configured timeout.
+     *
+     * <p>
+     * This protects against a process crash occurring after an event
+     * was claimed but before Kafka acknowledged the message.
+     * </p>
+     */
+    @Scheduled(fixedDelay = 5000)
+    public void recoverStaleProcessingEvents() {
+
+        LocalDateTime cutoff =
+                LocalDateTime.now()
+                        .minusSeconds(PROCESSING_TIMEOUT_SECONDS);
+
+        List<OutboxEvent> staleEvents =
+                outboxRepository
+                        .findByStatusAndProcessingStartedAtLessThanEqualOrderByProcessingStartedAtAsc(
+                                OutboxEventStatus.PROCESSING,
+                                cutoff
+                        );
+
+        if (staleEvents.isEmpty()) {
+            return;
+        }
+
+        System.out.println(
+                "OUTBOX RECOVERY: found "
+                        + staleEvents.size()
+                        + " stale PROCESSING events"
+        );
+
+        for (OutboxEvent event : staleEvents) {
+
+            System.out.println(
+                    "OUTBOX RECOVERY: recovering event "
+                            + event.getEventId()
+            );
+
+            outboxStateService.recoverStaleProcessingEvent(
+                    event.getEventId()
+            );
+        }
+    }
+
+    /**
+     * Serializes and publishes a single outbox event to Kafka.
+     *
+     * <p>
+     * The Kafka key is the aggregate ID rather than the outbox event ID.
+     * For account-based events, the aggregate ID represents the account
+     * affected by the event.
+     * </p>
+     *
+     * <p>
+     * Using the aggregate ID as the Kafka key causes events for the same
+     * aggregate to be routed to the same Kafka partition. Kafka preserves
+     * message ordering within that partition.
+     * </p>
      *
      * @param event outbox event to publish
      */
@@ -103,36 +190,66 @@ public class OutboxRelayService {
 
         try {
 
-            // 1. Create the Kafka event envelope.
-            KafkaEvent kafkaEvent = new KafkaEvent(
-                    event.getEventId(),
-                    event.getEventType(),
-                    event.getAggregateId(),
-                    event.getCreatedAt(),
-                    event.getPayload()
-            );
+            KafkaEvent kafkaEvent =
+                    new KafkaEvent(
+                            event.getEventId(),
+                            event.getEventType(),
+                            event.getAggregateId(),
+                            event.getCreatedAt(),
+                            event.getPayload()
+                    );
 
-            // 2. Serialize the envelope into JSON.
             String message =
                     objectMapper.writeValueAsString(kafkaEvent);
 
-            // 3. Publish the envelope to Kafka.
+            /*
+             * Use aggregateId as the Kafka key.
+             *
+             * Previously:
+             *
+             *     event.getEventId().toString()
+             *
+             * This could distribute events belonging to the same
+             * account across different Kafka partitions.
+             *
+             * Now:
+             *
+             *     event.getAggregateId().toString()
+             *
+             * Events for the same aggregate use the same Kafka key
+             * and therefore the same Kafka partition.
+             */
+            String kafkaKey =
+                    event.getAggregateId().toString();
+
             kafkaProducerService
                     .publish(
-                            event.getEventId().toString(),
+                            kafkaKey,
                             message
                     )
                     .whenComplete((result, exception) -> {
 
                         if (exception == null) {
 
-                            // 4. Kafka acknowledged the event.
-                            markPublished(event.getEventId());
+                            System.out.println(
+                                    "OUTBOX RELAY: Kafka acknowledged event "
+                                            + event.getEventId()
+                            );
+
+                            outboxStateService.markPublished(
+                                    event.getEventId()
+                            );
 
                         } else {
 
-                            // 5. Kafka publication failed.
-                            markFailed(
+                            System.out.println(
+                                    "OUTBOX RELAY: Kafka failed for event "
+                                            + event.getEventId()
+                                            + ": "
+                                            + exception.getMessage()
+                            );
+
+                            outboxStateService.markFailed(
                                     event.getEventId(),
                                     exception
                             );
@@ -141,106 +258,17 @@ public class OutboxRelayService {
 
         } catch (Exception exception) {
 
-            // 6. Serialization or another synchronous failure.
-            markFailed(
+            System.out.println(
+                    "OUTBOX RELAY: synchronous failure for event "
+                            + event.getEventId()
+                            + ": "
+                            + exception.getMessage()
+            );
+
+            outboxStateService.markFailed(
                     event.getEventId(),
                     exception
             );
         }
-    }
-
-    /**
-     * Marks an outbox event as successfully published.
-     *
-     * @param eventId outbox event ID
-     */
-    public void markPublished(Long eventId) {
-
-        OutboxEvent event =
-                outboxRepository.findById(eventId)
-                        .orElse(null);
-
-        if (event == null) {
-            return;
-        }
-
-        // 1. Mark the event as successfully published.
-        event.setStatus(OutboxEventStatus.PUBLISHED);
-
-        // 2. Record the publication timestamp.
-        event.setPublishedAt(LocalDateTime.now());
-
-        // 3. Clear any previous failure information.
-        event.setLastError(null);
-
-        outboxRepository.save(event);
-    }
-
-    /**
-     * Records a failed Kafka publication attempt.
-     *
-     * <p>
-     * The event is returned to PENDING when retry attempts remain.
-     * Exponential backoff determines when the next attempt should occur.
-     * Once the maximum retry count is reached, the event is permanently
-     * marked as FAILED.
-     * </p>
-     *
-     * @param eventId outbox event ID
-     * @param exception exception produced by the failed publication
-     */
-    public void markFailed(
-            Long eventId,
-            Throwable exception
-    ) {
-
-        OutboxEvent event =
-                outboxRepository.findById(eventId)
-                        .orElse(null);
-
-        if (event == null) {
-            return;
-        }
-
-        // 1. Increase the retry count.
-        int retryCount = event.getRetryCount() + 1;
-
-        event.setRetryCount(retryCount);
-
-        // 2. Store the failure reason for debugging.
-        event.setLastError(
-                exception.getMessage()
-        );
-
-        // 3. Check whether the maximum retry count was reached.
-        if (retryCount >= MAX_RETRIES) {
-
-            event.setStatus(
-                    OutboxEventStatus.FAILED
-            );
-
-            event.setNextAttempt(null);
-
-        } else {
-
-            // 4. Return the event to PENDING for another attempt.
-            event.setStatus(
-                    OutboxEventStatus.PENDING
-            );
-
-            // 5. Calculate exponential backoff.
-            long delaySeconds =
-                    INITIAL_RETRY_DELAY_SECONDS
-                            * (1L << (retryCount - 1));
-
-            // 6. Schedule the next publication attempt.
-            event.setNextAttempt(
-                    LocalDateTime.now()
-                            .plusSeconds(delaySeconds)
-            );
-        }
-
-        // 7. Persist the new state.
-        outboxRepository.save(event);
     }
 }

@@ -7,14 +7,19 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 
 /**
- * Represents an event stored in the transactional outbox.
+ * Represents a transactional outbox event.
  *
  * <p>
- * The outbox event is persisted in the same PostgreSQL transaction as
- * the financial operation that generated it. This ensures that a
- * successfully committed financial operation always has a durable
- * event record that can later be published to an external system.
+ * Outbox events are stored in PostgreSQL together with the financial
+ * transaction that produced them. A separate relay later publishes
+ * these events to Kafka.
  * </p>
+ *
+ * <p>
+ * PostgreSQL remains the durable source of truth for the outbox.
+ * Kafka publication is an asynchronous downstream operation.
+ * </p>
+ *
  * @author Suleman Agasimani
  * @since 1.0
  */
@@ -25,84 +30,104 @@ import java.time.LocalDateTime;
 public class OutboxEvent {
 
     /**
-     * Unique identifier of the outbox event.
+     * Unique database identifier for the outbox event.
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long eventId;
 
     /**
-     * Type of event that occurred.
-     *
-     * <p>
-     * Examples:
-     * TRANSFER_COMPLETED,
-     * DEPOSIT_COMPLETED,
-     * WITHDRAWAL_COMPLETED
-     * </p>
+     * Type of event being published.
      */
-    @Column(nullable = false, length = 50)
+    @Column(
+            nullable = false,
+            length = 50
+    )
     private String eventType;
 
     /**
-     * Identifier of the financial transaction associated with this event.
+     * Identifier of the aggregate associated with the event.
      */
     @Column(nullable = false)
     private Long aggregateId;
 
     /**
-     * Serialized JSON representation of the event.
+     * Serialized event payload.
      */
-    @Column(nullable = false, columnDefinition = "TEXT")
+    @Column(
+            nullable = false,
+            columnDefinition = "TEXT"
+    )
     private String payload;
 
     /**
-     * Current processing status of the event.
+     * Current lifecycle state of the outbox event.
      */
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 20)
+    @Column(
+            nullable = false,
+            length = 20
+    )
     private OutboxEventStatus status;
 
     /**
-     * Time at which the event was created.
+     * Time at which the outbox event was created.
      */
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
     /**
-     * Time at which the event was successfully published.
-     *
-     * <p>
-     * This remains null while the event is pending.
-     * </p>
+     * Time at which the event was successfully published to Kafka.
      */
     private LocalDateTime publishedAt;
 
     /**
-     * Number of publication attempts.
+     * Number of failed publication attempts.
      */
     @Column(nullable = false)
     private int retryCount;
 
+    /**
+     * Time after which another publication attempt may occur.
+     */
+    @Column(name = "next_attempt")
     private LocalDateTime nextAttempt;
 
+    /**
+     * Time at which the event entered PROCESSING state.
+     *
+     * <p>
+     * This timestamp allows the relay to identify events that became
+     * stuck while being processed.
+     * </p>
+     */
+    private LocalDateTime processingStartedAt;
+
+    /**
+     * Most recent publication failure reason.
+     */
     @Column(columnDefinition = "TEXT")
     private String lastError;
 
     /**
-     * Required by JPA.
+     * Default constructor required by JPA.
      */
     public OutboxEvent() {
     }
 
     /**
-     * Creates a new pending outbox event.
+     * Creates a new outbox event.
+     *
+     * <p>
+     * This constructor is kept compatible with the existing
+     * transaction, deposit, withdrawal, and outbox test code.
+     * </p>
      *
      * @param eventType event type
-     * @param aggregateId associated financial transaction ID
+     * @param aggregateId aggregate identifier
      * @param payload serialized event payload
-     * @param status initial event status
-     * @param createdAt event creation time
+     * @param status initial outbox status
+     * @param createdAt creation timestamp
      */
     public OutboxEvent(
             String eventType,
@@ -117,7 +142,8 @@ public class OutboxEvent {
         this.status = status;
         this.createdAt = createdAt;
         this.retryCount = 0;
-        this.nextAttempt=createdAt;
+        this.nextAttempt = createdAt;
+        this.processingStartedAt = null;
     }
 
 }

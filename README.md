@@ -107,7 +107,35 @@ The system enforces a clear separation of concerns across its persistence, messa
 
 ## 🏛️ System Architecture & Data Flow
 
-### Complete End-to-End Execution Flow
+The architecture of LedgerCore is documented across three comprehensive lifecycle diagrams representing the core subsystems of the platform:
+
+---
+
+### 🏛️ Complete Financial Transaction & Outbox Lifecycle
+
+![LedgerCore Complete Financial Transaction and Outbox Lifecycle](./ledgercore-architecture.svg)
+
+> The complete synchronous financial lifecycle—from authentication and ownership validation through atomic account, transaction, ledger, and outbox persistence—showing idempotency, optimistic concurrency control, rollback boundaries, and reliable handoff to asynchronous event processing.
+
+---
+
+### 📨 Kafka Event Streaming, Ordering & Failure Lifecycle
+
+![LedgerCore Kafka Event Streaming Architecture](./ledgercore-kafka-architecture.svg)
+
+> The asynchronous Kafka lifecycle showing transactional-outbox publication, per-account event ordering, transfer source/destination events, consumer idempotency, retry handling, and dead-letter recovery.
+
+---
+
+### ⚡ Redis Projection, Version Guard & Reconciliation Lifecycle
+
+![LedgerCore Redis Projection and Reconciliation Architecture](./ledgercore-redis-architecture.svg)
+
+> The Redis read-side lifecycle showing version-guarded balance projections, stale-event rejection, reconciliation, missing-projection backfill, orphan detection and safe cleanup.
+
+---
+
+### Complete End-to-End Execution Sequence
 
 Every financial operation in LedgerCore travels through a strictly sequenced, decoupled architecture:
 
